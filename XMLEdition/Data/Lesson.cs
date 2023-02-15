@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace XMLEdition.Data
+﻿namespace XMLEdition.Data
 {
     public class Lesson
     {
