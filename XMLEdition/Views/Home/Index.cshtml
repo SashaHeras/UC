@@ -1,0 +1,35 @@
+﻿@model XMLEdition.Data.Product;
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<a href="/Home/Add" class="btn btn-primary">+ Create product</a>
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Price</th>
+            <th scope="col">Vendor</th>
+            <th scope="col">Storage</th>
+            <th scope="col">Count</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            foreach (XMLEdition.Data.Product p in ViewBag.Products)
+            {
+                <tr>
+                    <th scope="row">@p.Id</th>
+                    <td>@p.Name</td>
+                    <td>@p.Price</td>
+                    <td>@p.Vendor</td>
+                    <td>@p.Storage</td>
+                    <td>@p.Count</td>
+                    <td><a href="/Home/Edit/@p.Id" class="btn btn-warning">Edit</a></td>
+                    <td><a href="/Home/DeleteProduct/@p.Id" class="btn btn-danger">Delete</a></td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

@@ -1,0 +1,30 @@
+﻿@model XMLEdition.Data.Product;
+@{
+    ViewData["Title"] = "Add Page";
+}
+
+<form asp-controller="Home" asp-action="AddProduct">
+    <p>
+        <label asp-for="Name">Name</label><br />
+        <input id="Name" type="text" asp-for="Name" />
+    </p>
+    <p>
+        <label asp-for="Price">Price</label><br />
+        <input id="Price" type="number" asp-for="Price" />
+    </p>
+    <p>
+        <label asp-for="Vendor">Vendor</label><br />
+        <input id="Vendor" type="text" asp-for="Vendor" />
+    </p>
+    <p>
+        <label asp-for="Storage">Storage</label><br />
+        <input id="Storage" type="text" asp-for="Storage" />
+    </p>
+    <p>
+        <label asp-for="Count">Count</label><br />
+        <input id="Count" type="number" asp-for="Count" />
+    </p>
+    <p>
+        <input type="submit" class="btn btn-success" value="Add"/>
+    </p>
+</form>

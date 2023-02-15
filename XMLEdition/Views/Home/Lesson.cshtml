@@ -1,0 +1,20 @@
+﻿@model XMLEdition.Data.Lesson;
+@{
+    ViewData["Title"] = "Lesson Page";
+}
+
+<div id="discription">
+    <h2 style="font: small-caps bold sans-serif;">Theme: @ViewBag.Lesson.Theme</h2>
+    <h4 style="font: small-caps bold sans-serif;">Discription: @ViewBag.Lesson.Description</h4>
+    <div style="color: #C0C0C0">
+        @ViewBag.Lesson.DateCreation
+    </div>
+</div>
+
+<div id="video">
+    <video id="videoplayer" src="@Url.Content("~/Videos/" + ViewBag.Lesson.VideoPath + "")" controls width="70%" height="480" loop></video>
+</div>
+
+<div id="body" style="width: 70%">
+    @Html.Raw(ViewBag.Lesson.Body)
+</div>

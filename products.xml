@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfProduct xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Product>
+    <Id>2</Id>
+    <Name>Мобільний телефон Samsung A9</Name>
+    <Price>20000</Price>
+    <Vendor>Samsung</Vendor>
+    <Storage>Головний</Storage>
+    <Count>40</Count>
+  </Product>
+  <Product>
+    <Id>3</Id>
+    <Name>Телевізор LG S100</Name>
+    <Price>15000</Price>
+    <Vendor>LG</Vendor>
+    <Storage>Центральний</Storage>
+    <Count>100</Count>
+  </Product>
+</ArrayOfProduct>
