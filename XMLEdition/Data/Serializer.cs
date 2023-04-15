@@ -16,19 +16,19 @@ namespace XMLEdition.Data
                 {
                     Id = 1,
                     Name = "Годинник Bitux",
-                    Price = 20,
+                    Price = 200,
                     Vendor = "SDB",
                     Storage = "Додатковий",
-                    Count = 10
+                    Count = 100
                 },
                 new Product()
                 {
                     Id = 2,
                     Name = "Мобільний телефон Samsung A9",
-                    Price = 20000,
+                    Price = 10000,
                     Vendor = "Samsung",
                     Storage = "Головний",
-                    Count = 40
+                    Count = 100
                 }
             };
 

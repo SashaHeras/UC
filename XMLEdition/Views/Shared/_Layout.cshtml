@@ -7,9 +7,13 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/XMLEdition.styles.css" asp-append-version="true" />
+    <script src="https://code.jquery.com/jquery-3.6.3.js"
+            integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM="
+            crossorigin="anonymous"></script>
 </head>
+
 <body>
-    <header>
+    @*<header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">XMLEdition</a>
@@ -29,14 +33,17 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="CreateLesson">Create lesson</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="CreateCourse">Create cource</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Test" asp-action="CreateTest">Create test</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" href="/Test/PassTest/23">Pass test</a>
                         </li>
                     </ul>
                 </div>
             </div>
         </nav>
-    </header>
-    <div class="container">
+    </header>*@
+    <div>
         <main role="main" class="pb-3">
             @RenderBody()
         </main>

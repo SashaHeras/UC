@@ -1,0 +1,236 @@
+﻿@{
+    ViewData["Title"] = "Create Course Page";
+}
+
+<style>
+    a{
+        text-decoration: none;
+        color: black;
+    }
+
+    a:visited {
+        color: black; /* Цвет посещенной ссылки */
+    }
+
+        a:hover {
+            color: black; /* Цвет посещенной ссылки */
+        }
+
+    .listA{
+        margin-left: 5px;
+        
+    }
+
+    .listElement{        
+        vertical-align: middle;
+        display: flex;
+        height: 42px;
+        font-size: 18px;
+        margin-top: 15px;
+        width: 450px;
+        border-radius: 5px;
+        padding-top: 3px;
+        padding-bottom: 3px;
+        padding-left: 10px;
+        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    }
+
+    .dropbtn {
+        background-color: white;
+        color: black;
+        padding: 8px;
+        font-size: 16px;
+        border: none;
+    }
+
+    .dropdown {
+        position: relative;
+        display: inline-block;
+    }
+
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #f1f1f1;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 1;
+    }
+
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+            .dropdown-content a:hover {
+                background-color: #ddd;
+            }
+
+    .dropdown:hover .dropdown-content {
+        display: block;
+    }
+
+    .dropdown:hover .dropbtn {
+        background-color: white;
+    }
+
+    .body {
+        margin-left: 40px;
+        margin-right: 40px;
+    }
+</style>
+
+<partial name="/Views/Partial/Header.cshtml" />
+
+<div class="body">
+    <div class="mainInfo">
+        <text>Course name:</text>
+        @{
+            if (ViewBag.Course.Name != "")
+            {
+                <input type="text" placeholder="Enter course name" id="courseName" value="@ViewBag.Course.Name" width="350px" />
+            }
+            else
+            {
+                <input type="text" placeholder="Enter course name" id="courseName" width="350px" />
+            }            
+        }
+        </br>
+        <text>Course price:</text>
+        @{
+            if (ViewBag.Course.Price != null)
+            {
+                <input type="text" placeholder="Enter course price" id="coursePrice" value="@ViewBag.Course.Price" width="150px" />
+            }
+            else
+            {
+                <input type="number" placeholder="Enter course price" id="coursePrice" width="150px" />
+            }
+        }
+        </br>
+        <text>Course picture:</text>
+        <input type="file" name="file" id="file" />
+        </br>
+        <input type="button" onclick="SaveCourse()" class="btn btn-success" value="Save"/>
+    </div>
+    <hr />
+    <div class="dropdown">
+        <button id="elementsTypes" class="dropbtn">Create new...</button>
+        <div class="dropdown-content">
+            <a id="createLesson">Lesson</a>
+            <a id="createTest">Test</a>
+        </div>
+    </div>
+    <div id="elementsList">
+
+    </div>
+</div>
+
+<script>
+    let courseId = @ViewBag.Course.Id;
+    let authorId = "{5cc5918d-81b7-4a84-bd64-e79fd914ebf7}";
+
+    $(document).ready(function() {
+        
+        if (courseId != 0) {
+            let lesson = document.getElementById("createLesson");
+            lesson.href = "/Home/CreateLesson/" + courseId;
+
+            let test = document.getElementById("createTest");
+            test.href = "/Test/CreateTest/" + courseId;
+
+            let formdata = new FormData();
+            formdata.append("course", courseId);
+
+            $.ajax({
+                url: "/Course/GetCourseElements",
+                type: "POST",
+                data: formdata,
+                dataType: "json",
+                contentType: false,
+                processData: false,
+                success: function (result) {
+                    var res = JSON.parse(result);
+                    let list = document.getElementById("elementsList");
+                    
+                    for(let i = 0; i < res.length; i++)
+                    {
+                        if (res[i].TypeId == 2) {
+                            let div = document.createElement("div");
+                            div.className = "listElement";
+
+                            let icon = document.createElement("i");
+                            icon.className = "bi bi-file-text";
+                            div.appendChild(icon);
+
+                            let a = document.createElement("a");
+                            a.className = "listA";
+                            a.href = "/Lesson/EditLesson/" + res[i].Id;
+                            a.textContent = res[i].ElementName;
+                            div.appendChild(a);
+
+                            list.appendChild(div);
+                        }
+                        else
+                        {
+                            let div = document.createElement("div");
+                            div.className = "listElement";
+
+                            let icon = document.createElement("i");
+                            icon.className = "bi bi-list-check";
+                            div.appendChild(icon);
+
+                            let a = document.createElement("a");
+                            a.className = "listA";
+                            a.href = "/Test/EditTest/" + res[i].Id;
+                            a.textContent = res[i].ElementName;
+                            div.appendChild(a);
+
+                            list.appendChild(div);
+                        }
+                    }
+                }
+            });
+        }
+        else{
+            let lesson = document.getElementById("createLesson");
+            lesson.href = "javascript:void(0)";
+
+            let test = document.getElementById("createTest");
+            test.href = "javascript:void(0)";
+
+        }
+    });
+
+    function SaveCourse(){
+        var formdata = new FormData();
+        
+        formdata.append("courseId", courseId);
+        formdata.append("authorId", authorId);
+        formdata.append("name", document.getElementById("courseName").value);
+        formdata.append("price", document.getElementById("coursePrice").value);
+        formdata.append("file", $("#file").get(0).files[0]);
+
+        $.ajax({
+            url: "/Course/SaveCource",
+            type: "POST",
+            data: formdata,
+            dataType: "json",
+            contentType: false,
+            processData: false,
+            success: function (result) {
+                if (result != null) {
+                    courseId = parseInt(result);
+
+                    let lesson = document.getElementById("createLesson");
+                    lesson.href = "/Home/CreateLesson/" + courseId;
+
+                    let test = document.getElementById("createTest");
+                    test.href = "/Test/CreateTest/" + courseId;
+                }
+            }
+        });   
+    }
+</script>

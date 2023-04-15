@@ -5,8 +5,20 @@
       "PackagePath": "staticwebassets\\XMLEdition.bundle.scp.css"
     },
     {
-      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\Videos\\125.mp4",
-      "PackagePath": "staticwebassets\\Videos\\125.mp4"
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\Pictures\\img_avatar.png",
+      "PackagePath": "staticwebassets\\Pictures\\img_avatar.png"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\Pictures\\завантаження.png",
+      "PackagePath": "staticwebassets\\Pictures\\завантаження.png"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\Videos\\611984.mp4",
+      "PackagePath": "staticwebassets\\Videos\\611984.mp4"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\Videos\\84988456.mp4",
+      "PackagePath": "staticwebassets\\Videos\\84988456.mp4"
     },
     {
       "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\css\\site.css",

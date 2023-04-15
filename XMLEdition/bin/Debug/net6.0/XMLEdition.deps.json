@@ -17,6 +17,7 @@
           "Microsoft.EntityFrameworkCore.Relational": "7.0.2",
           "Microsoft.EntityFrameworkCore.SqlServer": "7.0.2",
           "Microsoft.EntityFrameworkCore.Tools": "7.0.2",
+          "System.Text.Encodings.Web": "7.0.0",
           "Video": "0.0.2"
         },
         "runtime": {

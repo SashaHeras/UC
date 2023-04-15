@@ -1,0 +1,48 @@
+﻿@{
+    ViewData["Title"] = "Author Page";
+}
+
+<style>
+    .body {
+        
+    }
+
+    .control{
+        background-color: #A9A9A9;
+    }
+
+    .mainText{
+        padding-top: 35px;
+        padding-bottom: 25px;
+        margin-left: 120px;
+        display: flex;
+    }
+
+    .createCourseBlock{
+        height: 52px;
+    }
+
+    .createCourseBtn {
+        margin-top: 8px
+    }
+</style>
+
+<partial name="/Views/Partial/Header.cshtml" />
+
+<div class="body">
+    <div class="control">
+        <div class="mainText">
+            <h1 style="width: 82%">Author`s control panel</h1>
+            <div class="createCourseBlock">
+                <a class="btn btn-primary createCourseBtn" href="/Course/CreateCourse/0">Create course</a>
+            </div>
+        </div>        
+    </div>
+    <div class="summary">
+
+    </div>
+    <hr />
+    <div>
+
+    </div>
+</div>

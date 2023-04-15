@@ -9,5 +9,7 @@
         public string Description { get; set; }
 
         public string Body { get; set; }
+
+        public string CourseId { get; set; }
     }
 }

@@ -8,6 +8,24 @@ namespace XMLEdition.Data
     {
         public DbSet<Lesson> Lessons { get; set; }
 
+        public DbSet<Test> Tests { get; set; }
+
+        public DbSet<TaskAnswer> TaskAnswers { get; set; }
+
+        public DbSet<TestTask> TestTasks { get; set; }
+
+        public DbSet<Course> Courses { get; set; }
+
+        public DbSet<CourseItem> CourseItem { get; set; }
+
+        public DbSet<CourseItemType> CourseItemTypes { get; set; }
+
+        public DbSet<TestHistory> TestHistory { get; set; }
+
+        public DbSet<TaskHistory> TaskHistory { get; set; }
+
+        public DbSet<AnswerHistory> AnswerHistory { get; set; }
+
         public AppContext()
         {
 
@@ -25,7 +43,7 @@ namespace XMLEdition.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=DESKTOP-R22J42Q;Initial Catalog=StudyDB;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False;Trusted_Connection=True", builder =>
+            optionsBuilder.UseSqlServer("Server=localhost;Initial Catalog=StudyDB;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False;Trusted_Connection=True", builder =>
             {
                 builder.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null);
             });

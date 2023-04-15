@@ -3,25 +3,33 @@
     ViewData["Title"] = "Add Page";
 }
 
+<style>
+    body{
+        margin-right:40px;
+        margin-left: 40px;
+    }
+</style>
+
+<h1>Створення продукту</h1>
 <form asp-controller="Home" asp-action="AddProduct">
     <p>
-        <label asp-for="Name">Name</label><br />
+        <label asp-for="Name">Імя</label><br />
         <input id="Name" type="text" asp-for="Name" />
     </p>
     <p>
-        <label asp-for="Price">Price</label><br />
+        <label asp-for="Price">Ціна</label><br />
         <input id="Price" type="number" asp-for="Price" />
     </p>
     <p>
-        <label asp-for="Vendor">Vendor</label><br />
+        <label asp-for="Vendor">Марка</label><br />
         <input id="Vendor" type="text" asp-for="Vendor" />
     </p>
     <p>
-        <label asp-for="Storage">Storage</label><br />
+        <label asp-for="Storage">Склад</label><br />
         <input id="Storage" type="text" asp-for="Storage" />
     </p>
     <p>
-        <label asp-for="Count">Count</label><br />
+        <label asp-for="Count">Кількість</label><br />
         <input id="Count" type="number" asp-for="Count" />
     </p>
     <p>

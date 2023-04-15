@@ -13,5 +13,7 @@
         public string Body { get; set; }
 
         public string DateCreation { get; set; }
+
+        public int? CourseItemId { get; set; }
     }
 }

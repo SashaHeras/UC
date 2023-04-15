@@ -64,15 +64,19 @@ namespace XMLEdition.Controllers
             return View();
         }
 
-        public IActionResult Lesson()
+        [Route("/Home/Lesson/{id}")]
+        public IActionResult Lesson(Guid id)
         {
-            ViewBag.Lesson = _context.Lessons.FirstOrDefault();
+            ViewBag.Lesson = _context.Lessons.Where(lesson => lesson.Id == id).FirstOrDefault();
 
             return View();
         }
 
-        public IActionResult CreateLesson()
+        [Route("/Home/CreateLesson/{id}")]
+        public IActionResult CreateLesson(int id)
         {
+            ViewBag.CourseId = id;
+
             return View();
         }
 
@@ -91,20 +95,34 @@ namespace XMLEdition.Controllers
             //FileInfo file = new FileInfo(filePath);
             //file.MoveTo("C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\Videos\\" + newName);
 
-            Lesson l = new Lesson()
+            var sameCourseItems = _context.CourseItem.Where(ci => ci.CourseId == Convert.ToInt32(c.CourseId)).OrderBy(ci => ci.OrderNumber);
+
+            CourseItem newCourceItem = new CourseItem()
+            {
+                TypeId = _context.CourseItemTypes.Where(cit => cit.Name == "Lesson").FirstOrDefault().Id,
+                CourseId = Convert.ToInt32(c.CourseId),
+                DateCreation = DateTime.Now,
+                OrderNumber = sameCourseItems.Count() > 0 ? sameCourseItems.Last().OrderNumber + 1 : 1
+            };
+
+            _context.CourseItem.Add(newCourceItem);
+            _context.SaveChanges();
+
+            Lesson newLesson = new Lesson()
             {
                 Id = Guid.NewGuid(),
                 Theme = c.Theme,
                 Description = c.Description,
                 Body = c.Body,
                 VideoPath = c.VideoPath.FileName,
+                CourseItemId = newCourceItem.Id,
                 DateCreation = DateTime.Now.ToShortDateString()
             };
 
-            _context.Lessons.Add(l);
+            _context.Lessons.Add(newLesson);
             _context.SaveChanges();
 
-            return RedirectToAction("Index");
+            return RedirectToAction("CreateCourse", "Course", new { id = newCourceItem.CourseId });
         }
 
         public IActionResult Privacy()
