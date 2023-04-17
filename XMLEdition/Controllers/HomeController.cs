@@ -72,56 +72,6 @@ namespace XMLEdition.Controllers
             return View();
         }
 
-        [Route("/Home/CreateLesson/{id}")]
-        public IActionResult CreateLesson(int id)
-        {
-            ViewBag.CourseId = id;
-
-            return View();
-        }
-
-        [HttpPost]
-        public IActionResult Create(IFormCollection form, CreateLessonModel c)
-        {
-            string uploads = "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\Videos\\";
-            string newName = Guid.NewGuid().ToString().Replace("-", "") + "." + c.VideoPath.FileName.Split(".").Last();
-
-            string filePath = Path.Combine(uploads, c.VideoPath.FileName);
-            using (Stream fileStream = new FileStream(filePath, FileMode.Create))
-            {
-                c.VideoPath.CopyToAsync(fileStream);
-            }
-
-            var sameCourseItems = _context.CourseItem.Where(ci => ci.CourseId == Convert.ToInt32(c.CourseId)).OrderBy(ci => ci.OrderNumber);
-
-            CourseItem newCourceItem = new CourseItem()
-            {
-                TypeId = _context.CourseItemTypes.Where(cit => cit.Name == "Lesson").FirstOrDefault().Id,
-                CourseId = Convert.ToInt32(c.CourseId),
-                DateCreation = DateTime.Now,
-                OrderNumber = sameCourseItems.Count() > 0 ? sameCourseItems.Last().OrderNumber + 1 : 1
-            };
-
-            _context.CourseItem.Add(newCourceItem);
-            _context.SaveChanges();
-
-            Lesson newLesson = new Lesson()
-            {
-                Id = Guid.NewGuid(),
-                Theme = c.Theme,
-                Description = c.Description,
-                Body = c.Body,
-                VideoPath = c.VideoPath.FileName,
-                CourseItemId = newCourceItem.Id,
-                DateCreation = DateTime.Now.ToShortDateString()
-            };
-
-            _context.Lessons.Add(newLesson);
-            _context.SaveChanges();
-
-            return RedirectToAction("CreateCourse", "Course", new { id = newCourceItem.CourseId });
-        }
-
         public IActionResult Privacy()
         {
             return View();

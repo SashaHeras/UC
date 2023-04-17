@@ -14,13 +14,13 @@
     }
 
     .field{
-        margin-bottom: 10px;
+        margin-bottom: 5px;
     }
 </style>
 
 <partial name="/Views/Partial/Header.cshtml" />
 <div class="body">
-    <form method="post" enctype="multipart/form-data" asp-action="Create" asp-controller="Home">
+    <form method="post" enctype="multipart/form-data" asp-action="Create" asp-controller="Lesson">
         <div class="field">
             <label asp-for="Theme">Theme</label>
             <input asp-for="Theme" />

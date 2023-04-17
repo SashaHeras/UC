@@ -37,6 +37,7 @@
     }
 </style>
 
+<partial name="/Views/Partial/Header.cshtml" />
 <div class="body">
     <div id="nameTest">
         @ViewBag.Test.Name
@@ -45,7 +46,6 @@
     </div>
     <button class="btn btn-primary" onclick="SaveAnswers()">Submit</button>
 </div>
-
 
 <script>
     let testId = @ViewBag.Test.Id;
