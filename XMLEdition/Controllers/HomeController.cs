@@ -81,7 +81,7 @@ namespace XMLEdition.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(CreateLessonModel c)
+        public IActionResult Create(IFormCollection form, CreateLessonModel c)
         {
             string uploads = "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\Videos\\";
             string newName = Guid.NewGuid().ToString().Replace("-", "") + "." + c.VideoPath.FileName.Split(".").Last();
@@ -91,9 +91,6 @@ namespace XMLEdition.Controllers
             {
                 c.VideoPath.CopyToAsync(fileStream);
             }
-
-            //FileInfo file = new FileInfo(filePath);
-            //file.MoveTo("C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\Videos\\" + newName);
 
             var sameCourseItems = _context.CourseItem.Where(ci => ci.CourseId == Convert.ToInt32(c.CourseId)).OrderBy(ci => ci.OrderNumber);
 

@@ -80,39 +80,49 @@
         margin-left: 40px;
         margin-right: 40px;
     }
+
+    .field {
+        margin-bottom: 10px;
+    }
 </style>
 
 <partial name="/Views/Partial/Header.cshtml" />
 
 <div class="body">
     <div class="mainInfo">
-        <text>Course name:</text>
-        @{
-            if (ViewBag.Course.Name != "")
-            {
-                <input type="text" placeholder="Enter course name" id="courseName" value="@ViewBag.Course.Name" width="350px" />
+        <div class="field">
+            <text>Course name:</text>
+            @{
+                if (ViewBag.Course.Name != "")
+                {
+                    <input type="text" placeholder="Enter course name" id="courseName" value="@ViewBag.Course.Name" width="350px" />
+                }
+                else
+                {
+                    <input type="text" placeholder="Enter course name" id="courseName" width="350px" />
+                }
             }
-            else
-            {
-                <input type="text" placeholder="Enter course name" id="courseName" width="350px" />
-            }            
-        }
+        </div>
         </br>
-        <text>Course price:</text>
-        @{
-            if (ViewBag.Course.Price != null)
-            {
-                <input type="text" placeholder="Enter course price" id="coursePrice" value="@ViewBag.Course.Price" width="150px" />
+        <div class="field">
+            <text>Course price:</text>
+            @{
+                if (ViewBag.Course.Price != null)
+                {
+                    <input type="text" placeholder="Enter course price" id="coursePrice" value="@ViewBag.Course.Price" width="150px" />
+                }
+                else
+                {
+                    <input type="number" placeholder="Enter course price" id="coursePrice" width="150px" />
+                }
             }
-            else
-            {
-                <input type="number" placeholder="Enter course price" id="coursePrice" width="150px" />
-            }
-        }
+        </div>
         </br>
-        <text>Course picture:</text>
-        <input type="file" name="file" id="file" />
-        </br>
+        <div class="field">
+            <text>Course picture:</text>
+            <input type="file" name="file" id="file" />
+            </br>
+        </div>
         <input type="button" onclick="SaveCourse()" class="btn btn-success" value="Save"/>
     </div>
     <hr />
@@ -154,6 +164,8 @@
                 success: function (result) {
                     var res = JSON.parse(result);
                     let list = document.getElementById("elementsList");
+
+                    console.log(res);
                     
                     for(let i = 0; i < res.length; i++)
                     {
@@ -167,7 +179,7 @@
 
                             let a = document.createElement("a");
                             a.className = "listA";
-                            a.href = "/Lesson/EditLesson/" + res[i].Id;
+                            a.href = "/Lesson/EditLesson/" + res[i].CourseItemId;
                             a.textContent = res[i].ElementName;
                             div.appendChild(a);
 
@@ -184,7 +196,7 @@
 
                             let a = document.createElement("a");
                             a.className = "listA";
-                            a.href = "/Test/EditTest/" + res[i].Id;
+                            a.href = "/Test/EditTest/" + res[i].CourseItemId;
                             a.textContent = res[i].ElementName;
                             div.appendChild(a);
 

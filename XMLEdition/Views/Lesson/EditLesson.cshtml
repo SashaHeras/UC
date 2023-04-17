@@ -8,36 +8,50 @@
         margin-left: 40px;
         margin-right: 40px;
     }
+
+    .field{
+        margin-bottom: 10px;
+    }
 </style>
 
 <partial name="/Views/Partial/Header.cshtml" />
 <div class="body">
     <form method="post" enctype="multipart/form-data" asp-action="Edit" asp-controller="Lesson">
-        <label asp-for="Theme">Theme</label>
-        <input asp-for="Theme" value="@ViewBag.Lesson.Theme" />
+        <div class="field">
+            <label asp-for="Theme">Theme</label>
+            <input asp-for="Theme" value="@ViewBag.Lesson.Theme" />
+        </div>
         <br />
-        <label asp-for="Description">Description</label>
-        <input asp-for="Description" value="@ViewBag.Lesson.Description" />
+        <div class="field">
+            <label asp-for="Description">Description</label>
+            <input asp-for="Description" value="@ViewBag.Lesson.Description" />
+        </div>
         <br />
-        <label asp-for="VideoPath">Video</label>
-        <input asp-for="VideoPath" type="file" value="@ViewBag.Lesson.VideoPath" />
+        <div class="field">
+            <label asp-for="VideoPath">Video</label>
+            <input asp-for="VideoPath" type="file" value="@ViewBag.Lesson.VideoPath" />
+        </div>
         <br />
-        <label asp-for="Body">Body</label>
-        <textarea asp-for="Body" style="height: 250px" id="textarea">@ViewBag.Lesson.Body</textarea>
+        <div class="form-group">
+            <label asp-for="Body">Body</label>
+            <div class="col-md-10">
+                @Html.TextAreaFor(model => model.Body, new { id = "summernote" })
+            </div>
+        </div>
         <br />
-        <input asp-for="CourseItemId" type="hidden" value="@ViewBag.Lesson.CourseItemId" />
         <input asp-for="Id" type="hidden" value="@ViewBag.Lesson.Id" />
+        <input asp-for="CourseItemId" type="hidden" value="@ViewBag.Lesson.CourseItemId" />
         <input type="submit" value="Submit" />
         <br />
     </form>
 </div>
 
-<script src="https://cdn.tiny.cloud/1/gytqbbntp7aoav23in6bthycv22f05bcqjs55vxlznbbxtwz/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
-<script type="text/javascript">
-    tinymce.init({ selector: 'textarea' });
+@section Scripts {
+    <script src="~/js/summernote/summernote-bs5.min.js"></script>
 
-    var editor = tinymce.get('textarea');
-
-    // Set the content of the editor
-    editor.setContent('@Html.Raw(ViewBag.Lesson.Body)');
-</script>
+    <script>
+        $(document).ready(function () {
+            $('#summernote').summernote();
+        });
+    </script>
+}

@@ -97,3 +97,7 @@ C:\Users\acsel\source\repos\XMLEdition\XMLEdition\obj\Debug\net6.0\refint\XMLEdi
 C:\Users\acsel\source\repos\XMLEdition\XMLEdition\obj\Debug\net6.0\XMLEdition.pdb
 C:\Users\acsel\source\repos\XMLEdition\XMLEdition\obj\Debug\net6.0\XMLEdition.genruntimeconfig.cache
 C:\Users\acsel\source\repos\XMLEdition\XMLEdition\obj\Debug\net6.0\ref\XMLEdition.dll
+C:\Users\acsel\source\repos\XMLEdition\XMLEdition\bin\Debug\net6.0\Antlr3.Runtime.dll
+C:\Users\acsel\source\repos\XMLEdition\XMLEdition\bin\Debug\net6.0\System.Web.Optimization.dll
+C:\Users\acsel\source\repos\XMLEdition\XMLEdition\bin\Debug\net6.0\Newtonsoft.Json.dll
+C:\Users\acsel\source\repos\XMLEdition\XMLEdition\bin\Debug\net6.0\WebGrease.dll

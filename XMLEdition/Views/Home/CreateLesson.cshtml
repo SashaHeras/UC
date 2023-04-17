@@ -2,35 +2,59 @@
 @{
     ViewData["Title"] = "Create lesson Page";
 }
+
 <style>
     .body {
         margin-left: 40px;
         margin-right: 40px;
+    }
+
+    #summernote{
+        height: 350px;
+    }
+
+    .field{
+        margin-bottom: 10px;
     }
 </style>
 
 <partial name="/Views/Partial/Header.cshtml" />
 <div class="body">
     <form method="post" enctype="multipart/form-data" asp-action="Create" asp-controller="Home">
-        <label asp-for="Theme">Theme</label>
-        <input asp-for="Theme" />
+        <div class="field">
+            <label asp-for="Theme">Theme</label>
+            <input asp-for="Theme" />
+        </div>
         <br />
-        <label asp-for="Description">Description</label>
-        <input asp-for="Description" />
+        <div class="field">
+            <label asp-for="Description">Description</label>
+            <input asp-for="Description" />
+        </div>
         <br />
-        <label asp-for="VideoPath">Video</label>
-        <input asp-for="VideoPath" type="file" />
-        <br />
-        <label asp-for="Body">Body</label>
-        <textarea asp-for="Body" style="height: 250px" id="textarea">Hi</textarea>
+        <div class="field">
+            <label asp-for="VideoPath">Video</label>
+            <input asp-for="VideoPath" type="file" />
+        </div>
+        <br />        
+        <div class="form-group">
+            <label asp-for="Body">Body</label>
+            <div class="col-md-10">
+                <textarea id="summernote" asp-for="Body"></textarea>
+            </div>
+        </div>
         <br />
         <input asp-for="CourseId" type="hidden" value="@ViewBag.CourseId"/>
         <input type="submit" value="Submit" />
         <br />
-    </form>
+    </form>   
 </div>
 
-<script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
-<script type="text/javascript">
-    tinymce.init({ selector: 'textarea' });
-</script>
+@section Scripts {
+    <script src="~/js/summernote/summernote-bs5.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#summernote').summernote();
+        });
+    </script>
+}

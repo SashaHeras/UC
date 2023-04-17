@@ -29,6 +29,558 @@
       "PackagePath": "staticwebassets\\favicon.ico"
     },
     {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\font\\summernote.eot",
+      "PackagePath": "staticwebassets\\js\\Summernote\\font\\summernote.eot"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\font\\summernote.ttf",
+      "PackagePath": "staticwebassets\\js\\Summernote\\font\\summernote.ttf"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\font\\summernote.woff",
+      "PackagePath": "staticwebassets\\js\\Summernote\\font\\summernote.woff"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\font\\summernote.woff2",
+      "PackagePath": "staticwebassets\\js\\Summernote\\font\\summernote.woff2"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-ar-AR.js",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-ar-AR.js"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-ar-AR.min.js",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-ar-AR.min.js"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-ar-AR.min.js.LICENSE.txt",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-ar-AR.min.js.LICENSE.txt"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-az-AZ.js",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-az-AZ.js"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-az-AZ.min.js",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-az-AZ.min.js"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-az-AZ.min.js.LICENSE.txt",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-az-AZ.min.js.LICENSE.txt"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-bg-BG.js",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-bg-BG.js"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-bg-BG.min.js",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-bg-BG.min.js"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-bg-BG.min.js.LICENSE.txt",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-bg-BG.min.js.LICENSE.txt"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-ca-ES.js",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-ca-ES.js"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-ca-ES.min.js",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-ca-ES.min.js"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-ca-ES.min.js.LICENSE.txt",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-ca-ES.min.js.LICENSE.txt"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-cs-CZ.js",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-cs-CZ.js"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-cs-CZ.min.js",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-cs-CZ.min.js"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-cs-CZ.min.js.LICENSE.txt",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-cs-CZ.min.js.LICENSE.txt"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-da-DK.js",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-da-DK.js"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-da-DK.min.js",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-da-DK.min.js"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-da-DK.min.js.LICENSE.txt",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-da-DK.min.js.LICENSE.txt"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-de-DE.js",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-de-DE.js"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-de-DE.min.js",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-de-DE.min.js"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-de-DE.min.js.LICENSE.txt",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-de-DE.min.js.LICENSE.txt"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-el-GR.js",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-el-GR.js"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-el-GR.min.js",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-el-GR.min.js"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-el-GR.min.js.LICENSE.txt",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-el-GR.min.js.LICENSE.txt"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-es-ES.js",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-es-ES.js"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-es-ES.min.js",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-es-ES.min.js"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-es-ES.min.js.LICENSE.txt",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-es-ES.min.js.LICENSE.txt"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-es-EU.js",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-es-EU.js"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-es-EU.min.js",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-es-EU.min.js"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-es-EU.min.js.LICENSE.txt",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-es-EU.min.js.LICENSE.txt"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-fa-IR.js",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-fa-IR.js"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-fa-IR.min.js",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-fa-IR.min.js"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-fa-IR.min.js.LICENSE.txt",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-fa-IR.min.js.LICENSE.txt"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-fi-FI.js",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-fi-FI.js"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-fi-FI.min.js",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-fi-FI.min.js"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-fi-FI.min.js.LICENSE.txt",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-fi-FI.min.js.LICENSE.txt"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-fr-FR.js",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-fr-FR.js"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-fr-FR.min.js",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-fr-FR.min.js"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-fr-FR.min.js.LICENSE.txt",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-fr-FR.min.js.LICENSE.txt"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-gl-ES.js",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-gl-ES.js"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-gl-ES.min.js",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-gl-ES.min.js"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-gl-ES.min.js.LICENSE.txt",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-gl-ES.min.js.LICENSE.txt"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-he-IL.js",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-he-IL.js"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-he-IL.min.js",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-he-IL.min.js"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-he-IL.min.js.LICENSE.txt",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-he-IL.min.js.LICENSE.txt"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-hr-HR.js",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-hr-HR.js"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-hr-HR.min.js",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-hr-HR.min.js"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-hr-HR.min.js.LICENSE.txt",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-hr-HR.min.js.LICENSE.txt"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-hu-HU.js",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-hu-HU.js"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-hu-HU.min.js",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-hu-HU.min.js"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-hu-HU.min.js.LICENSE.txt",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-hu-HU.min.js.LICENSE.txt"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-id-ID.js",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-id-ID.js"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-id-ID.min.js",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-id-ID.min.js"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-id-ID.min.js.LICENSE.txt",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-id-ID.min.js.LICENSE.txt"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-it-IT.js",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-it-IT.js"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-it-IT.min.js",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-it-IT.min.js"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-it-IT.min.js.LICENSE.txt",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-it-IT.min.js.LICENSE.txt"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-ja-JP.js",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-ja-JP.js"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-ja-JP.min.js",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-ja-JP.min.js"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-ja-JP.min.js.LICENSE.txt",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-ja-JP.min.js.LICENSE.txt"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-ko-KR.js",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-ko-KR.js"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-ko-KR.min.js",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-ko-KR.min.js"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-ko-KR.min.js.LICENSE.txt",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-ko-KR.min.js.LICENSE.txt"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-lt-LT.js",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-lt-LT.js"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-lt-LT.min.js",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-lt-LT.min.js"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-lt-LT.min.js.LICENSE.txt",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-lt-LT.min.js.LICENSE.txt"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-lt-LV.js",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-lt-LV.js"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-lt-LV.min.js",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-lt-LV.min.js"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-lt-LV.min.js.LICENSE.txt",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-lt-LV.min.js.LICENSE.txt"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-mn-MN.js",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-mn-MN.js"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-mn-MN.min.js",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-mn-MN.min.js"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-mn-MN.min.js.LICENSE.txt",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-mn-MN.min.js.LICENSE.txt"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-nb-NO.js",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-nb-NO.js"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-nb-NO.min.js",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-nb-NO.min.js"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-nb-NO.min.js.LICENSE.txt",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-nb-NO.min.js.LICENSE.txt"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-nl-NL.js",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-nl-NL.js"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-nl-NL.min.js",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-nl-NL.min.js"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-nl-NL.min.js.LICENSE.txt",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-nl-NL.min.js.LICENSE.txt"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-pl-PL.js",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-pl-PL.js"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-pl-PL.min.js",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-pl-PL.min.js"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-pl-PL.min.js.LICENSE.txt",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-pl-PL.min.js.LICENSE.txt"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-pt-BR.js",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-pt-BR.js"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-pt-BR.min.js",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-pt-BR.min.js"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-pt-BR.min.js.LICENSE.txt",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-pt-BR.min.js.LICENSE.txt"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-pt-PT.js",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-pt-PT.js"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-pt-PT.min.js",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-pt-PT.min.js"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-pt-PT.min.js.LICENSE.txt",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-pt-PT.min.js.LICENSE.txt"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-ro-RO.js",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-ro-RO.js"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-ro-RO.min.js",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-ro-RO.min.js"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-ro-RO.min.js.LICENSE.txt",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-ro-RO.min.js.LICENSE.txt"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-ru-RU.js",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-ru-RU.js"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-ru-RU.min.js",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-ru-RU.min.js"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-ru-RU.min.js.LICENSE.txt",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-ru-RU.min.js.LICENSE.txt"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-sk-SK.js",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-sk-SK.js"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-sk-SK.min.js",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-sk-SK.min.js"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-sk-SK.min.js.LICENSE.txt",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-sk-SK.min.js.LICENSE.txt"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-sl-SI.js",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-sl-SI.js"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-sl-SI.min.js",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-sl-SI.min.js"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-sl-SI.min.js.LICENSE.txt",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-sl-SI.min.js.LICENSE.txt"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-sr-RS-Latin.js",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-sr-RS-Latin.js"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-sr-RS-Latin.min.js",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-sr-RS-Latin.min.js"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-sr-RS-Latin.min.js.LICENSE.txt",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-sr-RS-Latin.min.js.LICENSE.txt"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-sr-RS.js",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-sr-RS.js"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-sr-RS.min.js",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-sr-RS.min.js"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-sr-RS.min.js.LICENSE.txt",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-sr-RS.min.js.LICENSE.txt"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-sv-SE.js",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-sv-SE.js"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-sv-SE.min.js",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-sv-SE.min.js"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-sv-SE.min.js.LICENSE.txt",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-sv-SE.min.js.LICENSE.txt"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-ta-IN.js",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-ta-IN.js"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-ta-IN.min.js",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-ta-IN.min.js"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-ta-IN.min.js.LICENSE.txt",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-ta-IN.min.js.LICENSE.txt"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-th-TH.js",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-th-TH.js"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-th-TH.min.js",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-th-TH.min.js"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-th-TH.min.js.LICENSE.txt",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-th-TH.min.js.LICENSE.txt"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-tr-TR.js",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-tr-TR.js"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-tr-TR.min.js",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-tr-TR.min.js"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-tr-TR.min.js.LICENSE.txt",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-tr-TR.min.js.LICENSE.txt"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-uk-UA.js",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-uk-UA.js"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-uk-UA.min.js",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-uk-UA.min.js"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-uk-UA.min.js.LICENSE.txt",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-uk-UA.min.js.LICENSE.txt"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-uz-UZ.js",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-uz-UZ.js"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-uz-UZ.min.js",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-uz-UZ.min.js"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-uz-UZ.min.js.LICENSE.txt",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-uz-UZ.min.js.LICENSE.txt"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-vi-VN.js",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-vi-VN.js"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-vi-VN.min.js",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-vi-VN.min.js"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-vi-VN.min.js.LICENSE.txt",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-vi-VN.min.js.LICENSE.txt"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-zh-CN.js",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-zh-CN.js"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-zh-CN.min.js",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-zh-CN.min.js"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-zh-CN.min.js.LICENSE.txt",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-zh-CN.min.js.LICENSE.txt"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-zh-TW.js",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-zh-TW.js"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-zh-TW.min.js",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-zh-TW.min.js"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\lang\\summernote-zh-TW.min.js.LICENSE.txt",
+      "PackagePath": "staticwebassets\\js\\Summernote\\lang\\summernote-zh-TW.min.js.LICENSE.txt"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\summernote-bs5.min.css",
+      "PackagePath": "staticwebassets\\js\\Summernote\\summernote-bs5.min.css"
+    },
+    {
+      "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\Summernote\\summernote-bs5.min.js",
+      "PackagePath": "staticwebassets\\js\\Summernote\\summernote-bs5.min.js"
+    },
+    {
       "Id": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\js\\site.js",
       "PackagePath": "staticwebassets\\js\\site.js"
     },

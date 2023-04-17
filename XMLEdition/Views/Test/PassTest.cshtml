@@ -30,15 +30,21 @@
         accent-color: green;
         margin-right: 3px;
     }
+
+    .body {
+        margin-left: 40px;
+        margin-right: 40px;
+    }
 </style>
 
-<div id="nameTest">
-    @ViewBag.Test.Name
+<div class="body">
+    <div id="nameTest">
+        @ViewBag.Test.Name
+    </div>
+    <div id="tasks">
+    </div>
+    <button class="btn btn-primary" onclick="SaveAnswers()">Submit</button>
 </div>
-<div id="tasks">
-
-</div>
-<button class="btn btn-primary" onclick="SaveAnswers()">Submit</button>
 
 
 <script>
