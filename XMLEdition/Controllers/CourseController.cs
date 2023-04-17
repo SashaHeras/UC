@@ -30,6 +30,7 @@ namespace XMLEdition.Controllers
                 return View();
             }
 
+            ViewBag.Subjects = _context.CourseSubjects.ToList();
             ViewBag.Course = _context.Courses.Where(course => course.Id == id).FirstOrDefault();
 
             return View();
@@ -68,7 +69,11 @@ namespace XMLEdition.Controllers
         {
             Course newCourse = new Course();
             var form = Request.Form;
-            var file = form.Files[0];
+            IFormFile file = null;
+            if (form.Files.Count != 0)
+            {
+                file = form.Files[0];
+            }
             string filePath = "";
             
             if (form["courseId"].ToString() == "0")
@@ -79,6 +84,7 @@ namespace XMLEdition.Controllers
                     AuthorId = Guid.Parse(form["authorId"].ToString()),
                     Checked = false,
                     Price = Convert.ToDecimal(form["price"].ToString()),
+                    CourseSubjectId = Convert.ToInt32(form["subject"]),
                     LastEdittingDate = DateTime.Now
                 };
 
@@ -94,6 +100,9 @@ namespace XMLEdition.Controllers
             {
                 newCourse = _context.Courses.Where(c => c.Id == Convert.ToInt32(Request.Form["courseId"].ToString())).FirstOrDefault();
                 int courseId = newCourse.Id;
+                string path = newCourse.PicturePath;
+
+                _context.Courses.Remove(newCourse);
 
                 newCourse = new Course()
                 {
@@ -102,12 +111,17 @@ namespace XMLEdition.Controllers
                     AuthorId = Guid.Parse(form["authorId"].ToString()),
                     Checked = false,
                     Price = Convert.ToDecimal(form["price"].ToString()),
+                    CourseSubjectId = Convert.ToInt32(form["subject"]),
                     LastEdittingDate = DateTime.Now
                 };
 
                 if (file != null)
                 {
                     newCourse.PicturePath = SavePicture(file);
+                }
+                else
+                {
+                    newCourse.PicturePath = path;
                 }
 
                 _context.Courses.Update(newCourse);

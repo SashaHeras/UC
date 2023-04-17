@@ -2,7 +2,69 @@
     ViewData["Title"] = "Create Course Page";
 }
 
+
+
 <style>
+    /* The container must be positioned relative: */
+    .custom-select {
+        position: relative;
+        font-family: Arial;
+    }
+
+        .custom-select select {
+            display: none; /*hide original SELECT element: */
+        }
+
+    .select-selected {
+        background-color: DodgerBlue;
+    }
+
+        /* Style the arrow inside the select element: */
+        .select-selected:after {
+            position: absolute;
+            content: "";
+            top: 14px;
+            right: 10px;
+            width: 0;
+            height: 0;
+            border: 6px solid transparent;
+            border-color: #fff transparent transparent transparent;
+        }
+
+        /* Point the arrow upwards when the select box is open (active): */
+        .select-selected.select-arrow-active:after {
+            border-color: transparent transparent #fff transparent;
+            top: 7px;
+        }
+
+    /* style the items (options), including the selected item: */
+    .select-items div, .select-selected {
+        color: #ffffff;
+        padding: 8px 16px;
+        border: 1px solid transparent;
+        border-color: transparent transparent rgba(0, 0, 0, 0.1) transparent;
+        cursor: pointer;
+    }
+
+    /* Style items (options): */
+    .select-items {
+        position: absolute;
+        background-color: DodgerBlue;
+        top: 100%;
+        left: 0;
+        right: 0;
+        z-index: 99;
+    }
+
+    /* Hide the items when the select box is closed: */
+    .select-hide {
+        display: none;
+    }
+
+    .select-items div:hover, .same-as-selected {
+        background-color: rgba(0, 0, 0, 0.1);
+    }
+
     a{
         text-decoration: none;
         color: black;
@@ -123,6 +185,48 @@
             <input type="file" name="file" id="file" />
             </br>
         </div>
+        </br>
+        <div class="field">
+            <text>Course subject:</text>
+            <div id="select">
+                <select class="custom-select" name="Subject" id="Subject">
+                    @{
+                        if (ViewBag.Course.CourseSubjectId == null)
+                        {
+                            foreach (XMLEdition.Data.CourseSubject cs in ViewBag.Subjects)
+                            {
+                                int cnt = 0;
+                                if (cnt == 0)
+                                {
+                                    <option selected="selected" value="@cs.Id">@cs.Name</option>
+                                    cnt++;
+                                }
+                                else
+                                {
+                                    <option value="@cs.Id">@cs.Name</option>
+                                    cnt++;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            foreach (XMLEdition.Data.CourseSubject cs in ViewBag.Subjects)
+                            {
+                                if (cs.Id == ViewBag.Course.CourseSubjectId)
+                                {
+                                    <option selected="selected" value="@cs.Id">@cs.Name</option>
+                                }
+                                else
+                                {
+                                    <option value="@cs.Id">@cs.Name</option>
+                                }
+                            }
+                        }
+                    }
+                </select>
+            </div>
+            </br>
+        </div>
         <input type="button" onclick="SaveCourse()" class="btn btn-success" value="Save"/>
     </div>
     <hr />
@@ -221,6 +325,7 @@
         
         formdata.append("courseId", courseId);
         formdata.append("authorId", authorId);
+        formdata.append("subject", document.getElementById("Subject").value);
         formdata.append("name", document.getElementById("courseName").value);
         formdata.append("price", document.getElementById("coursePrice").value);
         formdata.append("file", $("#file").get(0).files[0]);
@@ -234,7 +339,14 @@
             processData: false,
             success: function (result) {
                 if (result != null) {
-                    courseId = parseInt(result);
+                    if (courseId == 'undefinded') {
+                        alert("Course created!");
+                    }
+                    else{
+                        alert("Course editted!");
+                    }                    
+
+                    courseId = parseInt(result);                    
 
                     let lesson = document.getElementById("createLesson");
                     lesson.href = "/Home/CreateLesson/" + courseId;

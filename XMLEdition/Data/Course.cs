@@ -14,6 +14,8 @@
 
         public decimal Price { get; set; }
 
+        public int? CourseSubjectId { get; set; }
+
         public DateTime LastEdittingDate { get; set; }
     }
 }

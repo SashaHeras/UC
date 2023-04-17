@@ -16,6 +16,8 @@ namespace XMLEdition.Data
 
         public DbSet<Course> Courses { get; set; }
 
+        public DbSet<CourseSubject> CourseSubjects { get; set; }
+
         public DbSet<CourseItem> CourseItem { get; set; }
 
         public DbSet<CourseItemType> CourseItemTypes { get; set; }
