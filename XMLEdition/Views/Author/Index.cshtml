@@ -1,10 +1,57 @@
-﻿@{
+﻿@model XMLEdition.Data.Course;
+@{
     ViewData["Title"] = "Author Page";
 }
 
 <style>
     .body {
         
+    }
+
+    .myImg{
+        width: 280px;
+        height: 170px;
+    }
+
+    #coursesList{
+        margin-left: 40px;
+        margin-right: 40px;
+    }
+
+    .listElement {
+        vertical-align: middle;
+        display: flex;
+        height: 180px;
+        font-size: 18px;
+        margin-top: 15px;
+        width: 750px;
+        border-radius: 5px;
+        padding-top: 3px;
+        padding-bottom: 3px;
+        padding-left: 10px;
+        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    }
+
+    .image-box{
+        width: 290px;
+        height: 170px;
+    }
+
+    a {
+        text-decoration: none;
+        color: black;
+    }
+
+        a:visited {
+            color: black; /* Цвет посещенной ссылки */
+        }
+
+        a:hover {
+            color: black; /* Цвет посещенной ссылки */
+        }
+
+    .courseName{
+        font-size: 36px;
     }
 
     .control{
@@ -42,7 +89,19 @@
 
     </div>
     <hr />
-    <div>
-
+    <div id="coursesList">
+        @{
+            foreach (XMLEdition.Data.Course c in ViewBag.Courses)
+            {
+                <div class="listElement">
+                    <div class="image-box">
+                        <img class="myImg" src="/Pictures/@c.PicturePath" alt="Title">
+                    </div>
+                    <div>
+                        <a class="courseName" href="/Course/CreateCourse/@c.Id">@c.Name</a>
+                    </div>
+                </div>               
+            }
+        }
     </div>
 </div>
