@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "Xy8tW8lpC/+UAd7Vlft4B0wDVIf8fSPTRmMZtp0gOAk=",
+  "Hash": "wBW6xhWx2wK8HKIoRSTn0fRPRB9vvXacHGnkpdMqbSc=",
   "Source": "XMLEdition",
   "BasePath": "_content/XMLEdition",
   "Mode": "Default",
@@ -3466,6 +3466,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\Videos\\611984.mp4"
+    },
+    {
+      "Identity": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\Videos\\8494849894.mp4",
+      "SourceId": "XMLEdition",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\",
+      "BasePath": "_content/XMLEdition",
+      "RelativePath": "Videos/8494849894.mp4",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Videos\\8494849894.mp4"
     },
     {
       "Identity": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\Videos\\84988456.mp4",

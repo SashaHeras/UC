@@ -1,11 +1,16 @@
 using Microsoft.EntityFrameworkCore;
 using System.Numerics;
 using XMLEdition.Data;
+using XMLEdition.Data.Repositories.Interfaces;
+using XMLEdition.Data.Repositories.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+//builder.Services.AddSingleton<ICourseRepository, CourseRepository>();
+
 builder.Services.AddDbContext<XMLEdition.Data.AppContext>(options => options.UseSqlServer(
         builder.Configuration.GetConnectionString("DefaultConnection")
         ));

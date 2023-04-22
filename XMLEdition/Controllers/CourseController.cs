@@ -3,12 +3,20 @@ using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System.Xml.Linq;
 using XMLEdition.Data;
+using XMLEdition.Data.Repositories.Repositories;
 
 namespace XMLEdition.Controllers
 {
     public class CourseController : Controller
     {
         private Data.AppContext _context = new Data.AppContext();
+        private CourseRepository _courseRepository;
+
+        public CourseController(Data.AppContext context)
+        {
+            _context = context;
+            _courseRepository = new CourseRepository(context);
+        }
 
         public IActionResult Index()
         {
@@ -31,7 +39,7 @@ namespace XMLEdition.Controllers
             }
 
             ViewBag.Subjects = _context.CourseSubjects.ToList();
-            ViewBag.Course = _context.Courses.Where(course => course.Id == id).FirstOrDefault();
+            ViewBag.Course = _courseRepository.GetCourse(id);
 
             return View();
         }
@@ -56,10 +64,7 @@ namespace XMLEdition.Controllers
         [HttpPost]
         public JsonResult GetCourseElements()
         {
-            string courseId = Request.Form["course"].ToString();
-            string query = "EXEC GetCourseElementsList @courseId = " + courseId;
-            var result = _context.Database.SqlQueryRaw<string>(query).AsEnumerable().FirstOrDefault();
-
+            var result = _courseRepository.GetCourseElementsList(Request.Form["course"].ToString());
             return Json(result);
         }
 
