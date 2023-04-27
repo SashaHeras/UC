@@ -68,7 +68,6 @@ namespace XMLEdition.Controllers
             return Json(result);
         }
 
-
         [HttpPost]
         public JsonResult SaveCource()
         {
@@ -96,14 +95,13 @@ namespace XMLEdition.Controllers
                 if (file != null)
                 {
                     newCourse.PicturePath = SavePicture(file);
-                }                
+                }
 
-                _context.Courses.Add(newCourse);
-                _context.SaveChanges();
+                _courseRepository.AddAsync(newCourse);
             }
             else
             {
-                newCourse = _context.Courses.Where(c => c.Id == Convert.ToInt32(Request.Form["courseId"].ToString())).FirstOrDefault();
+                newCourse = _courseRepository.GetCourse(Convert.ToInt32(Request.Form["courseId"].ToString()));
                 int courseId = newCourse.Id;
                 string path = newCourse.PicturePath;
 
@@ -129,8 +127,7 @@ namespace XMLEdition.Controllers
                     newCourse.PicturePath = path;
                 }
 
-                _context.Courses.Update(newCourse);
-                _context.SaveChanges();
+                _courseRepository.AddAsync(newCourse);
             }
 
             return Json(newCourse.Id);

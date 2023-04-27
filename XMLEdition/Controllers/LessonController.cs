@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Razor.Compilation;
 using XMLEdition.Data;
+using XMLEdition.Data.Repositories.Repositories;
 using XMLEdition.Models;
 
 namespace XMLEdition.Controllers
@@ -8,6 +9,13 @@ namespace XMLEdition.Controllers
     public class LessonController : Controller
     {
         private Data.AppContext _context = new Data.AppContext();
+        private LessonRepository _lessonRepository;
+
+        public LessonController(Data.AppContext context)
+        {
+            _context = context;
+            _lessonRepository = new LessonRepository(context);   
+        }
 
         public IActionResult Index()
         {
@@ -58,8 +66,7 @@ namespace XMLEdition.Controllers
                 DateCreation = DateTime.Now.ToShortDateString()
             };
 
-            _context.Lessons.Add(newLesson);
-            _context.SaveChanges();
+            _lessonRepository.AddAsync(newLesson);
 
             return RedirectToAction("CreateCourse", "Course", new { id = newCourceItem.CourseId });
         }
@@ -67,7 +74,7 @@ namespace XMLEdition.Controllers
         [Route("/Lesson/Lesson/{id}")]
         public IActionResult Lesson(Guid id)
         {
-            ViewBag.Lesson = _context.Lessons.Where(lesson => lesson.Id == id).FirstOrDefault();
+            ViewBag.Lesson = _lessonRepository.GetLessonById(id);
 
             return View();
         }
@@ -75,7 +82,7 @@ namespace XMLEdition.Controllers
         [Route("/Lesson/EditLesson/{id}")]
         public IActionResult EditLesson(int id)
         {
-            Lesson l = _context.Lessons.Where(l => l.CourseItemId == id).FirstOrDefault();
+            Lesson l = _lessonRepository.GetLessonByCourseItemId(id);
             ViewBag.Lesson = l;
 
             return View(l);  
@@ -105,7 +112,7 @@ namespace XMLEdition.Controllers
             _context.CourseItem.Update(currentCourseItem);
             _context.SaveChanges();
 
-            Lesson currentLesson = _context.Lessons.Where(l => l.Id == lesson.Id).FirstOrDefault();
+            Lesson currentLesson = _lessonRepository.GetLessonById(lesson.Id);
 
             currentLesson.Theme = lesson.Theme;
             currentLesson.Description = lesson.Description;
@@ -113,8 +120,7 @@ namespace XMLEdition.Controllers
             currentLesson.CourseItemId = lesson.CourseItemId;
             currentLesson.DateCreation = DateTime.Now.ToShortDateString();
 
-            _context.Lessons.Update(currentLesson);
-            _context.SaveChanges();
+            _lessonRepository.UpdateAsync(currentLesson);
 
             return RedirectToAction("CreateCourse", "Course", new { id = courseId });
         }

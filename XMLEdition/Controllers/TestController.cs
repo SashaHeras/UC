@@ -1,5 +1,6 @@
 ﻿using Framework.Helper.Extension;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.JSInterop.Implementation;
 using Microsoft.SqlServer.Server;
 using System.Text.RegularExpressions;
 using XMLEdition.Data;
@@ -147,27 +148,42 @@ namespace XMLEdition.Controllers
         [HttpPost]
         public JsonResult SaveTest()
         {
+            Test t = new Test();
+            CourseItem currecntCourceItem = new CourseItem();
+
             var sameCourseItems = _context.CourseItem.Where(ci => ci.CourseId == Convert.ToInt32(Request.Form["courseId"])).OrderBy(ci => ci.OrderNumber);
 
-            CourseItem newCourceItem = new CourseItem()
+            if (Request.Form.Keys.Contains("testId") == false)
             {
-                TypeId = _context.CourseItemTypes.Where(cit => cit.Name == "Test").FirstOrDefault().Id,
-                CourseId = Convert.ToInt32(Request.Form["courseId"]),
-                DateCreation = DateTime.Now,
-                OrderNumber = sameCourseItems.Count() > 0 ? sameCourseItems.Last().OrderNumber + 1 : 1
-            };
+                currecntCourceItem = new CourseItem()
+                {
+                    TypeId = _context.CourseItemTypes.Where(cit => cit.Name == "Test").FirstOrDefault().Id,
+                    CourseId = Convert.ToInt32(Request.Form["courseId"]),
+                    DateCreation = DateTime.Now,
+                    OrderNumber = sameCourseItems.Count() > 0 ? sameCourseItems.Last().OrderNumber + 1 : 1
+                };
 
-            _context.CourseItem.Add(newCourceItem);
-            _context.SaveChanges();
+                _context.CourseItem.Add(currecntCourceItem);
+                _context.SaveChanges();
 
-            Test t = new Test()
+                t = new Test()
+                {
+                    Name = Request.Form["test"].ToString(),
+                    CourseItemId = currecntCourceItem.Id
+                };
+
+                _context.Tests.Add(t);
+                _context.SaveChanges();
+            }
+            else
             {
-                Name = Request.Form["test"].ToString(),
-                CourseItemId = newCourceItem.Id
-            };
+                t = _context.Tests.Where(t => t.Id == Convert.ToInt32(Request.Form["testId"])).FirstOrDefault();
 
-            _context.Tests.Add(t);
-            _context.SaveChanges();
+                t.Name = Request.Form["test"].ToString();
+
+                _context.Tests.Update(t);
+                _context.SaveChanges();
+            }
 
             return Json(t.Id);
         }
@@ -204,6 +220,107 @@ namespace XMLEdition.Controllers
             }
 
             return Json(true);
+        }
+
+        [Route("/Test/EditTest/{id}")]
+        public IActionResult EditTest(int id)
+        {
+            var test = _context.Tests.Where(t=>t.CourseItemId == id).FirstOrDefault();
+            ViewBag.Test = test;
+            ViewBag.CourseId = _context.CourseItem.Where(c => c.Id == id).FirstOrDefault().CourseId;
+
+            return View();
+        }
+
+        [HttpGet]
+        [Route("/Test/GetTasks/{id}")]
+        public JsonResult GetTasks(int id)
+        {
+            var res = _context.TestTasks.Where(tt => tt.TestId == id).ToList();
+            return Json(res);
+        }
+
+        [HttpGet]
+        [Route("/Test/GetTask/{id}")]
+        public JsonResult GetTask(int id)
+        {
+            var res = _context.TestTasks.Where(tt => tt.Id == id).FirstOrDefault();
+
+            return Json(res);
+        }
+
+        [Route("/Test/GetAnswersForEditting/{id}")]
+        public JsonResult GetAnswersForEditting(int id)
+        {
+            var tt = _context.TaskAnswers.Where(t => t.TaskId == id);
+
+            return Json(tt);
+        }
+
+        [HttpPost]
+        public JsonResult SaveEdittedAnswers()
+        {
+            TestTask editedTask = _context.TestTasks.Where(tt => tt.Id == Convert.ToInt32(Request.Form["taskId"])).FirstOrDefault();
+            editedTask.Name = Request.Form["taskName"].ToString();
+            editedTask.Mark = Convert.ToInt32(Request.Form["taskMark"].ToString());
+
+            var allAnsws = Request.Form["answers"];
+            var allChecked = Request.Form["checked"];
+            Dictionary<string, bool> answers = AnswersSpliter(allAnsws, allChecked);
+            string[] ids = Request.Form["ids"].ToString().Split(',');
+
+            int counter = 0;
+            foreach (var answer in answers)
+            {
+                int currentAnswerId = 0;
+                if (int.TryParse(ids[counter], out currentAnswerId) == false)
+                {
+                    TaskAnswer ta = new TaskAnswer()
+                    {
+                        Name = answer.Key,
+                        IsCorrect = answer.Value,
+                        TaskId = editedTask.Id
+                    };
+
+                    _context.TaskAnswers.Add(ta);
+                    _context.SaveChanges();
+                }
+                else
+                {
+                    TaskAnswer ta = _context.TaskAnswers.Where(ta => ta.Id == currentAnswerId).FirstOrDefault();
+                    ta.Name = answer.Key;
+                    ta.IsCorrect = answer.Value;
+
+                    _context.TaskAnswers.Update(ta);
+                    _context.SaveChanges();
+                }
+
+                counter++;
+            }
+
+            _context.TestTasks.Update(editedTask);
+            _context.SaveChanges();
+
+            return Json(true);
+        }
+
+        [HttpPost]
+        public JsonResult DeleteAnswer()
+        {
+            var answer = _context.TaskAnswers.Where(ta => ta.Id == Convert.ToInt32(Request.Form["answerId"])).FirstOrDefault();
+            var taskId = answer.TaskId;
+
+            if(answer != null)
+            {
+                _context.TaskAnswers.Remove(answer);
+                _context.SaveChanges();
+
+                var answers = _context.TaskAnswers.Where(ta=>ta.TaskId == taskId).ToList();
+
+                return Json(answers);
+            }
+
+            return Json(false);
         }
 
         public Dictionary<string, bool> AnswersSpliter(string answers, string _checked)

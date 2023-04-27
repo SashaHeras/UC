@@ -12,6 +12,11 @@ namespace XMLEdition.Data.Repositories.Repositories
             _context = repositoryContext;
         }
 
+        public List<Course> GetAllAuthorsCourses(Guid uid)
+        {
+            return GetAll().Where(c => c.AuthorId == uid).ToList();
+        }
+
         public Course GetCourse(int courseId)
         {
             return GetAll().Where(course => course.Id == courseId).FirstOrDefault();

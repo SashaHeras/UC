@@ -1,0 +1,485 @@
+﻿@{
+    ViewData["Title"] = "Edit test page";
+}
+
+<style>
+    .goBack {
+        text-decoration: none;
+        color: black;
+    }
+
+        .goBack:hover {
+            color: black;
+        }
+
+        .goBack:visited {
+            color: black;
+        }
+
+    #testMain {
+        display: flex;
+    }
+
+    .answerBlock {
+        display: flex;
+        margin: 3px;
+    }
+
+    .body {
+        margin-left: 40px;
+        margin-right: 40px;
+    }
+
+    .tasksList {
+        display: flex;
+        height: 40px;
+        margin-top: 10px;
+        margin-bottom: 15px;
+    }
+
+    .testElement {
+        border-radius: 5px;
+        border-color: black;
+        border: solid 1px;
+        text-align: center;
+        height: 36px;
+        width: 36px;
+        padding: 2px;
+        background-color: #FFE4B5;
+        margin-right: 8px;
+    }
+
+    .dot {
+        margin-left: 5px;
+        text-align: center;
+        height: 30px;
+        width: 30px;
+        color: white;
+        background-color: red;
+        border-radius: 50%;
+        display: inline-block;
+    }
+
+    .center-div{
+        margin: auto;
+        width: 50%;
+    }
+
+    .center{
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .myTr{
+        margin-bottom: 2px;
+    }
+
+    #testname{
+        width: 100%;
+    }
+
+    #taskname{
+        width: 100%;
+    }
+
+    #taskmark{
+        width: 50%;
+    }
+
+    #testAnswers{
+        
+    }
+
+    #answersContext{
+        width: 100%;
+        padding-left: 18%;
+        margin-top: 15px;
+    }
+
+    .answerField{
+        width: 300px;
+    }
+
+    #buttons{
+        margin-top: 15px;
+    }
+</style>
+
+<partial name="/Views/Partial/Header.cshtml" />
+<div class="body">
+    <div>
+        <a href="/Course/CreateCourse/@ViewBag.CourseId">Return to course</a>
+    </div>
+    <table class="center" width="40%">
+        <tr class="myTr">
+            <td style="padding-right: 6px">
+                <label>Test name:</label>
+            </td>
+        </tr>
+        <tr class="myTr">
+            <td>
+                <input id="testname" placeholder="Enter name of test" value="@ViewBag.Test.Name" />
+            </td>
+        </tr>
+        <tr class="myTr">
+            <td style="padding-right: 6px">
+            </td>
+        </tr>
+        <tr class="myTr">
+            <td style="text-align: right">
+                <button id="SaveTest" class="btn btn-light" onclick="SaveTest()">Submit</button>
+            </td>
+        </tr>
+    </table>
+    <div id="tasksList" class="tasksList center-div">
+        @*
+        <div onclick="AlertNumber(1)" class="testElement">
+        1
+        </div>
+        <div onclick="AlertNumber(2)" class="testElement">
+        2
+        </div>
+        *@
+    </div>
+    <table class="center" width="40%">
+        <tr style="margin-bottom: 2px">
+            <td style="padding-right: 6px">
+                <label>Task name:</label>
+            </td>
+        </tr>
+        <tr style="margin-bottom: 2px">
+            <td>
+                <input id="taskname" type="text" placeholder="Enter name of task" />
+            </td>
+        </tr>
+        <tr style="margin-bottom: 2px">
+            <td style="padding-right: 6px">
+                <label>Task mark:</label>
+            </td>
+        </tr>
+        <tr style="margin-bottom: 2px">
+            <td style="text-align: center;">
+                <input id="taskmark" type="number" placeholder="Enter mark" />
+            </td>
+        </tr>
+    </table>
+
+    <div id="answersContext" width="60%">
+        <div id="testAnswers" class="center-div">
+            @*<div name="answerBlock" id="answerBlock">
+            <input type="checkbox" id="correct1"><input id="answer1" type="text" placeholder="Enter answer" width="250px" />
+            </div>
+            <div name="answerBlock" id="answerBlock">
+            <input type="checkbox" id="correct2"><input id="answer2" type="text" placeholder="Enter answer" width="250px" />
+            </div>
+            <div name="answerBlock" id="answerBlock">
+            <input type="checkbox" id="correct3"><input id="answer3" type="text" placeholder="Enter answer" width="250px" />
+            </div>
+            <button onclick="SaveAnswers()">Submit</button>*@
+        </div>
+        <div id="buttons" class="center-div">
+
+        </div>
+    </div>
+</div>
+
+<script>
+    let answerCnt = 0;
+    let testId = @ViewBag.Test.Id;
+    let courseId = @ViewBag.CourseId;
+
+    let currentTaskAnswers = [];
+    let symbols = ['A','B','C','D','E','F','G','H','I','J','K','L'];
+    let correctCounter = 0;
+
+    let taskId = 0;
+    let taskName = "";
+    let taskMark = 0;
+    let orderNumber = 0;
+
+    $(document).ready(function () {
+        GenerateTasksList();
+    });
+
+    function GenerateTasksList()
+    {
+        let myUrl = "/Test/GetTasks/" + testId;
+        $.ajax({
+            url: myUrl,
+            type: "GET",
+            dataType: "json",
+            success: function (result) {
+                let main = document.getElementById("tasksList");
+
+                for (let i = 0; i < result.length; i++) {
+                    let div = document.createElement("div");
+                    div.className = "testElement";
+                    div.innerHTML = result[i].orderNumber;
+                    let id = result[i].id;
+                    div.setAttribute("onclick", "GenerateTask('" + id + "')");
+
+                    main.appendChild(div);
+                }
+            }
+        });
+    }
+
+    function GenerateTask(id){
+        console.log(id);
+
+        let myUrl = "/Test/GetTask/" + id;
+        $.ajax({
+            url: myUrl,
+            type: "GET",
+            dataType: "json",
+            success: function (result) {
+                console.log(result);
+
+                document.getElementById("taskmark").value = "";
+                document.getElementById("taskname").value = "";
+
+                document.getElementById("taskmark").value = result.mark;
+                document.getElementById("taskname").value = result.name;
+            }
+        });
+
+        taskId = id;
+
+        GenerateAnswers(id);
+    }
+
+    // Function for saving and creation test
+    function SaveTest() {
+        let name = document.getElementById("testname").value;
+
+        let formData = new FormData();
+
+        formData.append("test", name);
+        formData.append("testId", testId);
+        formData.append("courseId", courseId);
+
+        $.ajax({
+            url: "/Test/SaveTest",
+            type: "POST",
+            data: formData,
+            dataType: "json",
+            contentType: false,
+            processData: false,
+            success: function (result) {
+                if (result != 0) {
+                    testId = result;
+                    alert("Test name edited!");
+                }
+            }
+        });
+    }
+
+    // Function for saving task and it`s answers
+    function SaveAnswers() {
+        let allAnswers = [];
+        let allChecked = [];
+        let allIds = [];
+
+        // Reading all entered answers
+        let answers = document.getElementsByName("answerBlock");
+        for (let i = 0; i < answers.length; i++) {
+            let c = 0;
+            allIds.push(answers[i].id.replace("answerBlock",""));
+            for (const child of answers[i].children) {
+                if (c == 0) {
+                    allChecked.push(child.checked);
+                }
+                else if (c == 1) {
+                    allAnswers.push(child.value.replace(',', '|'));
+                }
+                c++;
+            }
+        }
+
+        console.log(allIds);
+        console.log(allChecked);
+        console.log(allAnswers);
+
+        // Checking is a correct answers
+        if (allChecked.some(item => item === true) == false) {
+            alert("Select true variant!");
+        }
+        else {
+            taskMark = document.getElementById("taskmark").value;
+            taskName = document.getElementById("taskname").value;
+
+            let formData = new FormData();
+
+            formData.append("answers", allAnswers);
+            formData.append("checked", allChecked);
+            formData.append("ids", allIds);
+            formData.append("taskName", taskName);
+            formData.append("taskMark", taskMark);
+            formData.append("taskId", taskId);
+            formData.append("testId", testId);
+
+            $.ajax({
+                url: "/Test/SaveEdittedAnswers",
+                type: "POST",
+                data: formData,
+                dataType: "json",
+                contentType: false,
+                processData: false,
+                success: function (result) {
+
+                }
+            });
+        }   
+        
+        correctCounter = 0;
+    }
+
+    // Function for cleaning place for new task
+    function Cleaning() {
+        let block = document.getElementById("testAnswers");
+
+        while (block.firstChild) {
+            block.removeChild(block.lastChild);
+        }
+
+        document.getElementById("taskmark").value = "";
+        document.getElementById("taskname").value = "";
+    }
+
+    // Function to generation of answers fields
+    function GenerateAnswers(taskId) {
+        let block = document.getElementById("testAnswers");
+        let buttons = document.getElementById("buttons");
+        correctCounter = 0;
+
+        while (block.firstChild) {
+            block.removeChild(block.lastChild);
+        }
+
+        while (buttons.firstChild) {
+            buttons.removeChild(buttons.lastChild);
+        }
+
+        let thisUrl = "/Test/GetAnswersForEditting/" + taskId;
+        $.ajax({
+            url: thisUrl,
+            type: "GET",
+            dataType: "json",
+            success: function (result) {
+                currentTaskAnswers = result;
+                taskId = currentTaskAnswers[0].taskId;
+                console.log(currentTaskAnswers);
+
+                for (let i = 0; i < result.length; i++) {
+                    let div = document.createElement("div");
+                    div.setAttribute("name", "answerBlock");
+                    div.className = "answerBlock";
+                    div.id = "answerBlock" + result[i].id;
+
+                    let cor = document.createElement("input");
+                    cor.setAttribute("type", "checkbox");
+                    if (result[i].isCorrect == true) {
+                        cor.checked = true;
+                    }
+                    else{
+                        cor.checked = false;
+                    }
+                    cor.id = "correct" + (result[i].id);
+
+                    div.appendChild(cor);
+
+                    let ans = document.createElement("input");
+                    ans.setAttribute("type", "text");
+                    ans.setAttribute("placeholder", "Enter answer");
+                    ans.className = "answerField";
+                    ans.setAttribute("value", result[i].name);
+                    ans.setAttribute("width", "450px");
+                    ans.id = "answer" + 1;
+
+                    div.appendChild(ans);
+
+                    let deleteAnswer = document.createElement("div");
+                    deleteAnswer.setAttribute("onclick", "DeleteAnswer('" + result[i].id + "')");
+                    deleteAnswer.setAttribute("class", "dot");
+                    deleteAnswer.innerHTML = "-"
+
+                    div.appendChild(deleteAnswer);
+
+                    block.appendChild(div);
+                }
+
+                let btnSub = document.createElement("button");
+                btnSub.setAttribute("onclick", "SaveAnswers()");
+                btnSub.setAttribute("style", "margin-left: 25%;");
+                btnSub.className = "btn btn-success";
+                btnSub.textContent = "Submit";
+
+                let btnAdd = document.createElement("button");
+                btnAdd.setAttribute("onclick", "AddAnswerField()"); 
+                btnAdd.className = "btn btn-light";
+                btnAdd.textContent = "Add new answer";
+
+                buttons.appendChild(btnAdd);
+                buttons.appendChild(btnSub);
+            }
+        });
+    }
+
+    function AddAnswerField()
+    {
+        let block = document.getElementById("testAnswers");
+        let buttons = document.getElementById("buttons");
+
+        let div = document.createElement("div");
+        div.setAttribute("name", "answerBlock");
+        div.className = "answerBlock";
+        div.id = "answerBlock" + symbols[correctCounter];
+
+        let cor = document.createElement("input");
+        cor.setAttribute("type", "checkbox");
+        cor.id = "correct" + correctCounter;
+        correctCounter++;
+
+        div.appendChild(cor);
+
+        let ans = document.createElement("input");
+        ans.setAttribute("type", "text");
+        ans.setAttribute("placeholder", "Enter answer");
+        ans.setAttribute("width", "450px");
+        ans.id = "answer" + 1;
+
+        div.appendChild(ans);
+
+        let deleteAnswer = document.createElement("div");
+        deleteAnswer.setAttribute("onclick", "DeleteAnswer('" + symbols[correctCounter] + "')");
+        deleteAnswer.setAttribute("class", "dot");
+        deleteAnswer.innerHTML = "-"
+
+        div.appendChild(deleteAnswer);
+
+        block.appendChild(div);
+    }
+
+    function DeleteAnswer(id){
+        let deletedElem = document.getElementById("answerBlock" + id);
+        deletedElem.remove();
+
+        let formData = new FormData();
+
+        formData.append("answerId", id);
+
+        $.ajax({
+            url: "/Test/DeleteAnswer",
+            type: "POST",
+            data: formData,
+            dataType: "json",
+            contentType: false,
+            processData: false,
+            success: function (result) {
+                if (result != false){
+                    currentTaskAnswers = result;
+                }
+            }
+        });
+    }
+</script>

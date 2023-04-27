@@ -1,20 +1,23 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using XMLEdition.Data.Repositories.Repositories;
 
 namespace XMLEdition.Controllers
 {
     public class AuthorController : Controller
     {
         private Data.AppContext _context = new Data.AppContext();
+        private CourseRepository _courseRepository;
 
+        public AuthorController(Data.AppContext context)
+        {
+            _context = context;
+            _courseRepository = new CourseRepository(context);
+        }
 
         [Route("/Author/Index/{userId}")]
         public IActionResult Index(Guid userId)
         {
-            // {5cc5918d-81b7-4a84-bd64-e79fd914ebf7}
-
-            var courses = _context.Courses.Where(c=>c.AuthorId == userId).ToList();
-            ViewBag.Courses = courses;
-
+            ViewBag.Courses = _courseRepository.GetAllAuthorsCourses(userId);
             return View();
         }
 

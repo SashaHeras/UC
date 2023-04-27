@@ -6,6 +6,8 @@ namespace XMLEdition.Data.Repositories.Interfaces
     {
         public string GetCourseElementsList(string courseId);
 
-        public Course GetCourse(int courseId);   
+        public Course GetCourse(int courseId);
+
+        public List<Course> GetAllAuthorsCourses(Guid uid);
     }
 }
