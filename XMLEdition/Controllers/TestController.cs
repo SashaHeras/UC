@@ -4,6 +4,8 @@ using Microsoft.JSInterop.Implementation;
 using Microsoft.SqlServer.Server;
 using System.Text.RegularExpressions;
 using XMLEdition.Data;
+using XMLEdition.Data.Repositories.Interfaces;
+using XMLEdition.Data.Repositories.Repositories;
 using XMLEdition.Migrations;
 
 namespace XMLEdition.Controllers
@@ -11,6 +13,13 @@ namespace XMLEdition.Controllers
     public class TestController : Controller
     {
         private Data.AppContext _context = new Data.AppContext();
+        private CourseItemRepository _courseItemRepository;
+
+        public TestController(Data.AppContext context)
+        {
+            _context = context;
+            _courseItemRepository = new CourseItemRepository(context);
+        }
 
         public IActionResult Index()
         {
@@ -150,8 +159,9 @@ namespace XMLEdition.Controllers
         {
             Test t = new Test();
             CourseItem currecntCourceItem = new CourseItem();
+            int courseId = Convert.ToInt32(Request.Form["courseId"]);
 
-            var sameCourseItems = _context.CourseItem.Where(ci => ci.CourseId == Convert.ToInt32(Request.Form["courseId"])).OrderBy(ci => ci.OrderNumber);
+            var sameCourseItems = _courseItemRepository.GetCourseItemsByCourseId(courseId).OrderBy(ci => ci.OrderNumber);
 
             if (Request.Form.Keys.Contains("testId") == false)
             {
@@ -163,8 +173,7 @@ namespace XMLEdition.Controllers
                     OrderNumber = sameCourseItems.Count() > 0 ? sameCourseItems.Last().OrderNumber + 1 : 1
                 };
 
-                _context.CourseItem.Add(currecntCourceItem);
-                _context.SaveChanges();
+                _courseItemRepository.AddAsync(currecntCourceItem);
 
                 t = new Test()
                 {
@@ -227,7 +236,7 @@ namespace XMLEdition.Controllers
         {
             var test = _context.Tests.Where(t=>t.CourseItemId == id).FirstOrDefault();
             ViewBag.Test = test;
-            ViewBag.CourseId = _context.CourseItem.Where(c => c.Id == id).FirstOrDefault().CourseId;
+            ViewBag.CourseId = _courseItemRepository.GetCourseItemById(id).CourseId;
 
             return View();
         }

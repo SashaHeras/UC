@@ -10,6 +10,7 @@ namespace XMLEdition.Controllers
     {
         private Data.AppContext _context = new Data.AppContext();
         private LessonRepository _lessonRepository;
+        private CourseItemRepository _courseItemRepository;
 
         public LessonController(Data.AppContext context)
         {

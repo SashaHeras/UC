@@ -9,57 +9,76 @@
         margin-right: 40px;
     }
 
-    .tasksList {
-        display: flex;
-        height: 40px;
+    .myImg {
+        width: 260px;
+        height: 150px;
     }
 
-    .testElement{
+    #coursesList {
+        margin-left: 40px;
+        margin-right: 40px;
+    }
+
+    .listElement {
+        vertical-align: middle;
+        height: 240px;
+        font-size: 18px;
+        margin-top: 15px;
+        width: 280px;
         border-radius: 5px;
-        border-color: black;
-        border: solid 1px;
-        text-align: center;
-        height: 36px;
-        width: 36px;
-        padding: 2px;
-        background-color: #FFE4B5;
-        margin-right: 8px;
+        padding-top: 3px;
+        padding-bottom: 3px;
+        padding-left: 10px;
+        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    }
+
+    .image-box {
+        width: 250px;
+        height: 140px;
+    }
+
+    a {
+        text-decoration: none;
+        color: black;
+    }
+
+    .courseName {
+        font-size: 24px;
+    }
+
+    .raiting{
+        color: gold;
     }
 
 </style>
 
 <partial name="/Views/Partial/Header.cshtml" />
-
-
-
 <div class="body">
-    <table class="table table-dark">
-        <thead>
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">Імя</th>
-                <th scope="col">Ціна</th>
-                <th scope="col">Марка</th>
-                <th scope="col">Склад</th>
-                <th scope="col">Кількість, шт.</th>
-            </tr>
-        </thead>
-        <tbody>
-            @{
-                foreach (XMLEdition.Data.Product p in ViewBag.Products)
-                {
-                    <tr>
-                        <th scope="row">@p.Id</th>
-                        <td>@p.Name</td>
-                        <td>@p.Price</td>
-                        <td>@p.Vendor</td>
-                        <td>@p.Storage</td>
-                        <td>@p.Count</td>
-                        <td><a href="/Home/Edit/@p.Id" class="btn btn-warning">Edit</a></td>
-                        <td><a href="/Home/DeleteProduct/@p.Id" class="btn btn-danger">Delete</a></td>
-                    </tr>
-                }
+    <div id="sales">
+
+    </div>
+    <div id="filters">
+
+    </div>
+    <div id="courses">
+        @{
+            foreach (XMLEdition.Data.Course c in ViewBag.Courses)
+            {
+                <div class="listElement">
+                    <div class="image-box">
+                        <img class="myImg" src="/Pictures/@c.PicturePath" alt="Title">
+                    </div>
+                    <div>
+                        <a class="courseName" href="/Course/ViewCourse/@c.Id">@c.Name</a>
+                    </div>
+                    <div>
+                        <div class="raiting" style="font-size: 16px;"><i class="bi bi-star-fill"></i>5</div>
+                    </div>
+                    <div>
+                        <div>$ @c.Price</div>
+                    </div>
+                </div>
             }
-        </tbody>
-    </table>
+        }
+    </div>
 </div>

@@ -18,45 +18,9 @@ namespace XMLEdition.Controllers
 
         public IActionResult Index()
         {
-            Serializer.Read();
-            ViewBag.Products = Serializer.products.OrderBy(p => p.Id);
+            ViewBag.Courses = _context.Courses.ToList();
 
             return View();
-        }
-
-        public IActionResult DeleteProduct(int id)
-        {
-            var prod = Serializer.products.Where(p => p.Id == id).FirstOrDefault();
-            Serializer.Delete(prod);
-
-            return RedirectToAction("Index");
-        }
-
-        public IActionResult Add()
-        {
-            return View();
-        }
-
-        public IActionResult AddProduct(Product p)
-        {
-            p.Id = Serializer.products.OrderBy(p => p.Id).Last().Id + 1;
-            Serializer.Add(p);
-
-            return RedirectToAction("Index");
-        }
-
-        public IActionResult Edit(int id)
-        {
-            ViewBag.Product = Serializer.products.Where(p=>p.Id == id).FirstOrDefault();
-
-            return View();
-        }
-
-        public IActionResult EditProduct(Product p)
-        {
-            Serializer.Update(p);
-
-            return RedirectToAction("Index");
         }
 
         public IActionResult Video()
