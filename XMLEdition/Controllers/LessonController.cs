@@ -43,7 +43,7 @@ namespace XMLEdition.Controllers
                 c.VideoPath.CopyToAsync(fileStream);
             }
 
-            var sameCourseItems = _context.CourseItem.Where(ci => ci.CourseId == Convert.ToInt32(c.CourseId)).OrderBy(ci => ci.OrderNumber);
+            var sameCourseItems = _courseItemRepository.GetCourseItemsByCourseId(Convert.ToInt32(c.CourseId)).OrderBy(ci => ci.OrderNumber);
 
             CourseItem newCourceItem = new CourseItem()
             {
@@ -91,9 +91,7 @@ namespace XMLEdition.Controllers
 
         [Route("/Lesson/Edit")]
         public IActionResult Edit(IFormCollection form, Lesson lesson)
-        {
-            int courseId = _context.CourseItem.Where(ci => ci.Id == lesson.CourseItemId).FirstOrDefault().CourseId;
-
+        {         
             if (form.Files.Count != 0)
             {
                 string uploads = "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\Videos\\";
@@ -107,11 +105,11 @@ namespace XMLEdition.Controllers
             }
 
             CourseItem currentCourseItem = _context.CourseItem.Where(c => c.Id == lesson.CourseItemId).FirstOrDefault();
-
             currentCourseItem.DateCreation = DateTime.Now;
 
-            _context.CourseItem.Update(currentCourseItem);
-            _context.SaveChanges();
+            int courseId = currentCourseItem.CourseId;
+
+            _courseItemRepository.UpdateAsync(currentCourseItem);
 
             Lesson currentLesson = _lessonRepository.GetLessonById(lesson.Id);
 

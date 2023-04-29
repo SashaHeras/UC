@@ -11,7 +11,7 @@ namespace XMLEdition.Data.Repositories.Repositories
             _context = repositoryContext;
         }
 
-        public CourseItem GetCourseItemById(int courseItemId)
+        public CourseItem GetCourseItemById(int? courseItemId)
         {
             return GetAll().Where(ci => ci.Id == courseItemId).FirstOrDefault();
         }

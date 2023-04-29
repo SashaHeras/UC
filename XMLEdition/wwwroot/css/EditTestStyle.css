@@ -1,0 +1,135 @@
+.goBack {
+    text-decoration: none;
+    color: black;
+}
+
+    .goBack:hover {
+        color: black;
+    }
+
+    .goBack:visited {
+        color: black;
+    }
+
+#testMain {
+    display: flex;
+}
+
+.answerBlock {
+    display: flex;
+    margin: 3px;
+}
+
+.body {
+    margin-left: 40px;
+    margin-right: 40px;
+}
+
+.tasksList {
+    display: flex;
+    height: 40px;
+    margin-top: 10px;
+    margin-bottom: 15px;
+    justify-content: center;
+    align-items: center;
+}
+
+.testElement {
+    border-radius: 5px;
+    border-color: black;
+    border: solid 1px;
+    text-align: center;
+    height: 40px;
+    width: 40px;
+    padding-top: 6px;
+    padding: 2px;
+    background-color: #FFE4B5;
+    margin-right: 10px;
+}
+
+.active {
+    border-color: blue;
+    box-shadow: 0 0 8px blue;
+}
+
+.insideDiv {
+    display: flex;
+}
+
+.dot {
+    margin-left: 5px;
+    text-align: center;
+    height: 30px;
+    width: 30px;
+    color: white;
+    background-color: red;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.center-div {
+    margin: auto;
+    width: 50%;
+}
+
+.center {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.myTr {
+    margin-bottom: 2px;
+}
+
+#testname {
+    width: 100%;
+}
+
+#taskname {
+    width: 100%;
+}
+
+#taskmark {
+    width: 50%;
+}
+
+.shortTd {
+    width: 20%;
+}
+
+.centeredTd {
+    text-align: center;
+}
+
+#testAnswers {
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    margin-left: 25%;
+    width: 100%;
+    margin-top: 15px;
+}
+
+#answersContext {
+    width: 100%;
+    padding-left: 18%;
+    margin-top: 15px;
+}
+
+.answerField {
+    width: 300px;
+    margin-top: 5px;
+    margin-left: 8px;
+}
+
+.flexable {
+    display: flex;
+}
+
+#myContext {
+    margin-top: 15px;
+}
+
+#buttons {
+    margin-top: 15px;
+}

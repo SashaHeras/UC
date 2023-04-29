@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using XMLEdition.Data;
+using XMLEdition.Data.Repositories.Repositories;
 using XMLEdition.Models;
 
 namespace XMLEdition.Controllers
@@ -10,15 +11,19 @@ namespace XMLEdition.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private Data.AppContext _context = new Data.AppContext();
+        private LessonRepository _lessonRepository;
+        private CourseRepository _courseRepository;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(Data.AppContext context)
         {
-            _logger = logger;
+            _context = context;
+            _lessonRepository = new LessonRepository(context);
+            _courseRepository = new CourseRepository(context);
         }
 
         public IActionResult Index()
         {
-            ViewBag.Courses = _context.Courses.ToList();
+            ViewBag.Courses = _courseRepository.GetAll();
 
             return View();
         }
@@ -31,7 +36,7 @@ namespace XMLEdition.Controllers
         [Route("/Home/Lesson/{id}")]
         public IActionResult Lesson(Guid id)
         {
-            ViewBag.Lesson = _context.Lessons.Where(lesson => lesson.Id == id).FirstOrDefault();
+            ViewBag.Lesson = _lessonRepository.GetLessonById(id);
 
             return View();
         }

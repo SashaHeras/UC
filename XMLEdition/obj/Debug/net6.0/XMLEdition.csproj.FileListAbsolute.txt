@@ -6,11 +6,13 @@ C:\Users\acsel\source\repos\XMLEdition\XMLEdition\bin\Debug\net6.0\XMLEdition.de
 C:\Users\acsel\source\repos\XMLEdition\XMLEdition\bin\Debug\net6.0\XMLEdition.runtimeconfig.json
 C:\Users\acsel\source\repos\XMLEdition\XMLEdition\bin\Debug\net6.0\XMLEdition.dll
 C:\Users\acsel\source\repos\XMLEdition\XMLEdition\bin\Debug\net6.0\XMLEdition.pdb
+C:\Users\acsel\source\repos\XMLEdition\XMLEdition\bin\Debug\net6.0\Antlr3.Runtime.dll
 C:\Users\acsel\source\repos\XMLEdition\XMLEdition\bin\Debug\net6.0\Azure.Core.dll
 C:\Users\acsel\source\repos\XMLEdition\XMLEdition\bin\Debug\net6.0\Azure.Identity.dll
 C:\Users\acsel\source\repos\XMLEdition\XMLEdition\bin\Debug\net6.0\Framework.Helper.dll
 C:\Users\acsel\source\repos\XMLEdition\XMLEdition\bin\Debug\net6.0\Humanizer.dll
 C:\Users\acsel\source\repos\XMLEdition\XMLEdition\bin\Debug\net6.0\System.Web.Razor.dll
+C:\Users\acsel\source\repos\XMLEdition\XMLEdition\bin\Debug\net6.0\System.Web.Optimization.dll
 C:\Users\acsel\source\repos\XMLEdition\XMLEdition\bin\Debug\net6.0\Microsoft.Web.Helpers.dll
 C:\Users\acsel\source\repos\XMLEdition\XMLEdition\bin\Debug\net6.0\System.Web.Helpers.dll
 C:\Users\acsel\source\repos\XMLEdition\XMLEdition\bin\Debug\net6.0\System.Web.WebPages.Deployment.dll
@@ -48,6 +50,7 @@ C:\Users\acsel\source\repos\XMLEdition\XMLEdition\bin\Debug\net6.0\Microsoft.Sql
 C:\Users\acsel\source\repos\XMLEdition\XMLEdition\bin\Debug\net6.0\Microsoft.Web.Infrastructure.dll
 C:\Users\acsel\source\repos\XMLEdition\XMLEdition\bin\Debug\net6.0\Microsoft.Win32.SystemEvents.dll
 C:\Users\acsel\source\repos\XMLEdition\XMLEdition\bin\Debug\net6.0\Mono.TextTemplating.dll
+C:\Users\acsel\source\repos\XMLEdition\XMLEdition\bin\Debug\net6.0\Newtonsoft.Json.dll
 C:\Users\acsel\source\repos\XMLEdition\XMLEdition\bin\Debug\net6.0\System.CodeDom.dll
 C:\Users\acsel\source\repos\XMLEdition\XMLEdition\bin\Debug\net6.0\System.Configuration.ConfigurationManager.dll
 C:\Users\acsel\source\repos\XMLEdition\XMLEdition\bin\Debug\net6.0\System.Drawing.Common.dll
@@ -60,6 +63,7 @@ C:\Users\acsel\source\repos\XMLEdition\XMLEdition\bin\Debug\net6.0\System.Text.E
 C:\Users\acsel\source\repos\XMLEdition\XMLEdition\bin\Debug\net6.0\System.Text.Json.dll
 C:\Users\acsel\source\repos\XMLEdition\XMLEdition\bin\Debug\net6.0\System.Windows.Extensions.dll
 C:\Users\acsel\source\repos\XMLEdition\XMLEdition\bin\Debug\net6.0\Video.dll
+C:\Users\acsel\source\repos\XMLEdition\XMLEdition\bin\Debug\net6.0\WebGrease.dll
 C:\Users\acsel\source\repos\XMLEdition\XMLEdition\bin\Debug\net6.0\runtimes\unix\lib\netcoreapp3.1\Microsoft.Data.SqlClient.dll
 C:\Users\acsel\source\repos\XMLEdition\XMLEdition\bin\Debug\net6.0\runtimes\win\lib\netcoreapp3.1\Microsoft.Data.SqlClient.dll
 C:\Users\acsel\source\repos\XMLEdition\XMLEdition\bin\Debug\net6.0\runtimes\win-arm\native\Microsoft.Data.SqlClient.SNI.dll
@@ -97,7 +101,3 @@ C:\Users\acsel\source\repos\XMLEdition\XMLEdition\obj\Debug\net6.0\refint\XMLEdi
 C:\Users\acsel\source\repos\XMLEdition\XMLEdition\obj\Debug\net6.0\XMLEdition.pdb
 C:\Users\acsel\source\repos\XMLEdition\XMLEdition\obj\Debug\net6.0\XMLEdition.genruntimeconfig.cache
 C:\Users\acsel\source\repos\XMLEdition\XMLEdition\obj\Debug\net6.0\ref\XMLEdition.dll
-C:\Users\acsel\source\repos\XMLEdition\XMLEdition\bin\Debug\net6.0\Antlr3.Runtime.dll
-C:\Users\acsel\source\repos\XMLEdition\XMLEdition\bin\Debug\net6.0\System.Web.Optimization.dll
-C:\Users\acsel\source\repos\XMLEdition\XMLEdition\bin\Debug\net6.0\Newtonsoft.Json.dll
-C:\Users\acsel\source\repos\XMLEdition\XMLEdition\bin\Debug\net6.0\WebGrease.dll

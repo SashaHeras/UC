@@ -6,6 +6,6 @@ namespace XMLEdition.Data.Repositories.Interfaces
     {
         public IQueryable<CourseItem> GetCourseItemsByCourseId(int courseId);
 
-        public CourseItem GetCourseItemById(int courseItemId);
+        public CourseItem GetCourseItemById(int? courseItemId);
     }
 }

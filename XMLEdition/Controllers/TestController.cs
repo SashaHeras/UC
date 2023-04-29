@@ -200,6 +200,10 @@ namespace XMLEdition.Controllers
         [HttpPost]
         public JsonResult SaveAnswers()
         {
+            var allAnsws = Request.Form["answers"];
+            var allChecked = Request.Form["checked"];
+            Dictionary<string, bool> answers = AnswersSpliter(allAnsws, allChecked);
+
             TestTask tt = new TestTask()
             {
                 Name = Request.Form["taskName"].ToString(),
@@ -210,10 +214,6 @@ namespace XMLEdition.Controllers
 
             _context.TestTasks.Add(tt);
             _context.SaveChanges();
-
-            var allAnsws = Request.Form["answers"];
-            var allChecked = Request.Form["checked"];
-            Dictionary<string, bool> answers = AnswersSpliter(allAnsws, allChecked);
 
             foreach(var answer in answers)
             {
@@ -309,6 +309,40 @@ namespace XMLEdition.Controllers
 
             _context.TestTasks.Update(editedTask);
             _context.SaveChanges();
+
+            return Json(true);
+        }
+
+        [HttpDelete]
+        [Route("/Test/DeleteTask/{taskId}")]
+        public JsonResult DeleteTask(int taskId)
+        {
+            int tid = taskId;
+
+            var task = _context.TestTasks.Where(tt=>tt.Id == tid).FirstOrDefault();
+            var taskAnswers = _context.TaskAnswers.Where(ta=>ta.TaskId == tid).ToList();
+            int orderNumber = task.OrderNumber;
+            int testId = task.TestId;
+            var allTasksAfter = _context.TestTasks.Where(tt => tt.TestId == testId && tt.OrderNumber > orderNumber).ToList();
+
+            try
+            {
+                _context.TestTasks.Remove(task);
+                _context.SaveChanges();
+
+                foreach(var ans in allTasksAfter)
+                {
+                    ans.OrderNumber = orderNumber;
+                    orderNumber++;
+
+                    _context.TestTasks.Update(ans);
+                    _context.SaveChanges();
+                }
+            }
+            catch(Exception ex)
+            {
+                return Json(ex.Message);
+            }
 
             return Json(true);
         }

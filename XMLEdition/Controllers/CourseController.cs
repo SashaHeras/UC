@@ -11,11 +11,15 @@ namespace XMLEdition.Controllers
     {
         private Data.AppContext _context = new Data.AppContext();
         private CourseRepository _courseRepository;
+        private CourseItemRepository _courseItemRepository;
+        private CourseTypeRepository _courseTypeRepository;
 
         public CourseController(Data.AppContext context)
         {
             _context = context;
             _courseRepository = new CourseRepository(context);
+            _courseItemRepository = new CourseItemRepository(context);
+            _courseTypeRepository = new CourseTypeRepository(context);
         }
 
         public IActionResult Index()
@@ -47,7 +51,8 @@ namespace XMLEdition.Controllers
         [HttpGet]
         public JsonResult GetElements()
         {
-            var elements = _context.CourseItem.Where(ci=>ci.CourseId == Convert.ToInt32(Request.Form["id"]));
+            int courseId = Convert.ToInt32(Request.Form["id"]);
+            var elements = _courseItemRepository.GetCourseItemsByCourseId(courseId);
 
             return Json(elements);
         }
@@ -55,8 +60,10 @@ namespace XMLEdition.Controllers
         [HttpGet]
         public JsonResult GetElementName()
         {
-            var element = _context.CourseItem.Where(e => e.Id == Convert.ToInt32(Request.Form["elementId"])).FirstOrDefault();
-            var typeName = _context.CourseItemTypes.Where(t => t.Id == element.TypeId).FirstOrDefault().Name;
+            int courseItemId = Convert.ToInt32(Request.Form["elementId"]);
+            var element = _courseItemRepository.GetCourseItemById(courseItemId);
+
+            var typeName = _courseTypeRepository.GetTypeById(element.TypeId).Name;
 
             return Json(element, typeName);
         }
@@ -101,9 +108,10 @@ namespace XMLEdition.Controllers
             }
             else
             {
-                newCourse = _courseRepository.GetCourse(Convert.ToInt32(Request.Form["courseId"].ToString()));
-                int courseId = newCourse.Id;
-                string path = newCourse.PicturePath;
+                int courseId = Convert.ToInt32(form["courseId"].ToString());
+                newCourse = _courseRepository.GetCourse(courseId);
+                courseId = newCourse.Id;
+                filePath = newCourse.PicturePath;
 
                 _context.Courses.Remove(newCourse);
 
@@ -124,7 +132,7 @@ namespace XMLEdition.Controllers
                 }
                 else
                 {
-                    newCourse.PicturePath = path;
+                    newCourse.PicturePath = filePath;
                 }
 
                 _courseRepository.AddAsync(newCourse);

@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "wBW6xhWx2wK8HKIoRSTn0fRPRB9vvXacHGnkpdMqbSc=",
+  "Hash": "bBC/cpeqkQXuZ94S3BMFZAru0dnG5s9rfpPSFZ153Ic=",
   "Source": "XMLEdition",
   "BasePath": "_content/XMLEdition",
   "Mode": "Default",
@@ -49,6 +49,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\obj\\Debug\\net6.0\\scopedcss\\projectbundle\\XMLEdition.bundle.scp.css"
+    },
+    {
+      "Identity": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\css\\EditTestStyle.css",
+      "SourceId": "XMLEdition",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\",
+      "BasePath": "_content/XMLEdition",
+      "RelativePath": "css/EditTestStyle.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\css\\EditTestStyle.css"
     },
     {
       "Identity": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\css\\site.css",
