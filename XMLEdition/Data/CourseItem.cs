@@ -11,5 +11,7 @@
         public DateTime DateCreation { get; set; }
 
         public int OrderNumber { get; set; }
+
+        public int StatusId { get; set; }        
     }
 }

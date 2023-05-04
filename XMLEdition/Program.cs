@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 using System.Numerics;
 using XMLEdition.Data;
 using XMLEdition.Data.Repositories.Interfaces;
@@ -25,8 +26,10 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.UseHttpsRedirection();
 app.UseStaticFiles();
+
+app.UseHttpsRedirection();
+
 
 app.UseRouting();
 

@@ -53,6 +53,7 @@ namespace XMLEdition.Data.Repositories.Repositories
 
             try
             {
+                repositoryContext.ChangeTracker.Clear();
                 repositoryContext.Update(entity);
                 await repositoryContext.SaveChangesAsync();
 

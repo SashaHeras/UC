@@ -488,7 +488,7 @@
                     const deleteAnswer = document.createElement("div");
                     deleteAnswer.setAttribute("onclick", `DeleteAnswer('${answer.id}')`);
                     deleteAnswer.setAttribute("class", "dot");
-                    deleteAnswer.innerHTML = "-";
+                    deleteAnswer.innerHTML = `<i class="bi bi-trash-fill"></i>`;
                     div.appendChild(deleteAnswer);
 
                     block.appendChild(div);

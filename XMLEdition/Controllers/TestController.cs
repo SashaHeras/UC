@@ -53,95 +53,93 @@ namespace XMLEdition.Controllers
         {
             double total = 0;
             double mark = 0;
-            int testId = Convert.ToInt32(Request.Form["test"]);
-            TestHistory testHistory = new TestHistory();
+
+            int testId = int.Parse(Request.Form["test"]);
+            int userId = int.Parse(Request.Form["userid"]);
             List<TaskHistory> taskHistories = new List<TaskHistory>();
             List<AnswerHistory> answerHistories = new List<AnswerHistory>();
 
-            testHistory.TestId = testId;
-            testHistory.UserId = Convert.ToInt32(Request.Form["userid"]);
-            // Add to testHistory user id
+            var tasks = _context.TestTasks.Where(tt => tt.TestId == testId).ToList();
+            var taskAnswers = Request.Form["answers"].ToString().Split(',')
+                                .Select(a => new {
+                                    TaskId = int.Parse(a.Split('_')[0]),
+                                    AnswerId = int.Parse(a.Split('_')[1]),
+                                    IsChecked = bool.Parse(a.Split('_')[2])
+                                }).ToList();
 
-            List<TestTask> tasks = _context.TestTasks.Where(tt => tt.TestId == testId).ToList();
-
-            var answers = Request.Form["answers"].ToString().Split(',');
-            for (int i = 0; i < tasks.Count; i++)
+            foreach (var task in tasks)
             {
-                TaskHistory taskHistory = new TaskHistory();
-                taskHistory.TaskId = tasks[i].Id;
-                taskHistory.TestHistoryId = 0;
-
-                total += tasks[i].Mark;
                 double markForTask = 0;
-                var taskAnswers = answers.Where(a => a.Split('_')[0].Equals(tasks[i].Id.ToString()) == true).ToList();
+                var taskAnswerIds = taskAnswers.Where(a => a.TaskId == task.Id).ToList();
                 int cntRight = 0;
 
-                for (int j = 0; j < taskAnswers.Count(); j++)
+                foreach (var taskAnswer in taskAnswerIds)
                 {
-                    AnswerHistory answerHistory = new AnswerHistory();
-                    answerHistory.TaskId = tasks[i].Id;
-                    answerHistory.TaskHistoryId = 0;
-
-                    string isChecked = taskAnswers[j].ToString().Split('_')[2].ToString();
-                    answerHistory.AnswerId = Convert.ToInt32(taskAnswers[j].ToString().Split('_')[1].ToString());
-
-                    bool isRight = _context.TaskAnswers.Where(ta => ta.TaskId == tasks[i].Id && ta.Id == answerHistory.AnswerId).First().IsCorrect;
-                    if(Convert.ToBoolean(isChecked) == isRight)
-                    {
-                        answerHistory.IsCorrect = true;
+                    bool isRight = _context.TaskAnswers.Where(ta => ta.TaskId == task.Id && ta.Id == taskAnswer.AnswerId).First().IsCorrect;
+                    if (taskAnswer.IsChecked == isRight) {
                         cntRight++;
+                        answerHistories.Add(new AnswerHistory
+                        {
+                            TaskId = task.Id,
+                            AnswerId = taskAnswer.AnswerId,
+                            IsCorrect = true
+                        });
                     }
-                    else
-                    {
-                        answerHistory.IsCorrect = false;
+                    else {
+                        answerHistories.Add(new AnswerHistory
+                        {
+                            TaskId = task.Id,
+                            AnswerId = taskAnswer.AnswerId,
+                            IsCorrect = false
+                        });
                     }
-
-                    answerHistories.Add(answerHistory);
                 }
 
-                int corAnsCnt = _context.TaskAnswers.Where(ta => ta.TaskId == tasks[i].Id && ta.IsCorrect == true).Count();
-                if (corAnsCnt == cntRight)
-                {
-                    markForTask += tasks[i].Mark;
+                int corAnsCnt = _context.TaskAnswers.Count(ta => ta.TaskId == task.Id && ta.IsCorrect);
+                if (corAnsCnt == cntRight) {
+                    markForTask = task.Mark;
                 }
-                else if(cntRight == 0)
-                {
-                    markForTask += 0;
+                else if (cntRight == 0) {
+                    markForTask = 0;
                 }
-                else if (corAnsCnt > cntRight)
-                {
-                    double perOne = tasks[i].Mark / (double)corAnsCnt;
-                    markForTask += tasks[i].Mark / (double)(perOne * cntRight);
-                }
-                else
-                {
-
+                else if (corAnsCnt > cntRight) {
+                    double perOne = task.Mark / corAnsCnt;
+                    markForTask = task.Mark / (perOne * cntRight);
                 }
 
                 mark += markForTask;
+                total += task.Mark;
 
-                taskHistory.UserMark = markForTask;
-                taskHistories.Add(taskHistory);
+                taskHistories.Add(new TaskHistory {
+                    TaskId = task.Id,
+                    UserMark = markForTask
+                });
             }
 
-            testHistory.TotalMark = total;
-            testHistory.Mark = mark;
+            var testHistory = new TestHistory
+            {
+                TestId = testId,
+                UserId = userId,
+                TotalMark = total,
+                Mark = mark
+            };
+
             _context.TestHistory.Add(testHistory);
             _context.SaveChanges();
 
-            for (int i = 0; i < taskHistories.Count; i++) 
+            foreach (var taskHistory in taskHistories)
             {
-                taskHistories[i].TestHistoryId = testHistory.Id;
-                _context.TaskHistory.Add(taskHistories[i]);
-                _context.SaveChanges();
+                taskHistory.TestHistoryId = testHistory.Id;
+                _context.TaskHistory.Add(taskHistory);
             }
 
-            for (int i = 0; i < answerHistories.Count; i++)
+            foreach (var answerHistory in answerHistories)
             {
-                answerHistories[i].TaskHistoryId = taskHistories.Where(t => t.TaskId == answerHistories[i].TaskId).FirstOrDefault().Id;
-                _context.AnswerHistory.Add(answerHistories[i]);
-                _context.SaveChanges();
+                answerHistory.TaskHistoryId = taskHistories.First(t => t.TaskId == answerHistory.TaskId).Id;
+                _context.AnswerHistory.Add(answerHistory);
             }
+
+            _context.SaveChanges();
 
             return Json(mark);
         }

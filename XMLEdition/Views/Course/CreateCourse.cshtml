@@ -92,7 +92,10 @@
         padding-top: 3px;
         padding-bottom: 3px;
         padding-left: 10px;
+        padding-right: 10px;
         box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+        align-items: center;
+        justify-content: space-between;
     }
 
     .dropbtn {
@@ -141,8 +144,29 @@
         margin-right: 40px;
     }
 
+    .marginDiv{
+        margin-left: 300px;
+    }
+
+    .deleteIcon{
+        margin-left: auto;
+        color: red;
+        visibility: hidden;
+        cursor: pointer;
+    }
+
     .field {
         margin-bottom: 10px;
+        margin-right: 25px;
+        display: flex;
+    }
+
+    .my-lable{
+        margin-right: 5px;
+    }
+
+    .fields-block{
+        display: flex;
     }
 </style>
 
@@ -150,91 +174,70 @@
 
 <div class="body">
     <div class="mainInfo">
-        <div class="field">
-            <text>Course name:</text>
-            @{
-                if (ViewBag.Course.Name != "")
-                {
-                    <input type="text" placeholder="Enter course name" id="courseName" value="@ViewBag.Course.Name" width="350px" />
+        <div class="fields-block">
+            <div class="field">
+                <text class="my-lable">Course name:</text>
+                @{
+                    string val = ViewBag.Course.Name == "" ? "" : ViewBag.Course.Name;
+                    <input type="text" placeholder="Enter course name" id="courseName" value="@val" width="450px" />
                 }
-                else
-                {
-                    <input type="text" placeholder="Enter course name" id="courseName" width="350px" />
+            </div>
+            <div class="field">
+                <text class="my-lable">Course price:</text>
+                @{
+                    decimal num = ViewBag.Course.Price == null ? 0 : ViewBag.Course.Price;
+                    <input type="text" placeholder="Enter course price" id="coursePrice" value="@num" width="150px" />
                 }
-            }
+            </div>
+            <div class="field">
+                <text class="my-lable">Course subject:</text>
+                <div id="select">
+                    <select class="custom-select" name="Subject" id="Subject">
+                        @{
+                            int? selectedSubjectId = ViewBag.Course.CourseSubjectId;
+                            List<XMLEdition.Data.CourseSubject> subjects = ViewBag.Subjects;
+
+                            foreach (XMLEdition.Data.CourseSubject cs in subjects)
+                            {
+                                string selected = "";
+                                if (selectedSubjectId != null && selectedSubjectId == cs.Id)
+                                {
+                                    <option value="@cs.Id" selected>@cs.Name</option>
+                                }
+                                else
+                                {
+                                    <option value="@cs.Id">@cs.Name</option>
+                                }
+                            }
+                        }
+                    </select>
+                </div>
+                </br>
+            </div>
         </div>
         </br>
         <div class="field">
-            <text>Course price:</text>
-            @{
-                if (ViewBag.Course.Price != null)
-                {
-                    <input type="text" placeholder="Enter course price" id="coursePrice" value="@ViewBag.Course.Price" width="150px" />
-                }
-                else
-                {
-                    <input type="number" placeholder="Enter course price" id="coursePrice" width="150px" />
-                }
-            }
-        </div>
-        </br>
-        <div class="field">
-            <text>Course picture:</text>
+            <text class="my-lable">Course picture:</text>
             <input type="file" name="file" id="file" />
             </br>
         </div>
-        </br>
         <div class="field">
-            <text>Course subject:</text>
-            <div id="select">
-                <select class="custom-select" name="Subject" id="Subject">
-                    @{
-                        if (ViewBag.Course.CourseSubjectId == null)
-                        {
-                            foreach (XMLEdition.Data.CourseSubject cs in ViewBag.Subjects)
-                            {
-                                int cnt = 0;
-                                if (cnt == 0)
-                                {
-                                    <option selected="selected" value="@cs.Id">@cs.Name</option>
-                                    cnt++;
-                                }
-                                else
-                                {
-                                    <option value="@cs.Id">@cs.Name</option>
-                                    cnt++;
-                                }
-                            }
-                        }
-                        else
-                        {
-                            foreach (XMLEdition.Data.CourseSubject cs in ViewBag.Subjects)
-                            {
-                                if (cs.Id == ViewBag.Course.CourseSubjectId)
-                                {
-                                    <option selected="selected" value="@cs.Id">@cs.Name</option>
-                                }
-                                else
-                                {
-                                    <option value="@cs.Id">@cs.Name</option>
-                                }
-                            }
-                        }
-                    }
-                </select>
+            <input type="button" onclick="SaveCourse()" class="btn btn-success" value="Save" />
+            <div class="marginDiv">
+                <div class="dropdown">
+                    <button id="elementsTypes" class="dropbtn">Create new...</button>
+                    <div class="dropdown-content">
+                        <a id="createLesson">Lesson</a>
+                        <a id="createTest">Test</a>
+                    </div>
+                </div>
             </div>
-            </br>
         </div>
-        <input type="button" onclick="SaveCourse()" class="btn btn-success" value="Save"/>
+        
     </div>
+
     <hr />
-    <div class="dropdown">
-        <button id="elementsTypes" class="dropbtn">Create new...</button>
-        <div class="dropdown-content">
-            <a id="createLesson">Lesson</a>
-            <a id="createTest">Test</a>
-        </div>
-    </div>
+    
     <div id="elementsList">
 
     </div>
@@ -253,60 +256,7 @@
             let test = document.getElementById("createTest");
             test.href = "/Test/CreateTest/" + courseId;
 
-            let formdata = new FormData();
-            formdata.append("course", courseId);
-
-            $.ajax({
-                url: "/Course/GetCourseElements",
-                type: "POST",
-                data: formdata,
-                dataType: "json",
-                contentType: false,
-                processData: false,
-                success: function (result) {
-                    var res = JSON.parse(result);
-                    let list = document.getElementById("elementsList");
-
-                    console.log(res);
-                    
-                    for(let i = 0; i < res.length; i++)
-                    {
-                        if (res[i].TypeId == 2) {
-                            let div = document.createElement("div");
-                            div.className = "listElement";
-
-                            let icon = document.createElement("i");
-                            icon.className = "bi bi-file-text";
-                            div.appendChild(icon);
-
-                            let a = document.createElement("a");
-                            a.className = "listA";
-                            a.href = "/Lesson/EditLesson/" + res[i].CourseItemId;
-                            a.textContent = res[i].ElementName;
-                            div.appendChild(a);
-
-                            list.appendChild(div);
-                        }
-                        else
-                        {
-                            let div = document.createElement("div");
-                            div.className = "listElement";
-
-                            let icon = document.createElement("i");
-                            icon.className = "bi bi-list-check";
-                            div.appendChild(icon);
-
-                            let a = document.createElement("a");
-                            a.className = "listA";
-                            a.href = "/Test/EditTest/" + res[i].CourseItemId;
-                            a.textContent = res[i].ElementName;
-                            div.appendChild(a);
-
-                            list.appendChild(div);
-                        }
-                    }
-                }
-            });
+            GenerateItems(courseId);
         }
         else{
             let lesson = document.getElementById("createLesson");
@@ -314,9 +264,69 @@
 
             let test = document.getElementById("createTest");
             test.href = "javascript:void(0)";
-
         }
     });
+
+    function CleanItemsList()
+    {
+        let block = document.getElementById("elementsList");
+        removeAllChildElements(block);
+    }
+
+    function GenerateItems(courseId)
+    {
+        let formdata = new FormData();
+        formdata.append("course", courseId);
+
+        $.ajax({
+            url: "/Course/GetCourseElements",
+            type: "POST",
+            data: formdata,
+            dataType: "json",
+            contentType: false,
+            processData: false,
+            success: function (result) {
+                var res = JSON.parse(result);
+                let list = document.getElementById("elementsList");
+
+                console.log(res);
+
+                for (let i = 0; i < res.length; i++) {
+                    let div = document.createElement("div");
+                    div.className = "listElement";
+
+                    let iconClass = res[i].TypeId == 2 ? "bi bi-file-text" : "bi bi-list-check";
+                    let icon = document.createElement("i");
+                    icon.className = iconClass;
+                    div.appendChild(icon);
+
+                    let a = document.createElement("a");
+                    a.className = "listA";
+                    a.href = res[i].TypeId == 2 ? "/Lesson/EditLesson/" + res[i].CourseItemId : "/Test/EditTest/" + res[i].CourseItemId;
+                    a.textContent = res[i].ElementName;
+                    div.appendChild(a);
+
+                    let deleteIcon = document.createElement("i");
+                    deleteIcon.className = "bi bi-trash deleteIcon";
+
+                    deleteIcon.onclick = function () {
+                        DeleteItemById(res[i].CourseItemId, res[i].TypeId);
+                    };
+                    div.appendChild(deleteIcon);
+
+                    div.addEventListener("mouseenter", function () {
+                        deleteIcon.style.visibility = "visible";
+                    });
+
+                    div.addEventListener("mouseleave", function () {
+                        deleteIcon.style.visibility = "hidden";
+                    });
+
+                    list.appendChild(div);
+                }
+            }
+        });
+    }
 
     function SaveCourse(){
         var formdata = new FormData();
@@ -354,5 +364,27 @@
                 }
             }
         });   
+    }
+
+    function removeAllChildElements(block) {
+        while (block.firstChild) {
+            block.removeChild(block.lastChild);
+        }
+    }
+
+    function DeleteItemById(courseItemId, typeId){
+        fetch('/Course/DeleteCourseItem/' + courseItemId + '/' + typeId, {
+            method: 'DELETE',
+        })
+        .then(res => res.json()) 
+        .then(
+            res => {
+                console.log(res);
+                if(res == true){
+                    CleanItemsList();
+                    GenerateItems(courseId);
+                }
+            }
+        )  
     }
 </script>

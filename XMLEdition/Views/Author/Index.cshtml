@@ -9,7 +9,7 @@
     }
 
     .myImg{
-        width: 290px;
+        width: 300px;
         height: 170px;
     }
 
@@ -33,7 +33,7 @@
     }
 
     .image-box{
-        width: 290px;
+        width: 300px;
         height: 170px;
     }
 
@@ -93,9 +93,11 @@
         @{
             foreach (XMLEdition.Data.Course c in ViewBag.Courses)
             {
+                string url = "https://mystudystorage.blob.core.windows.net/test/" + c.PicturePath;
+
                 <div class="listElement">
                     <div class="image-box">
-                        <img class="myImg" src="/Pictures/@c.PicturePath" alt="Title">
+                        <img class="myImg" src="@url" alt="Title">
                     </div>
                     <div width="40%">
                         <a class="courseName" href="/Course/CreateCourse/@c.Id">@c.Name</a>

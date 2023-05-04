@@ -28,6 +28,8 @@ namespace XMLEdition.Data
 
         public DbSet<AnswerHistory> AnswerHistory { get; set; }
 
+        public DbSet<ItemStatus> ItemsStatuses { get; set; }
+
         public AppContext()
         {
 
@@ -41,6 +43,7 @@ namespace XMLEdition.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Lesson>().HasKey(x => x.Id);
+            modelBuilder.Entity<Course>().HasKey(c => c.Id);
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

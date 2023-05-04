@@ -5,8 +5,12 @@
 
 <style>
     .body {
+        margin-top: 20px;
         margin-left: 40px;
         margin-right: 40px;
+    }
+    #content {
+        margin-top: 15px;
     }
 </style>
 
@@ -21,10 +25,12 @@
     </div>
 
     <div id="video">
-        <video id="videoplayer" src="@Url.Content("~/Videos/" + ViewBag.Lesson.VideoPath + "")" controls width="70%" height="480" loop></video>
+        <video controls width="70%" height="480" loop>
+            <source src="@Url.Content("https://mystudystorage.blob.core.windows.net/test/" + ViewBag.Lesson.VideoPath)" type="video/mp4">
+        </video>
     </div>
 
-    <div id="body" style="width: 70%">
+    <div id="content" style="width: 70%">
         @Html.Raw(ViewBag.Lesson.Body)
     </div>
 </div>

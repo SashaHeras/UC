@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "bBC/cpeqkQXuZ94S3BMFZAru0dnG5s9rfpPSFZ153Ic=",
+  "Hash": "lH5kJggX9ehi6IcAg9q8HP0mK5zWEeEt0fOx4bgKvZE=",
   "Source": "XMLEdition",
   "BasePath": "_content/XMLEdition",
   "Mode": "Default",
@@ -3451,6 +3451,40 @@
       "OriginalItemSpec": "wwwroot\\Pictures\\img_avatar.png"
     },
     {
+      "Identity": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\Pictures\\java.png",
+      "SourceId": "XMLEdition",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\",
+      "BasePath": "_content/XMLEdition",
+      "RelativePath": "Pictures/java.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Pictures\\java.png"
+    },
+    {
+      "Identity": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\Pictures\\ruby.png",
+      "SourceId": "XMLEdition",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\",
+      "BasePath": "_content/XMLEdition",
+      "RelativePath": "Pictures/ruby.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Pictures\\ruby.png"
+    },
+    {
       "Identity": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\Pictures\\завантаження.png",
       "SourceId": "XMLEdition",
       "SourceType": "Discovered",
@@ -3483,40 +3517,6 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\Videos\\611984.mp4"
-    },
-    {
-      "Identity": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\Videos\\8494849894.mp4",
-      "SourceId": "XMLEdition",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\",
-      "BasePath": "_content/XMLEdition",
-      "RelativePath": "Videos/8494849894.mp4",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\Videos\\8494849894.mp4"
-    },
-    {
-      "Identity": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\Videos\\84988456.mp4",
-      "SourceId": "XMLEdition",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\",
-      "BasePath": "_content/XMLEdition",
-      "RelativePath": "Videos/84988456.mp4",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\Videos\\84988456.mp4"
     }
   ]
 }

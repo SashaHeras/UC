@@ -3,7 +3,10 @@ using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System.Xml.Linq;
 using XMLEdition.Data;
+using System.IO;
 using XMLEdition.Data.Repositories.Repositories;
+using Microsoft.WindowsAzure.Storage;
+using XMLEdition.Models;
 
 namespace XMLEdition.Controllers
 {
@@ -13,6 +16,7 @@ namespace XMLEdition.Controllers
         private CourseRepository _courseRepository;
         private CourseItemRepository _courseItemRepository;
         private CourseTypeRepository _courseTypeRepository;
+        private LessonRepository _lessonRepository;
 
         public CourseController(Data.AppContext context)
         {
@@ -20,6 +24,7 @@ namespace XMLEdition.Controllers
             _courseRepository = new CourseRepository(context);
             _courseItemRepository = new CourseItemRepository(context);
             _courseTypeRepository = new CourseTypeRepository(context);
+            _lessonRepository = new LessonRepository(context);
         }
 
         public IActionResult Index()
@@ -30,7 +35,9 @@ namespace XMLEdition.Controllers
         [Route("/Course/CreateCourse/{id}")]
         public IActionResult CreateCourse(int id)
         {
-            if(id == 0)
+            ViewBag.Subjects = _context.CourseSubjects.ToList();
+
+            if (id == 0)
             {
                 ViewBag.Course = new Course()
                 {
@@ -41,8 +48,7 @@ namespace XMLEdition.Controllers
 
                 return View();
             }
-
-            ViewBag.Subjects = _context.CourseSubjects.ToList();
+            
             ViewBag.Course = _courseRepository.GetCourse(id);
 
             return View();
@@ -78,81 +84,100 @@ namespace XMLEdition.Controllers
         [HttpPost]
         public JsonResult SaveCource()
         {
-            Course newCourse = new Course();
             var form = Request.Form;
             IFormFile file = null;
             if (form.Files.Count != 0)
             {
                 file = form.Files[0];
             }
-            string filePath = "";
-            
-            if (form["courseId"].ToString() == "0")
+
+            int courseId = Convert.ToInt32(form["courseId"]);
+            Course newCourse = new Course();
+
+            newCourse.Name = form["name"].ToString();
+            newCourse.AuthorId = Guid.Parse(form["authorId"].ToString());
+            newCourse.Checked = false;
+            newCourse.Price = Convert.ToDecimal(form["price"].ToString());
+            newCourse.CourseSubjectId = Convert.ToInt32(form["subject"]);
+            newCourse.LastEdittingDate = DateTime.Now;
+
+            if (file != null)
             {
-                newCourse = new Course()
-                {
-                    Name = form["name"].ToString(),
-                    AuthorId = Guid.Parse(form["authorId"].ToString()),
-                    Checked = false,
-                    Price = Convert.ToDecimal(form["price"].ToString()),
-                    CourseSubjectId = Convert.ToInt32(form["subject"]),
-                    LastEdittingDate = DateTime.Now
-                };
+                newCourse.PicturePath = SavePictureAsync(file).Result;
+            }
+            else if(courseId != 0 && file == null) 
+            {
+                string path = _courseRepository.GetCourse(courseId).PicturePath;
+                newCourse.PicturePath = path;
+            }
 
-                if (file != null)
-                {
-                    newCourse.PicturePath = SavePicture(file);
-                }
-
+            if (courseId == 0)
+            {
                 _courseRepository.AddAsync(newCourse);
             }
             else
             {
-                int courseId = Convert.ToInt32(form["courseId"].ToString());
-                newCourse = _courseRepository.GetCourse(courseId);
-                courseId = newCourse.Id;
-                filePath = newCourse.PicturePath;
-
-                _context.Courses.Remove(newCourse);
-
-                newCourse = new Course()
-                {
-                    Id = courseId,
-                    Name = form["name"].ToString(),
-                    AuthorId = Guid.Parse(form["authorId"].ToString()),
-                    Checked = false,
-                    Price = Convert.ToDecimal(form["price"].ToString()),
-                    CourseSubjectId = Convert.ToInt32(form["subject"]),
-                    LastEdittingDate = DateTime.Now
-                };
-
-                if (file != null)
-                {
-                    newCourse.PicturePath = SavePicture(file);
-                }
-                else
-                {
-                    newCourse.PicturePath = filePath;
-                }
-
-                _courseRepository.AddAsync(newCourse);
+                newCourse.Id = _courseRepository.GetCourse(courseId).Id;
+                _courseRepository.UpdateAsync(newCourse);
             }
 
             return Json(newCourse.Id);
         }
 
-        public string SavePicture(IFormFile file)
+        [HttpDelete]
+        [Route("/Course/DeleteCourseItem/{courseItemId}/{typeId}")]
+        public JsonResult DeleteCourseItem(int courseItemId, int typeId)
+        {
+            var item = _courseItemRepository.GetCourseItemById(courseItemId);
+
+            try
+            {
+                item.StatusId = _context.ItemsStatuses.Where(i => i.Name == "Deleted").FirstOrDefault().Id;
+                _courseItemRepository.UpdateAsync(item);
+            }
+            catch(Exception ex)
+            {
+                return Json(ex.Message);
+            }
+
+            return Json(true);
+        }
+
+        public async Task<string> SavePictureAsync(IFormFile file)
         {
             string uploads = "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\Pictures\\";
-            string newName = Guid.NewGuid().ToString().Replace("-", "") + "." + file.FileName.Split(".").Last();
+            string newName = Guid.NewGuid().ToString().Replace("-", "");
 
             string filePath = Path.Combine(uploads, file.FileName);
             using (Stream fileStream = new FileStream(filePath, FileMode.Create))
             {
-                file.CopyToAsync(fileStream);
+                await file.CopyToAsync(fileStream);
             }
 
-            return file.FileName;
+            string connectionString = "DefaultEndpointsProtocol=https;AccountName=mystudystorage;AccountKey=F2DhOdWx3qBaoImpVaDkLDVCyErlLVghvKL5kcxYLL9V7KsOQobaH8wWSh4m48ACDDK/lnsyzd3Q+AStciFc5Q==;EndpointSuffix=core.windows.net";
+
+            try
+            {
+                var storageAccount = CloudStorageAccount.Parse(connectionString);
+                var blobClient = storageAccount.CreateCloudBlobClient();
+                var container = blobClient.GetContainerReference("test");
+
+                await container.CreateIfNotExistsAsync();
+
+                var blockBlob = container.GetBlockBlobReference(newName);
+
+                await using (var stream = System.IO.File.OpenRead(uploads + file.FileName))
+                {
+                    await blockBlob.UploadFromStreamAsync(stream);
+                }
+
+                return newName;
+            }
+            catch (Exception ex)
+            {
+                // handle exceptions
+                return "";
+            }
         }
     }
 }

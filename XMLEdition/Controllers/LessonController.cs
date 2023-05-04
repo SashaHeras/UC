@@ -1,7 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Azure.Storage.Blobs;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Razor.Compilation;
+using Microsoft.WindowsAzure.Storage;
 using XMLEdition.Data;
 using XMLEdition.Data.Repositories.Repositories;
+using XMLEdition.Migrations;
 using XMLEdition.Models;
 
 namespace XMLEdition.Controllers
@@ -15,7 +18,8 @@ namespace XMLEdition.Controllers
         public LessonController(Data.AppContext context)
         {
             _context = context;
-            _lessonRepository = new LessonRepository(context);   
+            _lessonRepository = new LessonRepository(context);
+            _courseItemRepository = new CourseItemRepository(context);
         }
 
         public IActionResult Index()
@@ -31,8 +35,7 @@ namespace XMLEdition.Controllers
             return View();
         }
 
-        [HttpPost]
-        public IActionResult Create(IFormCollection form, CreateLessonModel c)
+        public async Task<bool> SaveVideoAsync(string newname, IFormCollection form, CreateLessonModel c)
         {
             string uploads = "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\Videos\\";
             string newName = Guid.NewGuid().ToString().Replace("-", "") + "." + c.VideoPath.FileName.Split(".").Last();
@@ -40,8 +43,40 @@ namespace XMLEdition.Controllers
             string filePath = Path.Combine(uploads, c.VideoPath.FileName);
             using (Stream fileStream = new FileStream(filePath, FileMode.Create))
             {
-                c.VideoPath.CopyToAsync(fileStream);
+                await c.VideoPath.CopyToAsync(fileStream);
             }
+
+            string connectionString = "DefaultEndpointsProtocol=https;AccountName=mystudystorage;AccountKey=F2DhOdWx3qBaoImpVaDkLDVCyErlLVghvKL5kcxYLL9V7KsOQobaH8wWSh4m48ACDDK/lnsyzd3Q+AStciFc5Q==;EndpointSuffix=core.windows.net";
+
+            try
+            {
+                var storageAccount = CloudStorageAccount.Parse(connectionString);
+                var blobClient = storageAccount.CreateCloudBlobClient();
+                var container = blobClient.GetContainerReference("test");
+
+                await container.CreateIfNotExistsAsync();
+
+                var blockBlob = container.GetBlockBlobReference(newname);
+
+                await using (var stream = System.IO.File.OpenRead("C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\Videos\\" + c.VideoPath.FileName))
+                {
+                    await blockBlob.UploadFromStreamAsync(stream);
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                // handle exceptions
+                return false;
+            }
+        }
+
+        [HttpPost]
+        public IActionResult Create(IFormCollection form, CreateLessonModel c)
+        {
+            Guid newFileName = Guid.NewGuid();
+            SaveVideoAsync(newFileName.ToString(), form, c);
 
             var sameCourseItems = _courseItemRepository.GetCourseItemsByCourseId(Convert.ToInt32(c.CourseId)).OrderBy(ci => ci.OrderNumber);
 
@@ -50,7 +85,8 @@ namespace XMLEdition.Controllers
                 TypeId = _context.CourseItemTypes.Where(cit => cit.Name == "Lesson").FirstOrDefault().Id,
                 CourseId = Convert.ToInt32(c.CourseId),
                 DateCreation = DateTime.Now,
-                OrderNumber = sameCourseItems.Count() > 0 ? sameCourseItems.Last().OrderNumber + 1 : 1
+                OrderNumber = sameCourseItems.Count() > 0 ? sameCourseItems.Last().OrderNumber + 1 : 1,
+                StatusId = 2
             };
 
             _context.CourseItem.Add(newCourceItem);
@@ -62,7 +98,7 @@ namespace XMLEdition.Controllers
                 Theme = c.Theme,
                 Description = c.Description,
                 Body = c.Body,
-                VideoPath = c.VideoPath.FileName,
+                VideoPath = newFileName.ToString(),
                 CourseItemId = newCourceItem.Id,
                 DateCreation = DateTime.Now.ToShortDateString()
             };
@@ -122,6 +158,26 @@ namespace XMLEdition.Controllers
             _lessonRepository.UpdateAsync(currentLesson);
 
             return RedirectToAction("CreateCourse", "Course", new { id = courseId });
+        }
+
+        public async Task saveInAzure(string filename)
+        {
+            string connectionString = "DefaultEndpointsProtocol=https;AccountName=mystudystorage;AccountKey=F2DhOdWx3qBaoImpVaDkLDVCyErlLVghvKL5kcxYLL9V7KsOQobaH8wWSh4m48ACDDK/lnsyzd3Q+AStciFc5Q==;EndpointSuffix=core.windows.net";
+
+            // Create a BlobServiceClient object using the connection string
+            BlobServiceClient blobServiceClient = new BlobServiceClient(connectionString);
+
+            // Get a reference to the container you created
+            BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient("test");
+
+            // Get a reference to the blob you want to upload
+            BlobClient blobClient = containerClient.GetBlobClient(filename);
+
+            // Upload the video file
+            await using(FileStream fileStream = System.IO.File.OpenRead("C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\Videos\\" + filename))
+            {
+                await blobClient.UploadAsync(fileStream, true);
+            }
         }
     }
 }
