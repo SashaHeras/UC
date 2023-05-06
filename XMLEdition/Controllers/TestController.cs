@@ -1,4 +1,5 @@
-﻿using Framework.Helper.Extension;
+﻿using Antlr.Runtime.Tree;
+using Framework.Helper.Extension;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.JSInterop.Implementation;
 using Microsoft.SqlServer.Server;
@@ -14,11 +15,13 @@ namespace XMLEdition.Controllers
     {
         private Data.AppContext _context = new Data.AppContext();
         private CourseItemRepository _courseItemRepository;
+        private TaskRepository _taskRepository;
 
         public TestController(Data.AppContext context)
         {
             _context = context;
             _courseItemRepository = new CourseItemRepository(context);
+            _taskRepository = new TaskRepository(context);
         }
 
         public IActionResult Index()
@@ -26,17 +29,31 @@ namespace XMLEdition.Controllers
             return View();
         }
 
+        [Route("/Test/GoToTest/{courseItemId}")]
+        public IActionResult GoToTest(int courseItemId)
+        {
+            int testId = _context.Tests.Where(t => t.CourseItemId == courseItemId).FirstOrDefault().Id;
+
+            return RedirectToAction("PassTest", new { id = testId });
+        }
+
         [Route("/Test/PassTest/{id}")]
         public IActionResult PassTest(int id)
         {
-            ViewBag.Test = _context.Tests.Where(t => t.Id == id).FirstOrDefault();
+            var test = _context.Tests.Where(t => t.Id == id).FirstOrDefault();
+            var courseItemId = test.CourseItemId;
+            var courseId = _context.CourseItem.Where(ci => ci.Id == courseItemId).FirstOrDefault().CourseId;
+
+            ViewBag.CourseId = courseId;
+            ViewBag.Test = test;
 
             return View();
         }
 
         public JsonResult GetTasks()
         {
-            var tt = _context.TestTasks.Where(t => t.TestId == Convert.ToInt32(Request.Form["test"])).OrderBy(t => t.OrderNumber);
+            int testId = Convert.ToInt32(Request.Form["test"]);
+            var tt = _taskRepository.GetTaskByTestId(testId).OrderBy(t => t.OrderNumber);
 
             return Json(tt);
         }
@@ -59,7 +76,7 @@ namespace XMLEdition.Controllers
             List<TaskHistory> taskHistories = new List<TaskHistory>();
             List<AnswerHistory> answerHistories = new List<AnswerHistory>();
 
-            var tasks = _context.TestTasks.Where(tt => tt.TestId == testId).ToList();
+            var tasks = _taskRepository.GetTaskByTestId(testId);
             var taskAnswers = Request.Form["answers"].ToString().Split(',')
                                 .Select(a => new {
                                     TaskId = int.Parse(a.Split('_')[0]),
@@ -210,10 +227,9 @@ namespace XMLEdition.Controllers
                 TestId = Convert.ToInt32(Request.Form["testId"])
             };
 
-            _context.TestTasks.Add(tt);
-            _context.SaveChanges();
+            _taskRepository.AddAsync(tt);
 
-            foreach(var answer in answers)
+            foreach (var answer in answers)
             {
                 TaskAnswer ta = new TaskAnswer()
                 {
@@ -243,7 +259,7 @@ namespace XMLEdition.Controllers
         [Route("/Test/GetTasks/{id}")]
         public JsonResult GetTasks(int id)
         {
-            var res = _context.TestTasks.Where(tt => tt.TestId == id).ToList();
+            var res = _taskRepository.GetTaskByTestId(id);
             return Json(res);
         }
 
@@ -267,7 +283,8 @@ namespace XMLEdition.Controllers
         [HttpPost]
         public JsonResult SaveEdittedAnswers()
         {
-            TestTask editedTask = _context.TestTasks.Where(tt => tt.Id == Convert.ToInt32(Request.Form["taskId"])).FirstOrDefault();
+            int taskId = Convert.ToInt32(Request.Form["taskId"]);
+            TestTask editedTask = _context.TestTasks.Where(tt => tt.Id == taskId).FirstOrDefault();
             editedTask.Name = Request.Form["taskName"].ToString();
             editedTask.Mark = Convert.ToInt32(Request.Form["taskMark"].ToString());
 
@@ -317,7 +334,7 @@ namespace XMLEdition.Controllers
         {
             int tid = taskId;
 
-            var task = _context.TestTasks.Where(tt=>tt.Id == tid).FirstOrDefault();
+            var task = _taskRepository.GetTaskById(tid);
             var taskAnswers = _context.TaskAnswers.Where(ta=>ta.TaskId == tid).ToList();
             int orderNumber = task.OrderNumber;
             int testId = task.TestId;

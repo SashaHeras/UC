@@ -35,16 +35,44 @@
         margin-left: 40px;
         margin-right: 40px;
     }
+
+    .grid-item {
+    }
+
+    .grid-body-splitter {
+        display: grid;
+        grid-template-columns: 70% 30%;
+        grid-gap: 10px;
+    }
+
+    .list {
+        margin-top: 70px;
+    }
 </style>
+
+@{
+    int id = ViewBag.CourseId;
+}
 
 <partial name="/Views/Partial/Header.cshtml" />
 <div class="body">
-    <div id="nameTest">
-        @ViewBag.Test.Name
+    <div class="grid-body-splitter">
+        <div class="grid-item">
+            <div id="nameTest">
+                @ViewBag.Test.Name
+            </div>
+            <div id="tasks">
+
+            </div>
+            <button class="btn btn-primary" onclick="SaveAnswers()">Submit</button>
+        </div>
+        <div class="grid-item">
+            <div id="list">
+                @await Html.PartialAsync("../Partial/ItemsList", id)
+            </div>
+        </div>
     </div>
-    <div id="tasks">
-    </div>
-    <button class="btn btn-primary" onclick="SaveAnswers()">Submit</button>
+   
 </div>
 
 <script>

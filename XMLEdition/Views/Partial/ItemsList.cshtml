@@ -1,0 +1,88 @@
+﻿@model int
+
+<style>
+    a {
+        text-decoration: none;
+        color: black;
+    }
+
+        a:visited {
+            color: black; /* Цвет посещенной ссылки */
+        }
+
+        a:hover {
+            color: black; /* Цвет посещенной ссылки */
+        }
+
+    .listA {
+        margin-left: 5px;
+        text-align: left;
+    }
+
+    .listElement {
+        vertical-align: middle;
+        display: flex;
+        text-align: left;
+        height: 42px;
+        font-size: 18px;
+        margin-top: 15px;
+        width: 450px;
+        border-radius: 5px;
+        padding-top: 3px;
+        padding-bottom: 3px;
+        padding-left: 10px;
+        padding-right: 10px;
+        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+        align-items: center;
+    }
+</style>
+
+<div id="items-list">
+
+</div>
+
+<script>
+    let courseId = @Model;
+
+    $(document).ready(function(){
+        GenerateItems(courseId);
+    });
+
+    function GenerateItems(courseId) {
+        let formdata = new FormData();
+        formdata.append("course", courseId);
+
+        $.ajax({
+            url: "/Course/GetCourseElements",
+            type: "POST",
+            data: formdata,
+            dataType: "json",
+            contentType: false,
+            processData: false,
+            success: function (result) {
+                var res = JSON.parse(result);
+                let list = document.getElementById("items-list");
+
+                console.log(res);
+
+                for (let i = 0; i < res.length; i++) {
+                    let div = document.createElement("div");
+                    div.className = "listElement";
+
+                    let iconClass = res[i].TypeId == 2 ? "bi bi-file-text" : "bi bi-list-check";
+                    let icon = document.createElement("i");
+                    icon.className = iconClass;
+                    div.appendChild(icon);
+
+                    let a = document.createElement("a");
+                    a.className = "listA";
+                    a.href = res[i].TypeId == 2 ? "/Lesson/GoToLesson/" + res[i].CourseItemId : "/Test/GoToTest/" + res[i].CourseItemId;
+                    a.textContent = res[i].ElementName;
+                    div.appendChild(a);
+
+                    list.appendChild(div);
+                }
+            }
+        });
+    }
+</script>

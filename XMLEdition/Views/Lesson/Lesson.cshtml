@@ -4,6 +4,7 @@
 }
 
 <style>
+ 
     .body {
         margin-top: 20px;
         margin-left: 40px;
@@ -12,25 +13,164 @@
     #content {
         margin-top: 15px;
     }
+
+    /* Style the tab */
+    .tab {
+        overflow: hidden;
+        border: 1px solid #ccc;
+        background-color: #f1f1f1;
+    }
+
+        /* Style the buttons inside the tab */
+        .tab button {
+            background-color: inherit;
+            float: left;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            padding: 14px 16px;
+            transition: 0.3s;
+            font-size: 17px;
+        }
+
+            /* Change background color of buttons on hover */
+            .tab button:hover {
+                background-color: #ddd;
+            }
+
+            /* Create an active/current tablink class */
+            .tab button.active {
+                background-color: #ccc;
+            }
+
+    /* Style the tab content */
+    .tabcontent {
+        display: none;
+        padding: 6px 12px;
+        border: 1px solid #ccc;
+        border-top: none;
+    }
+
+    body {
+        min-width: 660px; /* Suppose you want minimum width of 1000px */
+        width: auto !important; /* Firefox will set width as auto */
+        width: 1000px; /* As IE6 ignores !important it will set width as 1000px; */
+    }
+
+    .grid-container {
+        display: grid;
+        grid-template-columns: 70% 30%;
+        grid-gap: 10px;
+    }
+
+    .grid-item {
+
+    }
+
+    .grid-body-splitter{
+        display: grid;
+        grid-template-columns: 70% 30%;
+        grid-gap: 10px;
+    }
+
+    .two-parts{
+        display: flex;
+        margin-bottom: 5%;
+    }
+
+    .description{
+        padding: 15px 10% 0;
+    }
+
+    .description-lable {
+        width: 20%;
+        padding: 15px 10% 0;
+    }
+
+    .list{
+        margin-top: 70px;
+    }
+
+    .vl {
+        border-left: 3px solid black;
+        height: 100%;
+    }
 </style>
+
+@{
+    int id = ViewBag.CourseId;
+}
 
 <partial name="/Views/Partial/Header.cshtml" />
 <div class="body">
-    <div id="discription">
-        <h2 style="font: small-caps bold sans-serif;">Theme: @ViewBag.Lesson.Theme</h2>
-        <h4 style="font: small-caps bold sans-serif;">Discription: @ViewBag.Lesson.Description</h4>
-        <div style="color: #C0C0C0">
-            @ViewBag.Lesson.DateCreation
+    <div class="grid-body-splitter">
+        <div class="grid-item">
+            <div id="discription">
+                <h2 style="font: small-caps bold sans-serif;">Theme: @ViewBag.Lesson.Theme</h2>
+                <div style="color: #C0C0C0">
+                    @ViewBag.Lesson.DateCreation
+                </div>
+            </div>
+
+            <div id="video">
+                <video controls width="100%" height="50%" loop>
+                    <source src="@Url.Content("https://mystudystorage.blob.core.windows.net/test/" + ViewBag.Lesson.VideoPath)" type="video/mp4">
+                </video>
+            </div>
+
+            <div class="tab">
+                <button class="tablinks" onclick="openTab(event, 'tab1')">Description</button>
+                <button class="tablinks" onclick="openTab(event, 'tab2')">Notes</button>
+                <button class="tablinks" onclick="openTab(event, 'tab3')">Author</button>
+            </div>
+
+            <div id="tab1" class="tabcontent">
+                <div class="two-parts">
+                    <div class="description-lable">
+                        Discription:
+                    </div>
+                    <div class="description">
+                        @ViewBag.Lesson.Description
+                    </div>
+                </div>
+            </div>
+
+            <div id="tab2" class="tabcontent">
+                @Html.Raw(ViewBag.Lesson.Body)
+            </div>
+
+            <div id="tab3" class="tabcontent">
+                <h3>Tab 3 content</h3>
+                <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.</p>
+            </div>
         </div>
-    </div>
-
-    <div id="video">
-        <video controls width="70%" height="480" loop>
-            <source src="@Url.Content("https://mystudystorage.blob.core.windows.net/test/" + ViewBag.Lesson.VideoPath)" type="video/mp4">
-        </video>
-    </div>
-
-    <div id="content" style="width: 70%">
-        @Html.Raw(ViewBag.Lesson.Body)
-    </div>
+        <div class="grid-item">
+            <div id="list" class="list">
+                @await Html.PartialAsync("../Partial/ItemsList", id)
+            </div>
+        </div>
+    </div>    
 </div>
+
+<script>
+    function openTab(evt, tabName) {
+        // Declare all variables
+        var i, tabcontent, tablinks;
+
+        // Get all elements with class="tabcontent" and hide them
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+
+        // Get all elements with class="tablinks" and remove the class "active"
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+
+        // Show the current tab, and add an "active" class to the button that opened the tab
+        document.getElementById(tabName).style.display = "block";
+        evt.currentTarget.className += " active";
+    }
+</script>

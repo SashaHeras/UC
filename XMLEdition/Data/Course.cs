@@ -12,6 +12,8 @@
 
         public bool Checked { get; set; }
 
+        public double Rating { get; set; }
+
         public decimal Price { get; set; }
 
         public int? CourseSubjectId { get; set; }

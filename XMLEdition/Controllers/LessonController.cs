@@ -108,10 +108,23 @@ namespace XMLEdition.Controllers
             return RedirectToAction("CreateCourse", "Course", new { id = newCourceItem.CourseId });
         }
 
+        [Route("/Lesson/GoToLesson/{id}")]
+        public IActionResult GoToLesson(int id)
+        {
+            Guid lessonGuid = _lessonRepository.GetLessonByCourseItemId(id).Id;
+
+            return RedirectToAction("Lesson", new { id = lessonGuid });
+        }
+
         [Route("/Lesson/Lesson/{id}")]
         public IActionResult Lesson(Guid id)
         {
-            ViewBag.Lesson = _lessonRepository.GetLessonById(id);
+            var lesson = _lessonRepository.GetLessonById(id);
+            var courseItemId = lesson.CourseItemId;
+            var courseId = _context.CourseItem.Where(c => c.Id == courseItemId).FirstOrDefault().CourseId;
+
+            ViewBag.Lesson = lesson;
+            ViewBag.CourseId = courseId;
 
             return View();
         }
