@@ -79,16 +79,20 @@
     }
 
     .description{
-        padding: 15px 10% 0;
+        padding: 15px 5% 0;
     }
 
     .description-lable {
-        width: 20%;
-        padding: 15px 10% 0;
+        width: 30%;
+        padding: 15px 5% 0;
     }
 
     .list{
         margin-top: 70px;
+    }
+
+    .video{
+        margin-top: 35px;
     }
 
     .vl {
@@ -107,12 +111,9 @@
         <div class="grid-item">
             <div id="discription">
                 <h2 style="font: small-caps bold sans-serif;">Theme: @ViewBag.Lesson.Theme</h2>
-                <div style="color: #C0C0C0">
-                    @ViewBag.Lesson.DateCreation
-                </div>
             </div>
 
-            <div id="video">
+            <div id="video" class="video">
                 <video controls width="100%" height="50%" loop>
                     <source src="@Url.Content("https://mystudystorage.blob.core.windows.net/test/" + ViewBag.Lesson.VideoPath)" type="video/mp4">
                 </video>
@@ -131,6 +132,14 @@
                     </div>
                     <div class="description">
                         @ViewBag.Lesson.Description
+                    </div>
+                </div>
+                <div class="two-parts">
+                    <div class="description-lable">
+                        Last editted date:
+                    </div>
+                    <div class="description">
+                        @ViewBag.Lesson.DateCreation
                     </div>
                 </div>
             </div>

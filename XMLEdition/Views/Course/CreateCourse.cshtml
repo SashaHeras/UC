@@ -168,13 +168,24 @@
     .fields-block{
         display: flex;
     }
+
+    .grid-container {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-gap: 10px;
+    }
+
+    .grid-item {
+        padding: 20px;
+        text-align: center;
+    }
 </style>
 
 <partial name="/Views/Partial/Header.cshtml" />
 
 <div class="body">
     <div class="mainInfo">
-        <div class="fields-block">
+        <div class="grid-container">
             <div class="field">
                 <text class="my-lable">Course name:</text>
                 @{
@@ -212,15 +223,17 @@
                         }
                     </select>
                 </div>
-                </br>
+            </div>
+            <div class="field">
+                <text class="my-lable">Course picture:</text>
+                <input type="file" name="picture" id="picture" />
+            </div>
+            <div class="field">
+                <text class="my-lable">Course preview video:</text>
+                <input type="file" name="video" id="video" />
             </div>
         </div>
-        </br>
-        <div class="field">
-            <text class="my-lable">Course picture:</text>
-            <input type="file" name="file" id="file" />
-            </br>
-        </div>
+        
         <div class="field">
             <input type="button" onclick="SaveCourse()" class="btn btn-success" value="Save" />
             <div class="marginDiv">
@@ -233,7 +246,6 @@
                 </div>
             </div>
         </div>
-        
     </div>
 
     <hr />
@@ -336,7 +348,8 @@
         formdata.append("subject", document.getElementById("Subject").value);
         formdata.append("name", document.getElementById("courseName").value);
         formdata.append("price", document.getElementById("coursePrice").value);
-        formdata.append("file", $("#file").get(0).files[0]);
+        formdata.append("picture", $("#picture").get(0).files[0]);
+        formdata.append("video", $("#video").get(0).files[0]);
 
         $.ajax({
             url: "/Course/SaveCource",

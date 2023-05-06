@@ -8,6 +8,8 @@
 
         public string PicturePath { get; set; }
 
+        public string? PreviewVideoPath { get; set; }
+
         public Guid AuthorId { get; set; }
 
         public bool Checked { get; set; }
