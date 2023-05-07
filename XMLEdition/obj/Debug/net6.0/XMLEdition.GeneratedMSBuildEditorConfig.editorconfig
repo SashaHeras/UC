@@ -9,89 +9,89 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = XMLEdition
 build_property.RootNamespace = XMLEdition
-build_property.ProjectDir = C:\Users\acsel\source\repos\XMLEdition\XMLEdition\
+build_property.ProjectDir = /Users/yehorHrabovskyi/RiderProjects/UC/XMLEdition/
 build_property.RazorLangVersion = 6.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = C:\Users\acsel\source\repos\XMLEdition\XMLEdition
+build_property.MSBuildProjectDirectory = /Users/yehorHrabovskyi/RiderProjects/UC/XMLEdition
 build_property._RazorSourceGeneratorDebug = 
 
-[C:/Users/acsel/source/repos/XMLEdition/XMLEdition/Views/Author/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXV0aG9yXEluZGV4LmNzaHRtbA==
+[/Users/yehorHrabovskyi/RiderProjects/UC/XMLEdition/Views/Author/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQXV0aG9yL0luZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/acsel/source/repos/XMLEdition/XMLEdition/Views/Course/CreateCourse.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ291cnNlXENyZWF0ZUNvdXJzZS5jc2h0bWw=
+[/Users/yehorHrabovskyi/RiderProjects/UC/XMLEdition/Views/Course/CreateCourse.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQ291cnNlL0NyZWF0ZUNvdXJzZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/acsel/source/repos/XMLEdition/XMLEdition/Views/Home/Add.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxBZGQuY3NodG1s
+[/Users/yehorHrabovskyi/RiderProjects/UC/XMLEdition/Views/Home/Add.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9BZGQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/acsel/source/repos/XMLEdition/XMLEdition/Views/Home/Edit.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxFZGl0LmNzaHRtbA==
+[/Users/yehorHrabovskyi/RiderProjects/UC/XMLEdition/Views/Home/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9FZGl0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/acsel/source/repos/XMLEdition/XMLEdition/Views/Home/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
+[/Users/yehorHrabovskyi/RiderProjects/UC/XMLEdition/Views/Home/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9JbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/acsel/source/repos/XMLEdition/XMLEdition/Views/Home/Privacy.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
+[/Users/yehorHrabovskyi/RiderProjects/UC/XMLEdition/Views/Home/Privacy.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9Qcml2YWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/acsel/source/repos/XMLEdition/XMLEdition/Views/Home/Video.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxWaWRlby5jc2h0bWw=
+[/Users/yehorHrabovskyi/RiderProjects/UC/XMLEdition/Views/Home/Video.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9WaWRlby5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/acsel/source/repos/XMLEdition/XMLEdition/Views/Lesson/CreateLesson.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGVzc29uXENyZWF0ZUxlc3Nvbi5jc2h0bWw=
+[/Users/yehorHrabovskyi/RiderProjects/UC/XMLEdition/Views/Lesson/CreateLesson.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvTGVzc29uL0NyZWF0ZUxlc3Nvbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/acsel/source/repos/XMLEdition/XMLEdition/Views/Lesson/EditLesson.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGVzc29uXEVkaXRMZXNzb24uY3NodG1s
+[/Users/yehorHrabovskyi/RiderProjects/UC/XMLEdition/Views/Lesson/EditLesson.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvTGVzc29uL0VkaXRMZXNzb24uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/acsel/source/repos/XMLEdition/XMLEdition/Views/Lesson/Lesson.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGVzc29uXExlc3Nvbi5jc2h0bWw=
+[/Users/yehorHrabovskyi/RiderProjects/UC/XMLEdition/Views/Lesson/Lesson.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvTGVzc29uL0xlc3Nvbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/acsel/source/repos/XMLEdition/XMLEdition/Views/Partial/Header.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGFydGlhbFxIZWFkZXIuY3NodG1s
+[/Users/yehorHrabovskyi/RiderProjects/UC/XMLEdition/Views/Partial/Header.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUGFydGlhbC9IZWFkZXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/acsel/source/repos/XMLEdition/XMLEdition/Views/Partial/ItemsList.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGFydGlhbFxJdGVtc0xpc3QuY3NodG1s
+[/Users/yehorHrabovskyi/RiderProjects/UC/XMLEdition/Views/Partial/ItemsList.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUGFydGlhbC9JdGVtc0xpc3QuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/acsel/source/repos/XMLEdition/XMLEdition/Views/Shared/Error.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
+[/Users/yehorHrabovskyi/RiderProjects/UC/XMLEdition/Views/Shared/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL0Vycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/acsel/source/repos/XMLEdition/XMLEdition/Views/Shared/_ValidationScriptsPartial.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+[/Users/yehorHrabovskyi/RiderProjects/UC/XMLEdition/Views/Shared/_ValidationScriptsPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/acsel/source/repos/XMLEdition/XMLEdition/Views/Test/CreateTest.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGVzdFxDcmVhdGVUZXN0LmNzaHRtbA==
+[/Users/yehorHrabovskyi/RiderProjects/UC/XMLEdition/Views/Test/CreateTest.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvVGVzdC9DcmVhdGVUZXN0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/acsel/source/repos/XMLEdition/XMLEdition/Views/Test/EditTest.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGVzdFxFZGl0VGVzdC5jc2h0bWw=
+[/Users/yehorHrabovskyi/RiderProjects/UC/XMLEdition/Views/Test/EditTest.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvVGVzdC9FZGl0VGVzdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/acsel/source/repos/XMLEdition/XMLEdition/Views/Test/PassTest.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGVzdFxQYXNzVGVzdC5jc2h0bWw=
+[/Users/yehorHrabovskyi/RiderProjects/UC/XMLEdition/Views/Test/PassTest.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvVGVzdC9QYXNzVGVzdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/acsel/source/repos/XMLEdition/XMLEdition/Views/_ViewImports.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+[/Users/yehorHrabovskyi/RiderProjects/UC/XMLEdition/Views/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/acsel/source/repos/XMLEdition/XMLEdition/Views/_ViewStart.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
+[/Users/yehorHrabovskyi/RiderProjects/UC/XMLEdition/Views/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/acsel/source/repos/XMLEdition/XMLEdition/Views/Shared/_Layout.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
-build_metadata.AdditionalFiles.CssScope = b-jydkoe68hg
+[/Users/yehorHrabovskyi/RiderProjects/UC/XMLEdition/Views/Shared/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19MYXlvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = b-f6a4bxjzdz

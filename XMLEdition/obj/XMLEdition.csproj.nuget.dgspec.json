@@ -1,27 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\XMLEdition.csproj": {}
+    "/Users/yehorHrabovskyi/RiderProjects/UC/XMLEdition/XMLEdition.csproj": {}
   },
   "projects": {
-    "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\XMLEdition.csproj": {
+    "/Users/yehorHrabovskyi/RiderProjects/UC/XMLEdition/XMLEdition.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\XMLEdition.csproj",
+        "projectUniqueName": "/Users/yehorHrabovskyi/RiderProjects/UC/XMLEdition/XMLEdition.csproj",
         "projectName": "XMLEdition",
-        "projectPath": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\XMLEdition.csproj",
-        "packagesPath": "C:\\Users\\acsel\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\obj\\",
+        "projectPath": "/Users/yehorHrabovskyi/RiderProjects/UC/XMLEdition/XMLEdition.csproj",
+        "packagesPath": "/Users/yehorHrabovskyi/.nuget/packages/",
+        "outputPath": "/Users/yehorHrabovskyi/RiderProjects/UC/XMLEdition/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\acsel\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "/Users/yehorHrabovskyi/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net6.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -112,6 +110,20 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[6.0.15, 6.0.15]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Host.osx-arm64",
+              "version": "[6.0.15, 6.0.15]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Ref",
+              "version": "[6.0.15, 6.0.15]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.AspNetCore.App": {
               "privateAssets": "none"
@@ -120,7 +132,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.200\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.100-preview.3.23178.7/RuntimeIdentifierGraph.json"
         }
       }
     }

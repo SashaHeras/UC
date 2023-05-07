@@ -38,6 +38,7 @@ namespace XMLEdition.Controllers
         {
             ViewBag.Lesson = _lessonRepository.GetLessonById(id);
 
+            // ReSharper disable once Mvc.ViewNotResolved
             return View();
         }
 
