@@ -82,16 +82,21 @@
         padding: 15px 5% 0;
     }
 
+    .golden-text{
+        color: #FFD700;
+        font-size: 48px;
+    }
+
     .description-lable {
         width: 30%;
         padding: 15px 5% 0;
     }
 
-    .list{
-        margin-top: 70px;
+    .list {
+        margin-top: 30px;
     }
 
-    .video{
+    .video {
         margin-top: 35px;
     }
 
@@ -99,10 +104,88 @@
         border-left: 3px solid black;
         height: 100%;
     }
+
+    .list-lable {
+        font-family: Verdana;
+        font-size: 28px;
+    }
+
+    .reviews-block {
+        text-align: center;
+    }
+
+    .course-comments {
+        margin-top: 20px;
+    }
+
+    .comment-creation {
+        width: 80%;
+        margin-left: 10%;
+        text-align: center;
+    }
+
+    .user-rating {
+        display: flex;
+        margin: auto;
+        width: 50%;
+    }
+
+    .star-rating s:hover,
+    .star-rating s.active {
+        color: gold;
+    }
+
+    .star-rating-rtl s:hover,
+    .star-rating-rtl s.active {
+        color: gold;
+    }
+
+    .star-rating s,
+    .star-rating-rtl s {
+        color: black;
+        font-size: 40px;
+        cursor: default;
+        text-decoration: none;
+        line-height: 40px;
+    }
+
+    .star-rating {
+        padding: 2px;
+    }
+
+    .star-rating-rtl {
+        background: #555;
+        display: inline-block;
+        border: 1px solid #444;
+    }
+
+        .star-rating-rtl s {
+            color: yellow;
+        }
+
+    .star-rating s:hover:before,
+    .star-rating s.rated:before,
+    .star-rating s.active:before {
+        content: "\2605";
+    }
+
+    .star-rating s:before {
+        content: "\2606";
+    }
+
+    .star-rating-rtl s:hover:after,
+    .star-rating-rtl s.rated:after,
+    .star-rating-rtl s.active:after {
+        content: "\2605";
+    }
+
+    .star-rating-rtl s:after {
+        content: "\2606";
+    }
 </style>
 
 @{
-    int id = ViewBag.CourseId;
+    int id = ViewBag.Course.Id;
 }
 
 <partial name="/Views/Partial/Header.cshtml" />
@@ -123,6 +206,7 @@
                 <button class="tablinks" onclick="openTab(event, 'tab1')">Description</button>
                 <button class="tablinks" onclick="openTab(event, 'tab2')">Notes</button>
                 <button class="tablinks" onclick="openTab(event, 'tab3')">Author</button>
+                <button class="tablinks" onclick="openTab(event, 'tab4')">Reviews</button>
             </div>
 
             <div id="tab1" class="tabcontent">
@@ -152,8 +236,29 @@
                 <h3>Tab 3 content</h3>
                 <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.</p>
             </div>
+
+            <div id="tab4" class="tabcontent">
+                <div class="reviews-block">
+                    <h3 class="golden-text">Course rating: @ViewBag.Course.Rating</h3>
+                    <div class="comment-creation">
+                        <input type="text" class="form-control" placeholder="Give your review" id="userreview"/>
+                        <div class="user-rating">
+                            <div class="stars">                                
+                                <div class="star-rating"><s><s><s><s><s></s></s></s></s></s></div>
+                            </div>
+                            <button class="btn btn-success" onclick="SendReview()" height="20%" >Send</button>
+                        </div>
+                    </div>
+                    <div id="course-comments" class="course-comments">
+
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="grid-item">
+            <div class="list-lable">
+                Course content
+            </div>
             <div id="list" class="list">
                 @await Html.PartialAsync("../Partial/ItemsList", id)
             </div>
@@ -161,7 +266,26 @@
     </div>    
 </div>
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script>
+    function SendReview()
+    {
+
+    }
+
+    $("div.star-rating > s, div.star-rating-rtl > s").on("click", function (e) {
+
+        // remove all active classes first, needed if user clicks multiple times
+        $(this).closest('div').find('.active').removeClass('active');
+
+        $(e.target).parentsUntil("div").addClass('active'); // all elements up from the clicked one excluding self
+        $(e.target).addClass('active');  // the element user has clicked on
+
+
+        var numStars = $(e.target).parentsUntil("div").length + 1;
+        alert(numStars);
+    });
+
     function openTab(evt, tabName) {
         // Declare all variables
         var i, tabcontent, tablinks;

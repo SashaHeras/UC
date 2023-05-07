@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "8k5LH4fg+T2/YdO4lNPrzncPfrlLFU92i+K6qIuOJoo=",
+  "Hash": "kLn3QRus1KVxQa2OpnQtVRgZfbPS1VDfxpcOLD8GPzM=",
   "Source": "XMLEdition",
   "BasePath": "_content/XMLEdition",
   "Mode": "Default",
@@ -3432,6 +3432,40 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\lib\\jquery-validation-unobtrusive\\LICENSE.txt"
+    },
+    {
+      "Identity": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\Pictures\\125.mp4",
+      "SourceId": "XMLEdition",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\",
+      "BasePath": "_content/XMLEdition",
+      "RelativePath": "Pictures/125.mp4",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Pictures\\125.mp4"
+    },
+    {
+      "Identity": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\Pictures\\611984.mp4",
+      "SourceId": "XMLEdition",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\",
+      "BasePath": "_content/XMLEdition",
+      "RelativePath": "Pictures/611984.mp4",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Pictures\\611984.mp4"
     },
     {
       "Identity": "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\Pictures\\img_avatar.png",

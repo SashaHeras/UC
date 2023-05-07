@@ -124,7 +124,7 @@ namespace XMLEdition.Controllers
             var courseId = _context.CourseItem.Where(c => c.Id == courseItemId).FirstOrDefault().CourseId;
 
             ViewBag.Lesson = lesson;
-            ViewBag.CourseId = courseId;
+            ViewBag.Course = _context.Courses.Where(c => c.Id == courseId).FirstOrDefault();
 
             return View();
         }

@@ -202,6 +202,28 @@ namespace XMLEdition.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("/Course/GetComments/{courseId}/{commentsCount}")]
+        public JsonResult GetComments(int courseId, int commentsCount = 10)
+        {
+            List<CommentModel> commentsList = new List<CommentModel>();
+            var comments = _context.Comments.Where(c => c.CourseId == courseId);
+            foreach (var comment in comments)
+            {
+                commentsList.Add(new CommentModel()
+                {
+                    Id = comment.Id,
+                    Text = comment.Text,
+                    Rating = comment.Rating,
+                    DateAgo = GetTimeSinceDate(comment.DateCreation),
+                    UserName = "",              // Add user name Heras O.
+                    ProfileImagePath = ""       // Add user profile image name
+                });
+            }
+
+            return Json(commentsList);
+        }
+
         public async Task<bool> DeleteFromAzure(string name)
         {
             string connectionString = "DefaultEndpointsProtocol=https;AccountName=mystudystorage;AccountKey=F2DhOdWx3qBaoImpVaDkLDVCyErlLVghvKL5kcxYLL9V7KsOQobaH8wWSh4m48ACDDK/lnsyzd3Q+AStciFc5Q==;EndpointSuffix=core.windows.net";
@@ -228,6 +250,29 @@ namespace XMLEdition.Controllers
             }
 
             return true;
+        }
+
+        public static string GetTimeSinceDate(DateTime date)
+        {
+            TimeSpan timeSpan = DateTime.Now - date;
+
+            int totalDays = (int)timeSpan.TotalDays;
+            int totalWeeks = totalDays / 7;
+            int totalMonths = totalDays / 30;
+            int totalYears = totalDays / 365;
+
+            if (totalWeeks < 4)
+            {
+                return $"{totalWeeks} week{(totalWeeks == 1 ? "" : "s")} ago";
+            }
+            else if (totalMonths < 12)
+            {
+                return $"{totalMonths} month{(totalMonths == 1 ? "" : "s")} ago";
+            }
+            else
+            {
+                return $"{totalYears} year{(totalYears == 1 ? "" : "s")} ago";
+            }
         }
     }
 }
