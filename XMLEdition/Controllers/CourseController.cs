@@ -7,6 +7,8 @@ using System.IO;
 using XMLEdition.Data.Repositories.Repositories;
 using Microsoft.WindowsAzure.Storage;
 using XMLEdition.Models;
+using System.Web.Helpers;
+using System.Text.Json;
 
 namespace XMLEdition.Controllers
 {
@@ -27,8 +29,16 @@ namespace XMLEdition.Controllers
             _lessonRepository = new LessonRepository(context);
         }
 
-        public IActionResult Index()
+        public IActionResult Index(int id)
         {
+            ViewBag.CourseId = id;
+            var elementsJson = _courseRepository.GetCourseElementsList(id.ToString());
+
+            List<CourseElement> elements = JsonSerializer.Deserialize<List<CourseElement>>(elementsJson);
+
+            ViewBag.DefaultTypeId = elements[0].TypeId;
+            ViewBag.DefaultCourseItemId = elements[0].CourseItemId;
+
             return View();
         }
 
@@ -203,7 +213,7 @@ namespace XMLEdition.Controllers
         }
 
         [HttpGet]
-        [Route("/Course/GetComments/{courseId}/{commentsCount}")]
+        [Route("/Course/Comments/{courseId}/{commentsCount}")]
         public JsonResult GetComments(int courseId, int commentsCount = 10)
         {
             List<CommentModel> commentsList = new List<CommentModel>();
@@ -221,7 +231,47 @@ namespace XMLEdition.Controllers
                 });
             }
 
+            commentsList.Add(new CommentModel()
+            {
+                Id = 5,
+                Text = "Hello",
+                Rating = 4,
+                DateAgo = "4 month ago",
+                UserName = "Heras A.",              // Add user name Heras O.
+                ProfileImagePath = null       // Add user profile image name
+            });
+
             return Json(commentsList);
+        }
+
+        [HttpPost]
+        public IActionResult LoadPartialPage(string type, string courseItemId)
+        {
+            if(type == "1")
+            {
+
+            }
+
+            int itemId = Convert.ToInt32(courseItemId);
+            int courseId = _context.CourseItem.Where(ci => ci.Id == itemId).FirstOrDefault().CourseId;
+
+            Course c = _courseRepository.GetCourse(courseId);
+            Lesson l = _lessonRepository.GetLessonByCourseItemId(itemId);
+
+            LessonPartial lessonPartial = new LessonPartial()
+            {
+                Id = l.Id,
+                Theme = l.Theme,
+                Description = l.Description,
+                VideoPath = l.VideoPath,
+                Body = l.Body,
+                DateCreation = l.DateCreation,
+                CourseItemId = l.CourseItemId,
+                CourseId = c.Id,
+                Rating = c.Rating
+            };
+
+            return PartialView("~/Views/Partial/_LessonPartial.cshtml", lessonPartial);
         }
 
         public async Task<bool> DeleteFromAzure(string name)

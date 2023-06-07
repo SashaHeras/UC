@@ -1,6 +1,7 @@
 ﻿@model XMLEdition.Data.Product;
 @{
     ViewData["Title"] = "Home Page";
+    int a = 0;
 }
 
 <style>
@@ -35,7 +36,8 @@
         height: 240px;
         font-size: 18px;
         margin-top: 15px;
-        margin-right: 15px;
+        margin-right: 10px;
+        margin-right: 10px;
         width: 280px;
         border-radius: 5px;
         padding-top: 3px;
@@ -54,7 +56,18 @@
         color: black;
     }
 
+    a:hover{
+        text-decoration: none;
+        color: black;
+    }
+
+    a:visited{
+        text-decoration: none;
+        color: black;
+    }
+
     .courseName {
+        color: black;
         font-size: 24px;        
     }
 
@@ -124,7 +137,24 @@
             left: -20px;
         }
 
+    .carusel-pad{
+        padding-bottom: 15px;
+        padding-left: 15%;
+    }
 </style>
+
+@functions
+{
+    public string PagerNumber(int number)
+    {
+        if (number != 0)
+        {
+            return "item";
+        }
+
+        return "item active";
+    }
+}
 
 <partial name="/Views/Partial/Header.cshtml" />
 <div class="body">
@@ -134,6 +164,7 @@
     <div id="filters">
 
     </div>
+
     <div id="courses">
         <div class="grid-container">
             @foreach (XMLEdition.Data.Course c in ViewBag.Courses)
@@ -148,7 +179,7 @@
                             <img class="myImg" src="@url" alt="Title">
                         </div>
                         <div class="course-name-block">
-                            <a class="courseName" href="/Course/ViewCourse/@c.Id">@c.Name</a>
+                            <a class="courseName" href="/Course/Index/@c.Id">@c.Name</a>
                         </div>
                         <div class="raiting" style="font-size: 16px;">
                             @for (int i = 1; i <= 5; i++)
@@ -176,3 +207,7 @@
         </div>
     </div>
 </div>
+
+<script>
+    
+</script>

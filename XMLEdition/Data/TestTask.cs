@@ -6,7 +6,7 @@
 
         public string Name { get; set; }
 
-        public int Mark { get; set; }
+        public double Mark { get; set; }
 
         public int TestId { get; set; }
 

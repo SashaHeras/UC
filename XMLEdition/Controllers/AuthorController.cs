@@ -3,6 +3,7 @@ using XMLEdition.Data.Repositories.Repositories;
 
 namespace XMLEdition.Controllers
 {
+    [Route("/Author")]
     public class AuthorController : Controller
     {
         private Data.AppContext _context = new Data.AppContext();
@@ -18,9 +19,11 @@ namespace XMLEdition.Controllers
         public IActionResult Index(Guid userId)
         {
             ViewBag.Courses = _courseRepository.GetAllAuthorsCourses(userId);
+
             return View();
         }
 
+        [Route("/Author/CreateCourse")]
         public IActionResult CreateCourse()
         {
             return View();

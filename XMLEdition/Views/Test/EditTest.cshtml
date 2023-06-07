@@ -148,11 +148,11 @@
                 {
                     let con = document.getElementById("myContext");
                     con.innerHTML = edittingHtmlCode;
+
+                    GenerateTasksList();
                 }
             }
         });
-
-        GenerateTasksList();
     }
 
     // Saving data of new task (mark, name, count answers)

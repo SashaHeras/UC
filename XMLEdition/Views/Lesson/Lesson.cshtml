@@ -182,6 +182,84 @@
     .star-rating-rtl s:after {
         content: "\2606";
     }
+
+    .user-details {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .comment-text {
+        margin-top: 5px;
+    }
+
+    .user-comment {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+
+    .user-info {
+        margin-left: 10%;
+        display: flex;
+        padding: 1em 3em 1em;
+        width: 80%;
+        text-align: left;
+        margin-bottom: 1rem;
+
+    }
+
+    .hr-80{
+        margin-left: 10%;
+        width: 80%;
+    }
+
+    .user-picture {
+        flex: 0 0 30%;
+        max-width: 8%;
+        margin-right: 1rem;
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        overflow: hidden;
+    }
+
+        .user-picture img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+    .user-name {
+        font-weight: bold;
+    }
+
+    .user-metadata {
+        width: 200px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .comment-user-rating {
+        color: gold;
+        display: flex;
+    }
+
+    .star-icon {
+        display: inline-block;
+        width: 1rem;
+        height: 1rem;
+        background-image: url(star-icon.svg);
+        background-size: contain;
+        background-repeat: no-repeat;
+    }
+
+    .comment-time {
+        font-size: 0.8rem;
+        color: #666;
+    }
 </style>
 
 @{
@@ -246,11 +324,52 @@
                             <div class="stars">                                
                                 <div class="star-rating"><s><s><s><s><s></s></s></s></s></s></div>
                             </div>
-                            <button class="btn btn-success" onclick="SendReview()" height="20%" >Send</button>
+                            <div>
+                                <button class="btn btn-success" onclick="SendReview()" height="20%">Send</button>
+                            </div>
                         </div>
                     </div>
                     <div id="course-comments" class="course-comments">
-
+                        <div id="comments-list">
+                            @*<div class="user-comment">
+                                <div class="user-info">
+                                    <div class="user-picture">
+                                        <img src="/Pictures/img_avatar.png" alt="Avatar">
+                                    </div>
+                                    <div>
+                                        <div class="user-details">
+                                            <div class="user-name">John Doe</div>
+                                            <div class="user-metadata">
+                                                <div class="user-rating">
+                                                </div>
+                                                <div class="comment-time">Posted 2 hours ago</div>
+                                            </div>
+                                        </div>
+                                        <div class="comment-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce aliquet libero nec eros finibus faucibus. Morbi luctus orci ac nisl sollicitudin auctor. </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr class="hr-80"/>
+                            <div class="user-comment">
+                                <div class="user-info">
+                                    <div class="user-picture">
+                                        <img src="/Pictures/img_avatar.png" alt="Avatar">
+                                    </div>
+                                    <div>
+                                        <div class="user-details">
+                                            <div class="user-name">John Doe</div>
+                                            <div class="user-metadata">
+                                                <div class="user-rating">
+                                                </div>
+                                                <div class="comment-time">Posted 2 hours ago</div>
+                                            </div>
+                                        </div>
+                                        <div class="comment-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce aliquet libero nec eros finibus faucibus. Morbi luctus orci ac nisl sollicitudin auctor. </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr class="hr-80" />*@
+                        </div>
                     </div>
                 </div>
             </div>
@@ -268,9 +387,97 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script>
+    let course = @ViewBag.Course.Id;
+    let commentsCount = 15;
+
+    $(document).ready(function(){
+        GenerateUsersComments();
+    });
+
     function SendReview()
     {
 
+    }
+
+    async function GenerateUsersComments(){
+        const response = await fetch('/Course/Comments/' + course + '/' + commentsCount, {
+            method: 'GET'
+        });
+        const result = await response.json();
+
+        let commentsList = document.getElementById("comments-list");
+        console.log(result);
+
+        const hr = document.createElement('hr');
+        hr.className = 'hr-80';
+
+        // loop through the comments data and create the HTML elements for each comment
+        result.forEach(comment => {
+            // create the comment HTML elements
+            const commentElem = document.createElement("div");
+            commentElem.classList.add("user-comment");
+
+            const userInfoElem = document.createElement("div");
+            userInfoElem.classList.add("user-info");
+
+            const userPictureElem = document.createElement("div");
+            userPictureElem.classList.add("user-picture");
+
+            const img = document.createElement('img');
+            let src = "/Pictures/img_avatar.png";
+            if (comment.profileImagePath != null) {
+                src = 'https://mystudystorage.blob.core.windows.net/test/' + comment.profileImagePath;
+            }
+            img.src = src;
+            img.alt = 'Avatar';
+
+            const userDetailsElem = document.createElement("div");
+            userDetailsElem.classList.add("user-details");
+
+            const userNameElem = document.createElement("div");
+            userNameElem.classList.add("user-name");
+            userNameElem.textContent = comment.userName;
+
+            const userMetadataElem = document.createElement("div");
+            userMetadataElem.classList.add("user-metadata");
+
+            const userRatingElem = document.createElement("div");
+            userRatingElem.classList.add("comment-user-rating");
+            let rating = 5;
+            for (let j = 0; j < comment.rating; j++) {
+                let fillStar = document.createElement("i");
+                fillStar.className = "bi bi-star-fill";
+                userRatingElem.appendChild(fillStar);
+            }
+            rating = rating - comment.rating;
+            for (let j = 0; j < rating; j++) {
+                let star = document.createElement("i");
+                star.className = "bi bi-star";
+                userRatingElem.appendChild(star);
+            }
+            userMetadataElem.appendChild(userRatingElem);
+
+            const commentTimeElem = document.createElement("div");
+            commentTimeElem.classList.add("comment-time");
+            commentTimeElem.textContent = comment.dateAgo;
+            userMetadataElem.appendChild(commentTimeElem);
+
+            const commentTextElem = document.createElement("div");
+            commentTextElem.classList.add("comment-text");
+            commentTextElem.textContent = comment.text;
+
+            // append the comment HTML elements to the comments list element
+            userPictureElem.appendChild(img);
+            userInfoElem.appendChild(userPictureElem);
+            userDetailsElem.appendChild(userNameElem);
+            userDetailsElem.appendChild(userMetadataElem);
+            userDetailsElem.appendChild(commentTextElem);
+            userInfoElem.appendChild(userDetailsElem);
+            commentElem.appendChild(userInfoElem);
+            commentsList.appendChild(commentElem);
+
+            commentsList.appendChild(hr);
+        });
     }
 
     $("div.star-rating > s, div.star-rating-rtl > s").on("click", function (e) {

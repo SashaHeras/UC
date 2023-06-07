@@ -229,6 +229,8 @@ namespace XMLEdition.Controllers
 
             _taskRepository.AddAsync(tt);
 
+            Thread.Sleep(50);
+
             foreach (var answer in answers)
             {
                 TaskAnswer ta = new TaskAnswer()
