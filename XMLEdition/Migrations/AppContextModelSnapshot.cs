@@ -4,13 +4,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using XMLEdition.Data;
+using XMLEdition.DAL.EF;
 
 #nullable disable
 
 namespace XMLEdition.Migrations
 {
-    [DbContext(typeof(XMLEdition.Data.AppContext))]
+    [DbContext(typeof(ProjectContext))]
     partial class AppContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

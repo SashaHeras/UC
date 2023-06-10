@@ -1,42 +1,37 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
-using System.Xml.Linq;
-using XMLEdition.Data;
-using System.IO;
-using XMLEdition.Data.Repositories.Repositories;
 using Microsoft.WindowsAzure.Storage;
 using XMLEdition.Models;
-using System.Web.Helpers;
-using System.Text.Json;
+using XMLEdition.Core.Services;
+using XMLEdition.DAL.Repositories;
+using XMLEdition.DAL.EF;
+using XMLEdition.DAL.Entities;
 
 namespace XMLEdition.Controllers
 {
     public class CourseController : Controller
     {
-        private Data.AppContext _context = new Data.AppContext();
+        private ProjectContext _context = new ProjectContext();
         private CourseRepository _courseRepository;
         private CourseItemRepository _courseItemRepository;
         private CourseTypeRepository _courseTypeRepository;
         private LessonRepository _lessonRepository;
+        private CourseService _courseService;
 
-        public CourseController(Data.AppContext context)
+        public CourseController(CourseService service)
         {
-            _context = context;
-            _courseRepository = new CourseRepository(context);
-            _courseItemRepository = new CourseItemRepository(context);
-            _courseTypeRepository = new CourseTypeRepository(context);
-            _lessonRepository = new LessonRepository(context);
+            //_context = context;
+            //_courseRepository = new CourseRepository(context);
+            //_courseItemRepository = new CourseItemRepository(context);
+            //_courseTypeRepository = new CourseTypeRepository(context);
+            //_lessonRepository = new LessonRepository(context);
+            _courseService = service;    
         }
 
         public IActionResult Index(int id)
         {
-            ViewBag.CourseId = id;
-            var elementsJson = _courseRepository.GetCourseElementsList(id.ToString());
-
-            List<CourseElement> elements = JsonSerializer.Deserialize<List<CourseElement>>(elementsJson);
-
-            ViewBag.DefaultTypeId = elements[0].TypeId;
+            List<CourseElement> elements = _courseService.GetCourseElements(id);
+            ViewBag.CourseId = id;            
+            ViewBag.DefaultTypeId = elements[0].TypeId; 
             ViewBag.DefaultCourseItemId = elements[0].CourseItemId;
 
             return View();
@@ -46,30 +41,21 @@ namespace XMLEdition.Controllers
         public IActionResult CreateCourse(int id)
         {
             ViewBag.Subjects = _context.CourseSubjects.ToList();
-
             if (id == 0)
             {
-                ViewBag.Course = new Course()
-                {
-                    Id = 0,
-                    Name = "",
-                    Price = 0
-                };
-
-                return View();
+                ViewBag.Course = _courseService.CreateNewCourse();
             }
-            
-            ViewBag.Course = _courseRepository.GetCourse(id);
-
+            else
+            {
+                ViewBag.Course = _courseService._courseRepository.GetCourse(id);
+            }            
             return View();
         }
 
         [HttpGet]
         public JsonResult GetElements()
         {
-            int courseId = Convert.ToInt32(Request.Form["id"]);
-            var elements = _courseItemRepository.GetCourseItemsByCourseId(courseId);
-
+            var elements = _courseService.GetElementsByCourseId(Convert.ToInt32(Request.Form["id"]));
             return Json(elements);
         }
 
@@ -78,7 +64,6 @@ namespace XMLEdition.Controllers
         {
             int courseItemId = Convert.ToInt32(Request.Form["elementId"]);
             var element = _courseItemRepository.GetCourseItemById(courseItemId);
-
             var typeName = _courseTypeRepository.GetTypeById(element.TypeId).Name;
 
             return Json(element, typeName);
@@ -87,7 +72,7 @@ namespace XMLEdition.Controllers
         [HttpPost]
         public JsonResult GetCourseElements()
         {
-            var result = _courseRepository.GetCourseElementsList(Request.Form["course"].ToString());
+            var result = _courseService.GetCourseElements(Convert.ToInt32(Request.Form["course"]));
             return Json(result);
         }
 
@@ -113,43 +98,16 @@ namespace XMLEdition.Controllers
             newCourse.CourseSubjectId = Convert.ToInt32(form["subject"]);
             newCourse.LastEdittingDate = DateTime.Now;
 
-            if (picture != null)
-            {
-                string oldPictureName = _courseRepository.GetCourse(courseId).PicturePath;
-                if (courseId != null && oldPictureName != null)
-                {
-                    DeleteFromAzure(oldPictureName);
-                }
-                newCourse.PicturePath = SaveInAsync(picture).Result;
-            }
-            else if(courseId != 0 && picture == null) 
-            {
-                string path = _courseRepository.GetCourse(courseId).PicturePath;
-                newCourse.PicturePath = path;
-            }
-
-            if (video != null)
-            {
-                string oldVideoName = _courseRepository.GetCourse(courseId).PreviewVideoPath;
-                if (courseId != null && oldVideoName != null)
-                {                    
-                    DeleteFromAzure(oldVideoName);
-                }
-                newCourse.PreviewVideoPath = SaveInAsync(video).Result;
-            }
-            else if (courseId != 0 && video == null)
-            {
-                string path = _courseRepository.GetCourse(courseId).PreviewVideoPath;
-                newCourse.PreviewVideoPath = path;
-            }
-
+            newCourse.PicturePath = _courseService.SavePicture(picture, courseId);
+            newCourse.PreviewVideoPath = _courseService.SaveVideo(video, courseId);
+            
             if (courseId == 0)
             {
                 _courseRepository.AddAsync(newCourse);
             }
             else
             {
-                newCourse.Id = _courseRepository.GetCourse(courseId).Id;
+                newCourse.Id = courseId;
                 _courseRepository.UpdateAsync(newCourse);
             }
 
@@ -173,43 +131,6 @@ namespace XMLEdition.Controllers
             }
 
             return Json(true);
-        }
-
-        public async Task<string> SaveInAsync(IFormFile file)
-        {
-            string uploads = "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\Pictures\\";
-            string newName = Guid.NewGuid().ToString().Replace("-", "");
-
-            string filePath = Path.Combine(uploads, file.FileName);
-            using (Stream fileStream = new FileStream(filePath, FileMode.Create))
-            {
-                await file.CopyToAsync(fileStream);
-            }
-
-            string connectionString = "DefaultEndpointsProtocol=https;AccountName=mystudystorage;AccountKey=F2DhOdWx3qBaoImpVaDkLDVCyErlLVghvKL5kcxYLL9V7KsOQobaH8wWSh4m48ACDDK/lnsyzd3Q+AStciFc5Q==;EndpointSuffix=core.windows.net";
-
-            try
-            {
-                var storageAccount = CloudStorageAccount.Parse(connectionString);
-                var blobClient = storageAccount.CreateCloudBlobClient();
-                var container = blobClient.GetContainerReference("test");
-
-                await container.CreateIfNotExistsAsync();
-
-                var blockBlob = container.GetBlockBlobReference(newName);
-
-                await using (var stream = System.IO.File.OpenRead(uploads + file.FileName))
-                {
-                    await blockBlob.UploadFromStreamAsync(stream);
-                }
-
-                return newName;
-            }
-            catch (Exception ex)
-            {
-                // handle exceptions
-                return "";
-            }
         }
 
         [HttpGet]
@@ -247,7 +168,7 @@ namespace XMLEdition.Controllers
         [HttpPost]
         public IActionResult LoadPartialPage(string type, string courseItemId)
         {
-            if(type == "1")
+            if (type == "1")
             {
 
             }
@@ -272,6 +193,43 @@ namespace XMLEdition.Controllers
             };
 
             return PartialView("~/Views/Partial/_LessonPartial.cshtml", lessonPartial);
+        }
+
+        public async Task<string> SaveInAsync(IFormFile file)
+        {
+            string uploads = "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\Pictures\\";
+            string newName = Guid.NewGuid().ToString().Replace("-", "");
+
+            string filePath = Path.Combine(uploads, file.FileName);
+            using (Stream fileStream = new FileStream(filePath, FileMode.Create))
+            {
+                await file.CopyToAsync(fileStream);
+            }
+
+            string connectionString = "DefaultEndpointsProtocol=https;AccountName=mystudystorage;AccountKey=F2DhOdWx3qBaoImpVaDkLDVCyErlLVghvKL5kcxYLL9V7KsOQobaH8wWSh4m48ACDDK/lnsyzd3Q+AStciFc5Q==;EndpointSuffix=core.windows.net";
+
+            try
+            {
+                var storageAccount = CloudStorageAccount.Parse(connectionString);
+                var blobClient = storageAccount.CreateCloudBlobClient();
+                var container = blobClient.GetContainerReference("test");
+
+                await container.CreateIfNotExistsAsync();
+
+                var blockBlob = container.GetBlockBlobReference(newName);
+
+                await using (var stream = System.IO.File.OpenRead(uploads + file.FileName))
+                {
+                    await blockBlob.UploadFromStreamAsync(stream);
+                }
+
+                return newName;
+            }
+            catch (Exception ex)
+            {
+                // handle exceptions
+                return "";
+            }
         }
 
         public async Task<bool> DeleteFromAzure(string name)

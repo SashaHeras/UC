@@ -1,4 +1,4 @@
-﻿@model XMLEdition.Data.Lesson;
+﻿@model XMLEdition.DAL.Entities.Lesson;
 @{
     ViewData["Title"] = "Edit lesson";
 }
@@ -41,6 +41,7 @@
         <br />
         <input asp-for="Id" type="hidden" value="@ViewBag.Lesson.Id" />
         <input asp-for="CourseItemId" type="hidden" value="@ViewBag.Lesson.CourseItemId" />
+        <input asp-for="VideoPath" type="hidden" value="@ViewBag.Lesson.VideoPath" />        
         <input type="submit" value="Submit" />
         <br />
     </form>

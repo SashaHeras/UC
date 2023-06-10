@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using System.IO;
-using XMLEdition.Data;
-using XMLEdition.Data.Repositories.Repositories;
+using XMLEdition.DAL.EF;
+using XMLEdition.DAL.Repositories;
 using XMLEdition.Models;
 
 namespace XMLEdition.Controllers
@@ -10,11 +10,11 @@ namespace XMLEdition.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private Data.AppContext _context = new Data.AppContext();
+        private ProjectContext _context = new ProjectContext();
         private LessonRepository _lessonRepository;
         private CourseRepository _courseRepository;
 
-        public HomeController(Data.AppContext context)
+        public HomeController(ProjectContext context)
         {
             _context = context;
             _lessonRepository = new LessonRepository(context);
@@ -24,7 +24,6 @@ namespace XMLEdition.Controllers
         public IActionResult Index()
         {
             ViewBag.Courses = _courseRepository.GetAll();
-
             return View();
         }
 
@@ -38,6 +37,7 @@ namespace XMLEdition.Controllers
         {
             ViewBag.Lesson = _lessonRepository.GetLessonById(id);
 
+            // ReSharper disable once Mvc.ViewNotResolved
             return View();
         }
 

@@ -1,4 +1,4 @@
-﻿@model XMLEdition.Data.Course;
+﻿@model XMLEdition.DAL.Entities.Course;
 @{
     ViewData["Title"] = "Author Page";
 }
@@ -91,7 +91,7 @@
     <hr />
     <div id="coursesList">
         @{
-            foreach (XMLEdition.Data.Course c in ViewBag.Courses)
+            foreach (XMLEdition.DAL.Entities.Course c in ViewBag.Courses)
             {
                 string url = "https://mystudystorage.blob.core.windows.net/test/" + c.PicturePath;
 

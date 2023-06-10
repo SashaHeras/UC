@@ -1,9 +1,13 @@
 ﻿using Azure.Storage.Blobs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Razor.Compilation;
+using Microsoft.DotNet.Scaffolding.Shared.ProjectModel;
 using Microsoft.WindowsAzure.Storage;
-using XMLEdition.Data;
-using XMLEdition.Data.Repositories.Repositories;
+using XMLEdition.Core.Services;
+using XMLEdition.DAL.EF;
+using XMLEdition.DAL.Entities;
+using XMLEdition.DAL.Repositories;
+using XMLEdition.DAL.ViewModels;
 using XMLEdition.Migrations;
 using XMLEdition.Models;
 
@@ -11,99 +15,50 @@ namespace XMLEdition.Controllers
 {
     public class LessonController : Controller
     {
-        private Data.AppContext _context = new Data.AppContext();
-        private LessonRepository _lessonRepository;
-        private CourseItemRepository _courseItemRepository;
+        private ProjectContext _context = new ProjectContext();
+        private LessonService _lessonService;
+        private AzureService _azureService;
 
-        public LessonController(Data.AppContext context)
+        public LessonController(ProjectContext context)
         {
             _context = context;
-            _lessonRepository = new LessonRepository(context);
-            _courseItemRepository = new CourseItemRepository(context);
+            _lessonService = new LessonService(context);
+            _azureService = new AzureService();
         }
 
+        /// <summary>
+        /// Main page
+        /// </summary>
+        /// <returns></returns>
         public IActionResult Index()
         {
             return View();
         }
 
+        /// <summary>
+        /// Page of lesson creation
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [Route("/Lesson/CreateLesson/{id}")]
         public IActionResult CreateLesson(int id)
         {
             ViewBag.CourseId = id;
-
             return View();
         }
 
-        public async Task<bool> SaveVideoAsync(string newname, IFormCollection form, CreateLessonModel c)
-        {
-            string uploads = "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\Videos\\";
-            string newName = Guid.NewGuid().ToString().Replace("-", "") + "." + c.VideoPath.FileName.Split(".").Last();
-
-            string filePath = Path.Combine(uploads, c.VideoPath.FileName);
-            using (Stream fileStream = new FileStream(filePath, FileMode.Create))
-            {
-                await c.VideoPath.CopyToAsync(fileStream);
-            }
-
-            string connectionString = "DefaultEndpointsProtocol=https;AccountName=mystudystorage;AccountKey=F2DhOdWx3qBaoImpVaDkLDVCyErlLVghvKL5kcxYLL9V7KsOQobaH8wWSh4m48ACDDK/lnsyzd3Q+AStciFc5Q==;EndpointSuffix=core.windows.net";
-
-            try
-            {
-                var storageAccount = CloudStorageAccount.Parse(connectionString);
-                var blobClient = storageAccount.CreateCloudBlobClient();
-                var container = blobClient.GetContainerReference("test");
-
-                await container.CreateIfNotExistsAsync();
-
-                var blockBlob = container.GetBlockBlobReference(newname);
-
-                await using (var stream = System.IO.File.OpenRead("C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\Videos\\" + c.VideoPath.FileName))
-                {
-                    await blockBlob.UploadFromStreamAsync(stream);
-                }
-
-                return true;
-            }
-            catch (Exception ex)
-            {
-                // handle exceptions
-                return false;
-            }
-        }
-
+        /// <summary>
+        /// Method of lesson creation
+        /// </summary>
+        /// <param name="form"></param>
+        /// <param name="createLessonModel"></param>
+        /// <returns></returns>
         [HttpPost]
-        public IActionResult Create(IFormCollection form, CreateLessonModel c)
+        public IActionResult Create(IFormCollection form, CreateLessonModel createLessonModel)
         {
-            Guid newFileName = Guid.NewGuid();
-            SaveVideoAsync(newFileName.ToString(), form, c);
-
-            var sameCourseItems = _courseItemRepository.GetCourseItemsByCourseId(Convert.ToInt32(c.CourseId)).OrderBy(ci => ci.OrderNumber);
-
-            CourseItem newCourceItem = new CourseItem()
-            {
-                TypeId = _context.CourseItemTypes.Where(cit => cit.Name == "Lesson").FirstOrDefault().Id,
-                CourseId = Convert.ToInt32(c.CourseId),
-                DateCreation = DateTime.Now,
-                OrderNumber = sameCourseItems.Count() > 0 ? sameCourseItems.Last().OrderNumber + 1 : 1,
-                StatusId = 2
-            };
-
-            _context.CourseItem.Add(newCourceItem);
-            _context.SaveChanges();
-
-            Lesson newLesson = new Lesson()
-            {
-                Id = Guid.NewGuid(),
-                Theme = c.Theme,
-                Description = c.Description,
-                Body = c.Body,
-                VideoPath = newFileName.ToString(),
-                CourseItemId = newCourceItem.Id,
-                DateCreation = DateTime.Now.ToShortDateString()
-            };
-
-            _lessonRepository.AddAsync(newLesson);
+            string videoName = _azureService.SaveInAsync(createLessonModel.VideoPath).Result;
+            CourseItem newCourceItem = _lessonService.CreateNewCourseItem(createLessonModel);
+            _lessonService.CreateLesson(newCourceItem, createLessonModel, videoName);
 
             return RedirectToAction("CreateCourse", "Course", new { id = newCourceItem.CourseId });
         }
@@ -111,20 +66,18 @@ namespace XMLEdition.Controllers
         [Route("/Lesson/GoToLesson/{id}")]
         public IActionResult GoToLesson(int id)
         {
-            Guid lessonGuid = _lessonRepository.GetLessonByCourseItemId(id).Id;
-
+            Guid lessonGuid = _lessonService.GetLessonByCourseItem(id).Id;
             return RedirectToAction("Lesson", new { id = lessonGuid });
         }
 
         [Route("/Lesson/Lesson/{id}")]
         public IActionResult Lesson(Guid id)
         {
-            var lesson = _lessonRepository.GetLessonById(id);
-            var courseItemId = lesson.CourseItemId;
-            var courseId = _context.CourseItem.Where(c => c.Id == courseItemId).FirstOrDefault().CourseId;
+            var lesson = _lessonService.GetLesson(id);
+            var courseId = _lessonService.GetCourseItem(lesson.CourseItemId).CourseId;
 
             ViewBag.Lesson = lesson;
-            ViewBag.Course = _context.Courses.Where(c => c.Id == courseId).FirstOrDefault();
+            ViewBag.Course = _lessonService.GetCourse(courseId);
 
             return View();
         }
@@ -132,65 +85,40 @@ namespace XMLEdition.Controllers
         [Route("/Lesson/EditLesson/{id}")]
         public IActionResult EditLesson(int id)
         {
-            Lesson l = _lessonRepository.GetLessonByCourseItemId(id);
+            Lesson l = _lessonService.GetLessonByCourseItem(id);
             ViewBag.Lesson = l;
 
             return View(l);  
         }
 
         [Route("/Lesson/Edit")]
-        public IActionResult Edit(IFormCollection form, Lesson lesson)
-        {         
+        public async Task<IActionResult> Edit(IFormCollection form, Lesson lesson)
+        {
+            string videoPath = String.Empty;
+            string oldVideoName = String.Empty;
+
             if (form.Files.Count != 0)
             {
-                string uploads = "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\Videos\\";
-                string newName = Guid.NewGuid().ToString().Replace("-", "") + "." + form.Files[0].FileName.Split(".").Last();
-
-                string filePath = Path.Combine(uploads, form.Files[0].FileName);
-                using (Stream fileStream = new FileStream(filePath, FileMode.Create))
-                {
-                    form.Files[0].CopyToAsync(fileStream);
-                }
+                await _azureService.DeleteFromAzure(lesson.VideoPath);
+                videoPath = _azureService.SaveInAsync(form.Files[0]).Result;
+                lesson.VideoPath = videoPath;
+            }
+            else
+            {
+                oldVideoName = _lessonService.GetLesson(lesson.Id).VideoPath;
+                lesson.VideoPath = oldVideoName;
             }
 
-            CourseItem currentCourseItem = _context.CourseItem.Where(c => c.Id == lesson.CourseItemId).FirstOrDefault();
+            CourseItem currentCourseItem = _lessonService.GetCourseItem(lesson.CourseItemId);
             currentCourseItem.DateCreation = DateTime.Now;
 
             int courseId = currentCourseItem.CourseId;
+            await _lessonService.UpdateCourseItem(currentCourseItem);   
+            _lessonService.UpdateLesson(lesson);
 
-            _courseItemRepository.UpdateAsync(currentCourseItem);
-
-            Lesson currentLesson = _lessonRepository.GetLessonById(lesson.Id);
-
-            currentLesson.Theme = lesson.Theme;
-            currentLesson.Description = lesson.Description;
-            currentLesson.Body = lesson.Body;
-            currentLesson.CourseItemId = lesson.CourseItemId;
-            currentLesson.DateCreation = DateTime.Now.ToShortDateString();
-
-            _lessonRepository.UpdateAsync(currentLesson);
+            _azureService.DeleteMediaFromProject(form.Files[0]);
 
             return RedirectToAction("CreateCourse", "Course", new { id = courseId });
-        }
-
-        public async Task saveInAzure(string filename)
-        {
-            string connectionString = "DefaultEndpointsProtocol=https;AccountName=mystudystorage;AccountKey=F2DhOdWx3qBaoImpVaDkLDVCyErlLVghvKL5kcxYLL9V7KsOQobaH8wWSh4m48ACDDK/lnsyzd3Q+AStciFc5Q==;EndpointSuffix=core.windows.net";
-
-            // Create a BlobServiceClient object using the connection string
-            BlobServiceClient blobServiceClient = new BlobServiceClient(connectionString);
-
-            // Get a reference to the container you created
-            BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient("test");
-
-            // Get a reference to the blob you want to upload
-            BlobClient blobClient = containerClient.GetBlobClient(filename);
-
-            // Upload the video file
-            await using(FileStream fileStream = System.IO.File.OpenRead("C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\Videos\\" + filename))
-            {
-                await blobClient.UploadAsync(fileStream, true);
-            }
         }
     }
 }

@@ -4,20 +4,23 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.JSInterop.Implementation;
 using Microsoft.SqlServer.Server;
 using System.Text.RegularExpressions;
-using XMLEdition.Data;
-using XMLEdition.Data.Repositories.Interfaces;
-using XMLEdition.Data.Repositories.Repositories;
+using XMLEdition.Core.Services;
+using XMLEdition.DAL.EF;
+using XMLEdition.DAL.Entities;
+using XMLEdition.DAL.Repositories;
+using XMLEdition.DAL.ViewModels;
 using XMLEdition.Migrations;
 
 namespace XMLEdition.Controllers
 {
     public class TestController : Controller
     {
-        private Data.AppContext _context = new Data.AppContext();
-        private CourseItemRepository _courseItemRepository;
+        private ProjectContext _context = new ProjectContext();
+        private CourseItemRepository _courseItemRepository;   
         private TaskRepository _taskRepository;
+        private TestService _testService;
 
-        public TestController(Data.AppContext context)
+        public TestController(ProjectContext context)
         {
             _context = context;
             _courseItemRepository = new CourseItemRepository(context);
@@ -32,17 +35,16 @@ namespace XMLEdition.Controllers
         [Route("/Test/GoToTest/{courseItemId}")]
         public IActionResult GoToTest(int courseItemId)
         {
-            int testId = _context.Tests.Where(t => t.CourseItemId == courseItemId).FirstOrDefault().Id;
-
+            int testId = _testService.GetTestByCourseItem(courseItemId).Id;
             return RedirectToAction("PassTest", new { id = testId });
         }
 
         [Route("/Test/PassTest/{id}")]
         public IActionResult PassTest(int id)
         {
-            var test = _context.Tests.Where(t => t.Id == id).FirstOrDefault();
+            var test = _testService.GetTest(id);
             var courseItemId = test.CourseItemId;
-            var courseId = _context.CourseItem.Where(ci => ci.Id == courseItemId).FirstOrDefault().CourseId;
+            var courseId = _testService.GetCourseItem(courseItemId).CourseId;
 
             ViewBag.CourseId = courseId;
             ViewBag.Test = test;
@@ -53,16 +55,16 @@ namespace XMLEdition.Controllers
         public JsonResult GetTasks()
         {
             int testId = Convert.ToInt32(Request.Form["test"]);
-            var tt = _taskRepository.GetTaskByTestId(testId).OrderBy(t => t.OrderNumber);
+            var tasks = _testService.GetTasks(testId);
 
-            return Json(tt);
+            return Json(tasks);
         }
 
         public JsonResult GetAnswers()
         {
-            var tt = _context.TaskAnswers.Where(t => t.TaskId == Convert.ToInt32(Request.Form["task"]));
-
-            return Json(tt);
+            int taskId = Convert.ToInt32(Request.Form["task"]);
+            var testAnswers = _context.TaskAnswers.Where(t => t.TaskId == taskId);
+            return Json(testAnswers);
         }
 
         [HttpPost]
@@ -76,9 +78,9 @@ namespace XMLEdition.Controllers
             List<TaskHistory> taskHistories = new List<TaskHistory>();
             List<AnswerHistory> answerHistories = new List<AnswerHistory>();
 
-            var tasks = _taskRepository.GetTaskByTestId(testId);
+            var tasks = _testService.GetTasks(testId);
             var taskAnswers = Request.Form["answers"].ToString().Split(',')
-                                .Select(a => new {
+                                .Select(a => new UserAnswersModel {
                                     TaskId = int.Parse(a.Split('_')[0]),
                                     AnswerId = int.Parse(a.Split('_')[1]),
                                     IsChecked = bool.Parse(a.Split('_')[2])
@@ -88,45 +90,19 @@ namespace XMLEdition.Controllers
             {
                 double markForTask = 0;
                 var taskAnswerIds = taskAnswers.Where(a => a.TaskId == task.Id).ToList();
-                int cntRight = 0;
-
-                foreach (var taskAnswer in taskAnswerIds)
-                {
-                    bool isRight = _context.TaskAnswers.Where(ta => ta.TaskId == task.Id && ta.Id == taskAnswer.AnswerId).First().IsCorrect;
-                    if (taskAnswer.IsChecked == isRight) {
-                        cntRight++;
-                        answerHistories.Add(new AnswerHistory
-                        {
-                            TaskId = task.Id,
-                            AnswerId = taskAnswer.AnswerId,
-                            IsCorrect = true
-                        });
-                    }
-                    else {
-                        answerHistories.Add(new AnswerHistory
-                        {
-                            TaskId = task.Id,
-                            AnswerId = taskAnswer.AnswerId,
-                            IsCorrect = false
-                        });
-                    }
-                }
+                var corectAnswersCount = _testService.PopulateAnswerHistories(taskAnswerIds, task, answerHistories);
 
                 int corAnsCnt = _context.TaskAnswers.Count(ta => ta.TaskId == task.Id && ta.IsCorrect);
-                if (corAnsCnt == cntRight) {
+                if (corAnsCnt == corectAnswersCount) {
                     markForTask = task.Mark;
                 }
-                else if (cntRight == 0) {
-                    markForTask = 0;
-                }
-                else if (corAnsCnt > cntRight) {
+                else if (corAnsCnt > corectAnswersCount) {
                     double perOne = task.Mark / corAnsCnt;
-                    markForTask = task.Mark / (perOne * cntRight);
+                    markForTask = task.Mark / (perOne * corectAnswersCount);
                 }
 
                 mark += markForTask;
                 total += task.Mark;
-
                 taskHistories.Add(new TaskHistory {
                     TaskId = task.Id,
                     UserMark = markForTask
@@ -140,23 +116,7 @@ namespace XMLEdition.Controllers
                 TotalMark = total,
                 Mark = mark
             };
-
-            _context.TestHistory.Add(testHistory);
-            _context.SaveChanges();
-
-            foreach (var taskHistory in taskHistories)
-            {
-                taskHistory.TestHistoryId = testHistory.Id;
-                _context.TaskHistory.Add(taskHistory);
-            }
-
-            foreach (var answerHistory in answerHistories)
-            {
-                answerHistory.TaskHistoryId = taskHistories.First(t => t.TaskId == answerHistory.TaskId).Id;
-                _context.AnswerHistory.Add(answerHistory);
-            }
-
-            _context.SaveChanges();
+            _testService.SaveHistory(testHistory, taskHistories, answerHistories);
 
             return Json(mark);
         }
@@ -165,71 +125,44 @@ namespace XMLEdition.Controllers
         public IActionResult CreateTest(int id)
         {
             ViewBag.CourseId = id;
-
             return View();
         }
 
         [HttpPost]
-        public JsonResult SaveTest()
+        public async Task<JsonResult> SaveTest()
         {
             Test t = new Test();
             CourseItem currecntCourceItem = new CourseItem();
             int courseId = Convert.ToInt32(Request.Form["courseId"]);
+            var sameCourseItems = _testService.GetCourseItems(courseId);
 
-            var sameCourseItems = _courseItemRepository.GetCourseItemsByCourseId(courseId).OrderBy(ci => ci.OrderNumber);
+            int? testId = Request.Form.Keys.Contains("testId")
+                ? Convert.ToInt32(Request.Form["testId"])
+                : (int?)null;
 
-            if (Request.Form.Keys.Contains("testId") == false)
-            {
-                currecntCourceItem = new CourseItem()
-                {
-                    TypeId = _context.CourseItemTypes.Where(cit => cit.Name == "Test").FirstOrDefault().Id,
-                    CourseId = Convert.ToInt32(Request.Form["courseId"]),
-                    DateCreation = DateTime.Now,
-                    OrderNumber = sameCourseItems.Count() > 0 ? sameCourseItems.Last().OrderNumber + 1 : 1
-                };
+            string newName = Request.Form["test"].ToString();
 
-                _courseItemRepository.AddAsync(currecntCourceItem);
-
-                t = new Test()
-                {
-                    Name = Request.Form["test"].ToString(),
-                    CourseItemId = currecntCourceItem.Id
-                };
-
-                _context.Tests.Add(t);
-                _context.SaveChanges();
-            }
-            else
-            {
-                t = _context.Tests.Where(t => t.Id == Convert.ToInt32(Request.Form["testId"])).FirstOrDefault();
-
-                t.Name = Request.Form["test"].ToString();
-
-                _context.Tests.Update(t);
-                _context.SaveChanges();
-            }
+            t = testId.HasValue
+                ? await _testService.RenameTest(testId.Value, newName)
+                : await _testService.CreateNewTest(newName, courseId, sameCourseItems);
 
             return Json(t.Id);
         }
 
         [HttpPost]
-        public JsonResult SaveAnswers()
+        public async Task<JsonResult> SaveAnswers()
         {
             var allAnsws = Request.Form["answers"];
             var allChecked = Request.Form["checked"];
             Dictionary<string, bool> answers = AnswersSpliter(allAnsws, allChecked);
 
-            TestTask tt = new TestTask()
-            {
-                Name = Request.Form["taskName"].ToString(),
-                OrderNumber = Convert.ToInt32(Request.Form["orderNumber"]),
-                Mark = Convert.ToInt32(Request.Form["taskMark"]),
-                TestId = Convert.ToInt32(Request.Form["testId"])
-            };
-
-            _taskRepository.AddAsync(tt);
-
-            Thread.Sleep(50);
+            //
+            TestTask tt = _testService.CreateNewTask(
+                Request.Form["taskName"].ToString(),
+                Convert.ToInt32(Request.Form["orderNumber"]),
+                Convert.ToInt32(Request.Form["taskMark"]),
+                Convert.ToInt32(Request.Form["testId"])
+            ).Result;
 
             foreach (var answer in answers)
             {
@@ -250,10 +183,8 @@ namespace XMLEdition.Controllers
         [Route("/Test/EditTest/{id}")]
         public IActionResult EditTest(int id)
         {
-            var test = _context.Tests.Where(t=>t.CourseItemId == id).FirstOrDefault();
-            ViewBag.Test = test;
-            ViewBag.CourseId = _courseItemRepository.GetCourseItemById(id).CourseId;
-
+            ViewBag.Test = _testService.GetTestByCourseItem(id);
+            ViewBag.CourseId = _testService.GetCourseItem(id).CourseId;
             return View();
         }
 
@@ -261,16 +192,15 @@ namespace XMLEdition.Controllers
         [Route("/Test/GetTasks/{id}")]
         public JsonResult GetTasks(int id)
         {
-            var res = _taskRepository.GetTaskByTestId(id);
-            return Json(res);
+            var result = _testService.GetTasks(id);
+            return Json(result);
         }
 
         [HttpGet]
         [Route("/Test/GetTask/{id}")]
         public JsonResult GetTask(int id)
         {
-            var res = _context.TestTasks.Where(tt => tt.Id == id).FirstOrDefault();
-
+            var res = _testService.GetTask(id);
             return Json(res);
         }
 
@@ -283,10 +213,10 @@ namespace XMLEdition.Controllers
         }
 
         [HttpPost]
-        public JsonResult SaveEdittedAnswers()
+        public async Task<JsonResult> SaveEdittedAnswers()
         {
             int taskId = Convert.ToInt32(Request.Form["taskId"]);
-            TestTask editedTask = _context.TestTasks.Where(tt => tt.Id == taskId).FirstOrDefault();
+            TestTask editedTask = _testService.GetTask(taskId);
             editedTask.Name = Request.Form["taskName"].ToString();
             editedTask.Mark = Convert.ToInt32(Request.Form["taskMark"].ToString());
 
@@ -324,8 +254,7 @@ namespace XMLEdition.Controllers
                 counter++;
             }
 
-            _context.TestTasks.Update(editedTask);
-            _context.SaveChanges();
+            await _testService.UpdateTask(editedTask);
 
             return Json(true);
         }
@@ -336,25 +265,18 @@ namespace XMLEdition.Controllers
         {
             int tid = taskId;
 
-            var task = _taskRepository.GetTaskById(tid);
-            var taskAnswers = _context.TaskAnswers.Where(ta=>ta.TaskId == tid).ToList();
+            var task = _testService.GetTask(tid);
+            var taskAnswers = _context.TaskAnswers.Where(ta => ta.TaskId == tid).ToList();
             int orderNumber = task.OrderNumber;
             int testId = task.TestId;
-            var allTasksAfter = _context.TestTasks.Where(tt => tt.TestId == testId && tt.OrderNumber > orderNumber).ToList();
+            var allTasksAfter = _testService.GetTasksAfter(testId, orderNumber);
 
             try
             {
                 _context.TestTasks.Remove(task);
                 _context.SaveChanges();
 
-                foreach(var ans in allTasksAfter)
-                {
-                    ans.OrderNumber = orderNumber;
-                    orderNumber++;
-
-                    _context.TestTasks.Update(ans);
-                    _context.SaveChanges();
-                }
+                _testService.ResetOrderNumbers(orderNumber, allTasksAfter);
             }
             catch(Exception ex)
             {

@@ -206,9 +206,9 @@
                     <select class="custom-select" name="Subject" id="Subject">
                         @{
                             int? selectedSubjectId = ViewBag.Course.CourseSubjectId;
-                            List<XMLEdition.Data.CourseSubject> subjects = ViewBag.Subjects;
+                            List<XMLEdition.DAL.Entities.CourseSubject> subjects = ViewBag.Subjects;
 
-                            foreach (XMLEdition.Data.CourseSubject cs in subjects)
+                            foreach (XMLEdition.DAL.Entities.CourseSubject cs in subjects)
                             {
                                 string selected = "";
                                 if (selectedSubjectId != null && selectedSubjectId == cs.Id)
@@ -259,8 +259,7 @@
     let courseId = @ViewBag.Course.Id;
     let authorId = "{5cc5918d-81b7-4a84-bd64-e79fd914ebf7}";
 
-    $(document).ready(function() {
-        
+    $(document).ready(function() {        
         if (courseId != 0) {
             let lesson = document.getElementById("createLesson");
             lesson.href = "/Lesson/CreateLesson/" + courseId;
@@ -298,7 +297,7 @@
             contentType: false,
             processData: false,
             success: function (result) {
-                var res = JSON.parse(result);
+                var res = result;
                 let list = document.getElementById("elementsList");
 
                 console.log(res);
@@ -307,22 +306,22 @@
                     let div = document.createElement("div");
                     div.className = "listElement";
 
-                    let iconClass = res[i].TypeId == 2 ? "bi bi-file-text" : "bi bi-list-check";
+                    let iconClass = res[i].typeId == 2 ? "bi bi-file-text" : "bi bi-list-check";
                     let icon = document.createElement("i");
                     icon.className = iconClass;
                     div.appendChild(icon);
 
                     let a = document.createElement("a");
                     a.className = "listA";
-                    a.href = res[i].TypeId == 2 ? "/Lesson/EditLesson/" + res[i].CourseItemId : "/Test/EditTest/" + res[i].CourseItemId;
-                    a.textContent = res[i].ElementName;
+                    a.href = res[i].typeId == 2 ? "/Lesson/EditLesson/" + res[i].courseItemId : "/Test/EditTest/" + res[i].courseItemId;
+                    a.textContent = res[i].elementName;
                     div.appendChild(a);
 
                     let deleteIcon = document.createElement("i");
                     deleteIcon.className = "bi bi-trash deleteIcon";
 
                     deleteIcon.onclick = function () {
-                        DeleteItemById(res[i].CourseItemId, res[i].TypeId);
+                        DeleteItemById(res[i].courseItemId, res[i].typeId);
                     };
                     div.appendChild(deleteIcon);
 

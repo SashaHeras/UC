@@ -5,13 +5,13 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using XMLEdition.Data;
+using XMLEdition.DAL.EF;
 
 #nullable disable
 
 namespace XMLEdition.Migrations
 {
-    [DbContext(typeof(Data.AppContext))]
+    [DbContext(typeof(ProjectContext))]
     [Migration("20230215135428_test")]
     partial class test
     {

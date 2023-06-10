@@ -1,15 +1,15 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using XMLEdition.Data.Repositories.Repositories;
+using XMLEdition.DAL.EF;
+using XMLEdition.DAL.Repositories;
 
 namespace XMLEdition.Controllers
 {
-    [Route("/Author")]
     public class AuthorController : Controller
     {
-        private Data.AppContext _context = new Data.AppContext();
+        private ProjectContext _context = new ProjectContext();
         private CourseRepository _courseRepository;
 
-        public AuthorController(Data.AppContext context)
+        public AuthorController(ProjectContext context)
         {
             _context = context;
             _courseRepository = new CourseRepository(context);

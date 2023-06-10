@@ -1,24 +1,25 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.FileProviders;
-using Microsoft.OpenApi.Models;
-using System.Numerics;
-using XMLEdition.Data;
-using XMLEdition.Data.Repositories.Interfaces;
-using XMLEdition.Data.Repositories.Repositories;
+using XMLEdition.Core.Services;
+using XMLEdition.DAL.EF;
+using XMLEdition.DAL.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-//builder.Services.AddSingleton<ICourseRepository, CourseRepository>();
-
-builder.Services.AddDbContext<XMLEdition.Data.AppContext>(options => options.UseSqlServer(
+builder.Services.AddDbContext<ProjectContext>(options => options.UseSqlServer(
         builder.Configuration.GetConnectionString("DefaultConnection")
         ));
 
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddScoped<CourseItemRepository>();
+builder.Services.AddScoped<CourseRepository>();
+builder.Services.AddScoped<CourseTypeRepository>();
+builder.Services.AddScoped<LessonRepository>();
+builder.Services.AddScoped<TaskRepository>();
+builder.Services.AddScoped<CourseService>();
 
 var app = builder.Build();
 
@@ -33,16 +34,8 @@ if (!app.Environment.IsDevelopment())
 app.UseStaticFiles();
 
 app.UseDeveloperExceptionPage();
-
-// Enable middleware to serve generated Swagger as a JSON endpoint.
-app.UseSwagger();
-
-app.UseSwaggerUI();
-
 app.UseHttpsRedirection();
-
 app.UseRouting();
-
 app.UseAuthorization();
 
 app.MapControllerRoute(
