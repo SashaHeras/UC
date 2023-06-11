@@ -27,5 +27,20 @@ namespace XMLEdition.DAL.Repositories
         {
             return GetAll().Where(t=>t.TestId == testId);
         }
+
+        public bool DeleteTask(TestTask task)
+        {
+            try
+            {
+                _context.TestTasks.Remove(task);
+                _context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+
+            return true;
+        }
     }
 }

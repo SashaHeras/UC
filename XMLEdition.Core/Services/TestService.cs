@@ -39,19 +39,9 @@ namespace XMLEdition.Core.Services
             return _testRepository.GetTestById(id);
         }
 
-        public TestTask GetTask(int id)
-        {
-            return _taskRepository.GetTaskById(id);
-        }
-
         public CourseItem GetCourseItem(int id)
         {
             return _courseItemRepository.GetCourseItemById(id);
-        }
-
-        public IQueryable<TestTask> GetTasks(int testId)
-        {
-            return _taskRepository.GetTaskByTestId(testId).OrderBy(t => t.OrderNumber);
         }
 
         public Test GetTestByCourseItem(int courseItemId)
@@ -62,26 +52,6 @@ namespace XMLEdition.Core.Services
         public CourseItemType GetItemTypeByName(string name)
         {
             return _courseItemTypeRepository.GetItemTypeByName(name);
-        }
-
-        public List<TestTask> GetTasksAfter(int testId, int order)
-        {
-            return _taskRepository.GetTasksOfTestBiggerThanOrder(testId,order);
-        }
-
-        public async void ResetOrderNumbers(int order, List<TestTask> allTasksAfter)
-        {
-            foreach (var task in allTasksAfter)
-            {
-                task.OrderNumber = order++;
-                //order++;
-                await _taskRepository.UpdateAsync(task);
-            }
-        }
-
-        public async Task<TestTask> UpdateTask(TestTask task)
-        {
-            return await _taskRepository.UpdateAsync(task);
         }
 
         public IQueryable<CourseItem> GetCourseItems(int courseId)
@@ -167,21 +137,6 @@ namespace XMLEdition.Core.Services
             await _testRepository.UpdateAsync(test);
 
             return test;
-        }
-
-        public async Task<TestTask> CreateNewTask(string name, int order, int mark, int testId)
-        {
-            TestTask testTask = new TestTask()
-            {
-                Name = name,
-                OrderNumber = order,
-                Mark = mark,
-                TestId = testId
-            };
-
-            await _taskRepository.AddAsync(testTask);
-
-            return testTask;
         }
     }
 }

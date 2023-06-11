@@ -18,13 +18,17 @@ namespace XMLEdition.Controllers
         private ProjectContext _context = new ProjectContext();
         private CourseItemRepository _courseItemRepository;   
         private TaskRepository _taskRepository;
+        private AnswerRepository _answerRepository;
         private TestService _testService;
+        private TaskService _taskService;
+        private AnswerService _answerService;
 
         public TestController(ProjectContext context)
         {
             _context = context;
             _courseItemRepository = new CourseItemRepository(context);
             _taskRepository = new TaskRepository(context);
+            _answerRepository = new AnswerRepository(context);
         }
 
         public IActionResult Index()
@@ -55,7 +59,7 @@ namespace XMLEdition.Controllers
         public JsonResult GetTasks()
         {
             int testId = Convert.ToInt32(Request.Form["test"]);
-            var tasks = _testService.GetTasks(testId);
+            var tasks = _taskService.GetTasks(testId);
 
             return Json(tasks);
         }
@@ -63,7 +67,7 @@ namespace XMLEdition.Controllers
         public JsonResult GetAnswers()
         {
             int taskId = Convert.ToInt32(Request.Form["task"]);
-            var testAnswers = _context.TaskAnswers.Where(t => t.TaskId == taskId);
+            var testAnswers = _answerService.GetAnswers(taskId);
             return Json(testAnswers);
         }
 
@@ -78,7 +82,7 @@ namespace XMLEdition.Controllers
             List<TaskHistory> taskHistories = new List<TaskHistory>();
             List<AnswerHistory> answerHistories = new List<AnswerHistory>();
 
-            var tasks = _testService.GetTasks(testId);
+            var tasks = _taskService.GetTasks(testId);
             var taskAnswers = Request.Form["answers"].ToString().Split(',')
                                 .Select(a => new UserAnswersModel {
                                     TaskId = int.Parse(a.Split('_')[0]),
@@ -91,8 +95,8 @@ namespace XMLEdition.Controllers
                 double markForTask = 0;
                 var taskAnswerIds = taskAnswers.Where(a => a.TaskId == task.Id).ToList();
                 var corectAnswersCount = _testService.PopulateAnswerHistories(taskAnswerIds, task, answerHistories);
+                int corAnsCnt = _answerService.GetCountOfCorrectAnswers(task.Id);
 
-                int corAnsCnt = _context.TaskAnswers.Count(ta => ta.TaskId == task.Id && ta.IsCorrect);
                 if (corAnsCnt == corectAnswersCount) {
                     markForTask = task.Mark;
                 }
@@ -131,7 +135,6 @@ namespace XMLEdition.Controllers
         [HttpPost]
         public async Task<JsonResult> SaveTest()
         {
-            Test t = new Test();
             CourseItem currecntCourceItem = new CourseItem();
             int courseId = Convert.ToInt32(Request.Form["courseId"]);
             var sameCourseItems = _testService.GetCourseItems(courseId);
@@ -142,11 +145,11 @@ namespace XMLEdition.Controllers
 
             string newName = Request.Form["test"].ToString();
 
-            t = testId.HasValue
+            Test test = testId.HasValue
                 ? await _testService.RenameTest(testId.Value, newName)
                 : await _testService.CreateNewTest(newName, courseId, sameCourseItems);
 
-            return Json(t.Id);
+            return Json(test.Id);
         }
 
         [HttpPost]
@@ -157,7 +160,7 @@ namespace XMLEdition.Controllers
             Dictionary<string, bool> answers = AnswersSpliter(allAnsws, allChecked);
 
             //
-            TestTask tt = _testService.CreateNewTask(
+            TestTask tt = _taskService.CreateNewTask(
                 Request.Form["taskName"].ToString(),
                 Convert.ToInt32(Request.Form["orderNumber"]),
                 Convert.ToInt32(Request.Form["taskMark"]),
@@ -166,15 +169,14 @@ namespace XMLEdition.Controllers
 
             foreach (var answer in answers)
             {
-                TaskAnswer ta = new TaskAnswer()
+                TaskAnswer newAnswer = new TaskAnswer()
                 {
                     Name = answer.Key,
                     IsCorrect = answer.Value,
                     TaskId = tt.Id
                 };
 
-                _context.TaskAnswers.Add(ta);
-                _context.SaveChanges();
+                _answerService.AddAnswer(newAnswer);
             }
 
             return Json(true);
@@ -192,7 +194,7 @@ namespace XMLEdition.Controllers
         [Route("/Test/GetTasks/{id}")]
         public JsonResult GetTasks(int id)
         {
-            var result = _testService.GetTasks(id);
+            var result = _taskService.GetTasks(id);
             return Json(result);
         }
 
@@ -200,23 +202,23 @@ namespace XMLEdition.Controllers
         [Route("/Test/GetTask/{id}")]
         public JsonResult GetTask(int id)
         {
-            var res = _testService.GetTask(id);
+            var res = _taskService.GetTask(id);
             return Json(res);
         }
 
         [Route("/Test/GetAnswersForEditting/{id}")]
         public JsonResult GetAnswersForEditting(int id)
         {
-            var tt = _context.TaskAnswers.Where(t => t.TaskId == id);
+            var result = _answerService.GetAnswers(id);
 
-            return Json(tt);
+            return Json(result);
         }
 
         [HttpPost]
         public async Task<JsonResult> SaveEdittedAnswers()
         {
             int taskId = Convert.ToInt32(Request.Form["taskId"]);
-            TestTask editedTask = _testService.GetTask(taskId);
+            TestTask editedTask = _taskService.GetTask(taskId);
             editedTask.Name = Request.Form["taskName"].ToString();
             editedTask.Mark = Convert.ToInt32(Request.Form["taskMark"].ToString());
 
@@ -254,7 +256,7 @@ namespace XMLEdition.Controllers
                 counter++;
             }
 
-            await _testService.UpdateTask(editedTask);
+            await _taskService.UpdateTask(editedTask);
 
             return Json(true);
         }
@@ -263,22 +265,17 @@ namespace XMLEdition.Controllers
         [Route("/Test/DeleteTask/{taskId}")]
         public JsonResult DeleteTask(int taskId)
         {
-            int tid = taskId;
-
-            var task = _testService.GetTask(tid);
-            var taskAnswers = _context.TaskAnswers.Where(ta => ta.TaskId == tid).ToList();
+            var task = _taskService.GetTask(taskId);            
             int orderNumber = task.OrderNumber;
             int testId = task.TestId;
-            var allTasksAfter = _testService.GetTasksAfter(testId, orderNumber);
+            var allTasksAfter = _taskService.GetTasksAfter(testId, orderNumber);
 
             try
             {
-                _context.TestTasks.Remove(task);
-                _context.SaveChanges();
-
-                _testService.ResetOrderNumbers(orderNumber, allTasksAfter);
+                _taskService.DeleteTask(task);
+                _taskService.ResetOrderNumbers(orderNumber, allTasksAfter);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return Json(ex.Message);
             }
@@ -289,15 +286,15 @@ namespace XMLEdition.Controllers
         [HttpPost]
         public JsonResult DeleteAnswer()
         {
-            var answer = _context.TaskAnswers.Where(ta => ta.Id == Convert.ToInt32(Request.Form["answerId"])).FirstOrDefault();
-            var taskId = answer.TaskId;
+            var answerId = Convert.ToInt32(Request.Form["answerId"]);
+            var answer = _answerRepository.GetAnswerById(answerId);
+            var taskId = answer.TaskId; 
 
-            if(answer != null)
+            if (answer != null)
             {
-                _context.TaskAnswers.Remove(answer);
-                _context.SaveChanges();
+                _answerRepository.DeleteAnswer(answer);
 
-                var answers = _context.TaskAnswers.Where(ta=>ta.TaskId == taskId).ToList();
+                var answers = _answerRepository.GetAnswersByTaskId(taskId);
 
                 return Json(answers);
             }
