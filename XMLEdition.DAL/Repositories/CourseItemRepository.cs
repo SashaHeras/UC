@@ -30,7 +30,7 @@ namespace XMLEdition.DAL.Repositories
         /// <returns></returns>
         public IQueryable<CourseItem> GetCourseItemsByCourseId(int courseId)
         {
-            return GetAll().Where(ci => ci.CourseId == courseId);
+            return GetAll().Where(ci => ci.CourseId == courseId).OrderBy(ci => ci.OrderNumber);
         }
     }
 }

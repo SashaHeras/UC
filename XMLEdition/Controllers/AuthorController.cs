@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using XMLEdition.Core.Services;
 using XMLEdition.DAL.EF;
 using XMLEdition.DAL.Repositories;
 
@@ -6,19 +7,17 @@ namespace XMLEdition.Controllers
 {
     public class AuthorController : Controller
     {
-        private ProjectContext _context = new ProjectContext();
-        private CourseRepository _courseRepository;
+        private CourseService _courseService;
 
-        public AuthorController(ProjectContext context)
+        public AuthorController(CourseService courseService)
         {
-            _context = context;
-            _courseRepository = new CourseRepository(context);
+            _courseService = courseService;
         }
 
         [Route("/Author/Index/{userId}")]
         public IActionResult Index(Guid userId)
         {
-            ViewBag.Courses = _courseRepository.GetAllAuthorsCourses(userId);
+            ViewBag.Courses = _courseService.GetAuthorsCourses(userId);
 
             return View();
         }

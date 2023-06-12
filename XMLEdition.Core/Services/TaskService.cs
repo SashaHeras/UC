@@ -16,8 +16,11 @@ namespace XMLEdition.Core.Services
 
         private AnswerService _answerService;   
 
-        public TaskService() { 
-        
+        public TaskService(TaskRepository taskRepository, AnswerRepository answerRepository, AnswerService answerService)
+        {
+            _taskRepository = taskRepository;
+            _answerRepository = answerRepository;
+            _answerService = answerService;
         }
 
         public IQueryable<TestTask> GetTasks(int testId)

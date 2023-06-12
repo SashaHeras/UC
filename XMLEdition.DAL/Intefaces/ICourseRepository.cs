@@ -9,6 +9,6 @@ namespace XMLEdition.DAL.Interfaces
 
         public Course GetCourse(int courseId);
 
-        public List<Course> GetAllAuthorsCourses(Guid uid);
+        public IQueryable<Course> GetAllAuthorsCourses(Guid uid);
     }
 }

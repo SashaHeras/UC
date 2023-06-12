@@ -15,20 +15,18 @@ namespace XMLEdition.Controllers
 {
     public class TestController : Controller
     {
-        private ProjectContext _context = new ProjectContext();
-        private CourseItemRepository _courseItemRepository;   
-        private TaskRepository _taskRepository;
-        private AnswerRepository _answerRepository;
         private TestService _testService;
         private TaskService _taskService;
         private AnswerService _answerService;
+        private CourseItemService _courseItemService;
 
-        public TestController(ProjectContext context)
+        public TestController(TestService testService, TaskService taskService,
+            AnswerService answerService, CourseItemService courseItemService)
         {
-            _context = context;
-            _courseItemRepository = new CourseItemRepository(context);
-            _taskRepository = new TaskRepository(context);
-            _answerRepository = new AnswerRepository(context);
+            _testService = testService;
+            _taskService = taskService;
+            _answerService = answerService;
+            _courseItemService = courseItemService;
         }
 
         public IActionResult Index()
@@ -48,7 +46,7 @@ namespace XMLEdition.Controllers
         {
             var test = _testService.GetTest(id);
             var courseItemId = test.CourseItemId;
-            var courseId = _testService.GetCourseItem(courseItemId).CourseId;
+            var courseId = _courseItemService.GetCourseItem(courseItemId).CourseId;
 
             ViewBag.CourseId = courseId;
             ViewBag.Test = test;
@@ -94,7 +92,7 @@ namespace XMLEdition.Controllers
             {
                 double markForTask = 0;
                 var taskAnswerIds = taskAnswers.Where(a => a.TaskId == task.Id).ToList();
-                var corectAnswersCount = _testService.PopulateAnswerHistories(taskAnswerIds, task, answerHistories);
+                var corectAnswersCount = _answerService.PopulateAnswerHistories(taskAnswerIds, task, answerHistories);
                 int corAnsCnt = _answerService.GetCountOfCorrectAnswers(task.Id);
 
                 if (corAnsCnt == corectAnswersCount) {
@@ -137,7 +135,7 @@ namespace XMLEdition.Controllers
         {
             CourseItem currecntCourceItem = new CourseItem();
             int courseId = Convert.ToInt32(Request.Form["courseId"]);
-            var sameCourseItems = _testService.GetCourseItems(courseId);
+            var sameCourseItems = _courseItemService.GetCourseItems(courseId);
 
             int? testId = Request.Form.Keys.Contains("testId")
                 ? Convert.ToInt32(Request.Form["testId"])
@@ -157,7 +155,7 @@ namespace XMLEdition.Controllers
         {
             var allAnsws = Request.Form["answers"];
             var allChecked = Request.Form["checked"];
-            Dictionary<string, bool> answers = AnswersSpliter(allAnsws, allChecked);
+            Dictionary<string, bool> answers = _answerService.AnswersSpliter(allAnsws, allChecked);
 
             //
             TestTask tt = _taskService.CreateNewTask(
@@ -186,7 +184,7 @@ namespace XMLEdition.Controllers
         public IActionResult EditTest(int id)
         {
             ViewBag.Test = _testService.GetTestByCourseItem(id);
-            ViewBag.CourseId = _testService.GetCourseItem(id).CourseId;
+            ViewBag.CourseId = _courseItemService.GetCourseItem(id).CourseId;
             return View();
         }
 
@@ -224,37 +222,10 @@ namespace XMLEdition.Controllers
 
             var allAnsws = Request.Form["answers"];
             var allChecked = Request.Form["checked"];
-            Dictionary<string, bool> answers = AnswersSpliter(allAnsws, allChecked);
+            Dictionary<string, bool> answers = _answerService.AnswersSpliter(allAnsws, allChecked);
             string[] ids = Request.Form["ids"].ToString().Split(',');
 
-            int counter = 0;
-            foreach (var answer in answers)
-            {
-                int currentAnswerId = 0;
-                if (int.TryParse(ids[counter], out currentAnswerId) == false)
-                {
-                    TaskAnswer ta = new TaskAnswer()
-                    {
-                        Name = answer.Key,
-                        IsCorrect = answer.Value,
-                        TaskId = editedTask.Id
-                    };
-
-                    _context.TaskAnswers.Add(ta);
-                    _context.SaveChanges();
-                }
-                else
-                {
-                    TaskAnswer ta = _context.TaskAnswers.Where(ta => ta.Id == currentAnswerId).FirstOrDefault();
-                    ta.Name = answer.Key;
-                    ta.IsCorrect = answer.Value;
-
-                    _context.TaskAnswers.Update(ta);
-                    _context.SaveChanges();
-                }
-
-                counter++;
-            }
+            await _answerService.SavingAnswers(editedTask, answers, ids);
 
             await _taskService.UpdateTask(editedTask);
 
@@ -287,34 +258,19 @@ namespace XMLEdition.Controllers
         public JsonResult DeleteAnswer()
         {
             var answerId = Convert.ToInt32(Request.Form["answerId"]);
-            var answer = _answerRepository.GetAnswerById(answerId);
+            var answer = _answerService.GetAnswer(answerId);
             var taskId = answer.TaskId; 
 
             if (answer != null)
             {
-                _answerRepository.DeleteAnswer(answer);
+                _answerService.RemoveAnswer(answer);
 
-                var answers = _answerRepository.GetAnswersByTaskId(taskId);
+                var answers = _answerService.GetAnswers(taskId);
 
                 return Json(answers);
             }
 
             return Json(false);
-        }
-
-        public Dictionary<string, bool> AnswersSpliter(string answers, string _checked)
-        {
-            string[] _answers = answers.Split(',');
-            string[] checkedAns = _checked.Split(',');
-
-            Dictionary<string, bool> result = new Dictionary<string, bool>();
-
-            for (int i = 0; i < _answers.Length; i++)
-            {
-                result.Add(_answers[i].ToString().Replace('|',','), checkedAns[i] == "true" ? true : false);
-            }
-
-            return result;
         }
     }
 }

@@ -5,34 +5,39 @@ using XMLEdition.Core.Services;
 using XMLEdition.DAL.Repositories;
 using XMLEdition.DAL.EF;
 using XMLEdition.DAL.Entities;
+using System.Xml.Linq;
 
 namespace XMLEdition.Controllers
 {
     public class CourseController : Controller
     {
         private ProjectContext _context = new ProjectContext();
-        private CourseRepository _courseRepository;
-        private CourseItemRepository _courseItemRepository;
-        private CourseTypeRepository _courseTypeRepository;
-        private LessonRepository _lessonRepository;
-        private CourseService _courseService;
 
-        public CourseController(CourseService service)
+        private CourseService _courseService;
+        private LessonService _lessonService;
+        private MediaService _mediaService;
+        private CourseItemService _courseItemService;
+
+        public CourseController(ProjectContext projectContext, CourseService service, LessonService lessonService,
+            MediaService mediaService, CourseItemService courseItemService)
         {
-            //_context = context;
-            //_courseRepository = new CourseRepository(context);
-            //_courseItemRepository = new CourseItemRepository(context);
-            //_courseTypeRepository = new CourseTypeRepository(context);
-            //_lessonRepository = new LessonRepository(context);
-            _courseService = service;    
+            _context = projectContext;
+            _courseService = service;  
+            _courseItemService = courseItemService;
+            _lessonService = lessonService;
+            _mediaService = mediaService;
         }
 
         public IActionResult Index(int id)
         {
-            List<CourseElement> elements = _courseService.GetCourseElements(id);
-            ViewBag.CourseId = id;            
-            ViewBag.DefaultTypeId = elements[0].TypeId; 
-            ViewBag.DefaultCourseItemId = elements[0].CourseItemId;
+            List<CourseElement>? elements = _courseService.GetCourseElements(id);
+            ViewBag.CourseId = id;           
+            
+            if(elements != null)
+            {
+                ViewBag.DefaultTypeId = elements[0].TypeId;
+                ViewBag.DefaultCourseItemId = elements[0].CourseItemId;
+            }
 
             return View();
         }
@@ -47,7 +52,7 @@ namespace XMLEdition.Controllers
             }
             else
             {
-                ViewBag.Course = _courseService._courseRepository.GetCourse(id);
+                ViewBag.Course = _courseService.GetCourse(id);
             }            
             return View();
         }
@@ -55,7 +60,9 @@ namespace XMLEdition.Controllers
         [HttpGet]
         public JsonResult GetElements()
         {
-            var elements = _courseService.GetElementsByCourseId(Convert.ToInt32(Request.Form["id"]));
+            var courseId = Convert.ToInt32(Request.Form["id"]);
+            var elements = _courseItemService.GetElementsByCourseId(courseId);
+
             return Json(elements);
         }
 
@@ -63,8 +70,8 @@ namespace XMLEdition.Controllers
         public JsonResult GetElementName()
         {
             int courseItemId = Convert.ToInt32(Request.Form["elementId"]);
-            var element = _courseItemRepository.GetCourseItemById(courseItemId);
-            var typeName = _courseTypeRepository.GetTypeById(element.TypeId).Name;
+            var element = _courseItemService.GetCourseItem(courseItemId);
+            var typeName = _courseItemService.GetItemType(element.TypeId).Name;
 
             return Json(element, typeName);
         }
@@ -77,7 +84,7 @@ namespace XMLEdition.Controllers
         }
 
         [HttpPost]
-        public JsonResult SaveCource()
+        public async Task<JsonResult> SaveCource()
         {
             var form = Request.Form;
             IFormFile? picture = null;
@@ -98,17 +105,17 @@ namespace XMLEdition.Controllers
             newCourse.CourseSubjectId = Convert.ToInt32(form["subject"]);
             newCourse.LastEdittingDate = DateTime.Now;
 
-            newCourse.PicturePath = _courseService.SavePicture(picture, courseId);
-            newCourse.PreviewVideoPath = _courseService.SaveVideo(video, courseId);
+            newCourse.PicturePath = await _mediaService.SaveMedia(picture, courseId);
+            newCourse.PreviewVideoPath = await _mediaService.SaveMedia(video, courseId);
             
             if (courseId == 0)
             {
-                _courseRepository.AddAsync(newCourse);
+                await _courseService.AddCourse(newCourse);
             }
             else
             {
                 newCourse.Id = courseId;
-                _courseRepository.UpdateAsync(newCourse);
+                await _courseService.UpdateCourse(newCourse);
             }
 
             return Json(newCourse.Id);
@@ -116,14 +123,14 @@ namespace XMLEdition.Controllers
 
         [HttpDelete]
         [Route("/Course/DeleteCourseItem/{courseItemId}/{typeId}")]
-        public JsonResult DeleteCourseItem(int courseItemId, int typeId)
+        public async Task<JsonResult> DeleteCourseItem(int courseItemId, int typeId)
         {
-            var item = _courseItemRepository.GetCourseItemById(courseItemId);
+            var item = _courseItemService.GetCourseItem(courseItemId);
 
             try
             {
                 item.StatusId = _context.ItemsStatuses.Where(i => i.Name == "Deleted").FirstOrDefault().Id;
-                _courseItemRepository.UpdateAsync(item);
+                await _courseItemService.UpdateCourseItem(item);
             }
             catch(Exception ex)
             {
@@ -174,10 +181,10 @@ namespace XMLEdition.Controllers
             }
 
             int itemId = Convert.ToInt32(courseItemId);
-            int courseId = _context.CourseItem.Where(ci => ci.Id == itemId).FirstOrDefault().CourseId;
+            int courseId = _courseItemService.GetCourseItem(itemId).CourseId;
 
-            Course c = _courseRepository.GetCourse(courseId);
-            Lesson l = _lessonRepository.GetLessonByCourseItemId(itemId);
+            Course c = _courseService.GetCourse(courseId);
+            Lesson l = _lessonService.GetLessonByCourseItem(itemId);
 
             LessonPartial lessonPartial = new LessonPartial()
             {
@@ -193,71 +200,6 @@ namespace XMLEdition.Controllers
             };
 
             return PartialView("~/Views/Partial/_LessonPartial.cshtml", lessonPartial);
-        }
-
-        public async Task<string> SaveInAsync(IFormFile file)
-        {
-            string uploads = "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\Pictures\\";
-            string newName = Guid.NewGuid().ToString().Replace("-", "");
-
-            string filePath = Path.Combine(uploads, file.FileName);
-            using (Stream fileStream = new FileStream(filePath, FileMode.Create))
-            {
-                await file.CopyToAsync(fileStream);
-            }
-
-            string connectionString = "DefaultEndpointsProtocol=https;AccountName=mystudystorage;AccountKey=F2DhOdWx3qBaoImpVaDkLDVCyErlLVghvKL5kcxYLL9V7KsOQobaH8wWSh4m48ACDDK/lnsyzd3Q+AStciFc5Q==;EndpointSuffix=core.windows.net";
-
-            try
-            {
-                var storageAccount = CloudStorageAccount.Parse(connectionString);
-                var blobClient = storageAccount.CreateCloudBlobClient();
-                var container = blobClient.GetContainerReference("test");
-
-                await container.CreateIfNotExistsAsync();
-
-                var blockBlob = container.GetBlockBlobReference(newName);
-
-                await using (var stream = System.IO.File.OpenRead(uploads + file.FileName))
-                {
-                    await blockBlob.UploadFromStreamAsync(stream);
-                }
-
-                return newName;
-            }
-            catch (Exception ex)
-            {
-                // handle exceptions
-                return "";
-            }
-        }
-
-        public async Task<bool> DeleteFromAzure(string name)
-        {
-            string connectionString = "DefaultEndpointsProtocol=https;AccountName=mystudystorage;AccountKey=F2DhOdWx3qBaoImpVaDkLDVCyErlLVghvKL5kcxYLL9V7KsOQobaH8wWSh4m48ACDDK/lnsyzd3Q+AStciFc5Q==;EndpointSuffix=core.windows.net";
-
-            try
-            {
-                var storageAccount = CloudStorageAccount.Parse(connectionString);
-                var blobClient = storageAccount.CreateCloudBlobClient();
-                var container = blobClient.GetContainerReference("test");
-                var blockBlob = container.GetBlockBlobReference(name);
-
-                if (await blockBlob.DeleteIfExistsAsync())
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            catch (Exception ex)
-            {
-                return false;
-            }
-
-            return true;
         }
 
         public static string GetTimeSinceDate(DateTime date)

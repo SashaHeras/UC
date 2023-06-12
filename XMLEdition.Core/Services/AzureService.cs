@@ -88,37 +88,5 @@ namespace XMLEdition.Core.Services
 
             return true;
         }
-
-        /// <summary>
-        /// Method delete file from project folders Videos and Pictures after uploading file on Azure
-        /// </summary>
-        /// <param name="file"></param>
-        /// <returns></returns>
-        public bool DeleteMediaFromProject(IFormFile file)
-        {
-            string uploads = file.ContentType == "video/mp4" ?
-               "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\Videos\\"
-               : "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\Pictures\\";
-            string fullPath = uploads + file.FileName;
-
-            try
-            {
-                if (File.Exists(fullPath))
-                {
-                    // Delete the file
-                    File.Delete(fullPath);
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            catch(Exception ex)
-            {
-                return false;
-            }
-
-            return true;
-        }
     }
 }

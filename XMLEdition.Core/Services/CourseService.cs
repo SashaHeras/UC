@@ -24,6 +24,26 @@ namespace XMLEdition.Core.Services
             _lessonRepository = lessonRepository;
         }
 
+        public IQueryable<Course> GetAuthorsCourses(Guid userId)
+        {
+            return _courseRepository.GetAllAuthorsCourses(userId); 
+        }
+
+        public async Task<Course> AddCourse(Course course)
+        {
+            return await _courseRepository.AddAsync(course);
+        }
+
+        public async Task<Course> UpdateCourse(Course course)
+        {
+            return await _courseRepository.UpdateAsync(course);
+        }
+
+        public Course GetCourse(int id)
+        {
+            return _courseRepository.GetCourse(id);
+        }
+
         /// <summary>
         /// Execute stored procedure to generate list of course elements
         /// </summary>
@@ -57,167 +77,6 @@ namespace XMLEdition.Core.Services
                 Name = "",
                 Price = 0
             };
-        }
-
-        /// <summary>
-        /// Return IQuerable of course items
-        /// </summary>
-        /// <param name="courseId"></param>
-        /// <returns></returns>
-        public IQueryable<CourseItem> GetElementsByCourseId(int courseId)
-        {
-            return _courseItemRepository.GetCourseItemsByCourseId(courseId);
-        }
-
-        /// <summary>
-        /// Save picture in Azure blob 
-        /// </summary>
-        /// <param name="picture"></param>
-        /// <param name="courseId"></param>
-        /// <returns></returns>
-        public string SavePicture(IFormFile picture, int courseId)
-        {
-            string resPath = String.Empty;
-            if (picture != null)
-            {                
-                if (courseId != null)
-                {
-                    string oldPictureName = _courseRepository.GetCourse(courseId).PicturePath;
-                    if (oldPictureName != null)
-                    {
-                        DeleteFromAzure(oldPictureName);
-                    }
-                }
-                resPath = SaveInAsync(picture).Result;
-            }
-            else if (courseId != 0 && picture == null)
-            {
-                resPath = _courseRepository.GetCourse(courseId).PicturePath;
-            }
-
-            return resPath;
-        }
-
-        /// <summary>
-        /// Save video in Azure blob 
-        /// </summary>
-        /// <param name="video"></param>
-        /// <param name="courseId"></param>
-        /// <returns></returns>
-        public string SaveVideo(IFormFile video, int courseId)
-        {
-            string resPath = String.Empty;
-            if (video != null)
-            {                
-                if (courseId != null)
-                {
-                    string oldVideoName = _courseRepository.GetCourse(courseId).PreviewVideoPath;
-                    if (oldVideoName != null)
-                    {
-                        DeleteFromAzure(oldVideoName);
-                    }
-                }
-                resPath = SaveInAsync(video).Result;
-            }
-            else if (courseId != 0 && video == null)
-            {
-                resPath = _courseRepository.GetCourse(courseId).PreviewVideoPath;
-            }
-
-            return resPath;
-        }
-
-        /// <summary>
-        /// Save media file in Azure blob and return it`s name in Azure blob
-        /// </summary>
-        /// <param name="file"></param>
-        /// <returns></returns>
-        public async Task<string> SaveInAsync(IFormFile file)
-        {
-            string uploads = "C:\\Users\\acsel\\source\\repos\\XMLEdition\\XMLEdition\\wwwroot\\Pictures\\";
-            string newName = Guid.NewGuid().ToString().Replace("-", "");
-
-            string filePath = Path.Combine(uploads, file.FileName);
-            using (Stream fileStream = new FileStream(filePath, FileMode.Create))
-            {
-                await file.CopyToAsync(fileStream);
-            }
-
-            string connectionString = "DefaultEndpointsProtocol=https;AccountName=mystudystorage;AccountKey=F2DhOdWx3qBaoImpVaDkLDVCyErlLVghvKL5kcxYLL9V7KsOQobaH8wWSh4m48ACDDK/lnsyzd3Q+AStciFc5Q==;EndpointSuffix=core.windows.net";
-
-            try
-            {
-                var storageAccount = CloudStorageAccount.Parse(connectionString);
-                var blobClient = storageAccount.CreateCloudBlobClient();
-                var container = blobClient.GetContainerReference("test");
-
-                await container.CreateIfNotExistsAsync();
-
-                var blockBlob = container.GetBlockBlobReference(newName);
-
-                await using (var stream = System.IO.File.OpenRead(uploads + file.FileName))
-                {
-                    await blockBlob.UploadFromStreamAsync(stream);
-                }
-
-                return newName;
-            }
-            catch (Exception ex)
-            {
-                // handle exceptions
-                return "";
-            }
-        }
-
-        public async Task<bool> DeleteFromAzure(string name)
-        {
-            string connectionString = "DefaultEndpointsProtocol=https;AccountName=mystudystorage;AccountKey=F2DhOdWx3qBaoImpVaDkLDVCyErlLVghvKL5kcxYLL9V7KsOQobaH8wWSh4m48ACDDK/lnsyzd3Q+AStciFc5Q==;EndpointSuffix=core.windows.net";
-
-            try
-            {
-                var storageAccount = CloudStorageAccount.Parse(connectionString);
-                var blobClient = storageAccount.CreateCloudBlobClient();
-                var container = blobClient.GetContainerReference("test");
-                var blockBlob = container.GetBlockBlobReference(name);
-
-                if (await blockBlob.DeleteIfExistsAsync())
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            catch (Exception ex)
-            {
-                return false;
-            }
-
-            return true;
-        }
-
-        public static string GetTimeSinceDate(DateTime date)
-        {
-            TimeSpan timeSpan = DateTime.Now - date;
-
-            int totalDays = (int)timeSpan.TotalDays;
-            int totalWeeks = totalDays / 7;
-            int totalMonths = totalDays / 30;
-            int totalYears = totalDays / 365;
-
-            if (totalWeeks < 4)
-            {
-                return $"{totalWeeks} week{(totalWeeks == 1 ? "" : "s")} ago";
-            }
-            else if (totalMonths < 12)
-            {
-                return $"{totalMonths} month{(totalMonths == 1 ? "" : "s")} ago";
-            }
-            else
-            {
-                return $"{totalYears} year{(totalYears == 1 ? "" : "s")} ago";
-            }
         }
     }
 }

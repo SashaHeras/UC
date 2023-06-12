@@ -19,9 +19,9 @@ namespace XMLEdition.DAL.Repositories
         /// </summary>
         /// <param name="uid"></param>
         /// <returns></returns>
-        public List<Course> GetAllAuthorsCourses(Guid uid)
+        public IQueryable<Course> GetAllAuthorsCourses(Guid uid)
         {
-            return GetAll().Where(c => c.AuthorId == uid).ToList();
+            return GetAll().Where(c => c.AuthorId == uid);
         }
 
         /// <summary>

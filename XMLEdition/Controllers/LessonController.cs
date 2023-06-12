@@ -15,15 +15,21 @@ namespace XMLEdition.Controllers
 {
     public class LessonController : Controller
     {
-        private ProjectContext _context = new ProjectContext();
         private LessonService _lessonService;
         private AzureService _azureService;
+        private MediaService _mediaService;
+        private CourseItemService _courseItemService;
+        private CourseService _courseService;
 
-        public LessonController(ProjectContext context)
+        public LessonController(
+            LessonService lessonService, AzureService azureService, MediaService mediaService, 
+            CourseItemService courseItemService, CourseService courseService)
         {
-            _context = context;
-            _lessonService = new LessonService(context);
-            _azureService = new AzureService();
+            _lessonService = lessonService;
+            _azureService = azureService;
+            _mediaService = mediaService;
+            _courseItemService = courseItemService;
+            _courseService = courseService;
         }
 
         /// <summary>
@@ -54,10 +60,10 @@ namespace XMLEdition.Controllers
         /// <param name="createLessonModel"></param>
         /// <returns></returns>
         [HttpPost]
-        public IActionResult Create(IFormCollection form, CreateLessonModel createLessonModel)
+        public async Task<IActionResult> Create(IFormCollection form, CreateLessonModel createLessonModel)
         {
-            string videoName = _azureService.SaveInAsync(createLessonModel.VideoPath).Result;
-            CourseItem newCourceItem = _lessonService.CreateNewCourseItem(createLessonModel);
+            string videoName = await _azureService.SaveInAsync(createLessonModel.VideoPath);
+            CourseItem newCourceItem = await _courseItemService.CreateNewCourseItem(createLessonModel);
             _lessonService.CreateLesson(newCourceItem, createLessonModel, videoName);
 
             return RedirectToAction("CreateCourse", "Course", new { id = newCourceItem.CourseId });
@@ -74,10 +80,10 @@ namespace XMLEdition.Controllers
         public IActionResult Lesson(Guid id)
         {
             var lesson = _lessonService.GetLesson(id);
-            var courseId = _lessonService.GetCourseItem(lesson.CourseItemId).CourseId;
+            var courseId = _courseItemService.GetCourseItem(lesson.CourseItemId).CourseId;
 
             ViewBag.Lesson = lesson;
-            ViewBag.Course = _lessonService.GetCourse(courseId);
+            ViewBag.Course = _courseService.GetCourse(courseId);
 
             return View();
         }
@@ -109,14 +115,15 @@ namespace XMLEdition.Controllers
                 lesson.VideoPath = oldVideoName;
             }
 
-            CourseItem currentCourseItem = _lessonService.GetCourseItem(lesson.CourseItemId);
+            CourseItem currentCourseItem = _courseItemService.GetCourseItem(lesson.CourseItemId);
             currentCourseItem.DateCreation = DateTime.Now;
 
             int courseId = currentCourseItem.CourseId;
-            await _lessonService.UpdateCourseItem(currentCourseItem);   
+            await _courseItemService.UpdateCourseItem(currentCourseItem);  
+            
             _lessonService.UpdateLesson(lesson);
 
-            _azureService.DeleteMediaFromProject(form.Files[0]);
+            _mediaService.DeleteMediaFromProject(form.Files[0]);
 
             return RedirectToAction("CreateCourse", "Course", new { id = courseId });
         }

@@ -15,23 +15,25 @@ namespace XMLEdition.Core.Services
 {
     public class TestService
     {
-        private ProjectContext _context;
         private TestRepository _testRepository;
         private CourseItemRepository _courseItemRepository;
-        private TaskRepository _taskRepository;
-        private CourseTypeRepository _courseItemTypeRepository;
 
-        public TestService(ProjectContext projectContext, 
-            TestRepository testRepository, 
-            CourseItemRepository courseItemRepository, 
-            TaskRepository taskRepository, 
-            CourseTypeRepository courseTypeRepository)
+        private CourseItemService _courseItemService;
+        private TestHistoryService _testHistoryService;
+        private TaskHistoryService _taskHistoryService;
+        private AnswerHistoryService _answerHistoryService;
+
+        public TestService( 
+            TestRepository testRepository, CourseItemRepository courseItemRepository,
+            CourseItemService courseItemService, TestHistoryService testHistoryService,
+            TaskHistoryService taskHistoryService, AnswerHistoryService answerHistoryService)
         {
-            _context = projectContext;
             _testRepository = testRepository;
             _courseItemRepository = courseItemRepository;
-            _taskRepository = taskRepository;
-            _courseItemTypeRepository = courseTypeRepository;
+            _courseItemService = courseItemService;
+            _testHistoryService = testHistoryService;
+            _taskHistoryService = taskHistoryService;
+            _answerHistoryService = answerHistoryService;
         }             
 
         public Test GetTest(int id)
@@ -39,80 +41,25 @@ namespace XMLEdition.Core.Services
             return _testRepository.GetTestById(id);
         }
 
-        public CourseItem GetCourseItem(int id)
-        {
-            return _courseItemRepository.GetCourseItemById(id);
-        }
-
         public Test GetTestByCourseItem(int courseItemId)
         {
             return _testRepository.GetTestByCourseItemId(courseItemId);
         }
 
-        public CourseItemType GetItemTypeByName(string name)
-        {
-            return _courseItemTypeRepository.GetItemTypeByName(name);
-        }
-
-        public IQueryable<CourseItem> GetCourseItems(int courseId)
-        {
-            return _courseItemRepository.GetCourseItemsByCourseId(courseId).OrderBy(ci => ci.OrderNumber);
-        }
-
-        public int PopulateAnswerHistories(List<UserAnswersModel> taskAnswerIds, TestTask task, List<AnswerHistory> answerHistories)
-        {
-            var result = 0;
-
-            foreach (var taskAnswer in taskAnswerIds)
-            {
-                bool isRight = _context.TaskAnswers
-                    .Where(ta => ta.TaskId == task.Id && ta.Id == taskAnswer.AnswerId)
-                    .First().IsCorrect;
-
-                var answerHistory = new AnswerHistory
-                {
-                    TaskId = task.Id,
-                    AnswerId = taskAnswer.AnswerId,
-                    IsCorrect = (taskAnswer.IsChecked == isRight)
-                };
-
-                if (answerHistory.IsCorrect)
-                {
-                    result++; 
-                }
-
-                answerHistories.Add(answerHistory);
-            }
-
-            return result;
-        }
-
         public async void SaveHistory(TestHistory history, List<TaskHistory> taskHistories, List<AnswerHistory> answerHistories)
         {
-            _context.TestHistory.Add(history);
-            ///
-            await _context.SaveChangesAsync();
+            history = await _testHistoryService.SaveTestHistory(history);
 
-            foreach (var taskHistory in taskHistories)
-            {
-                taskHistory.TestHistoryId = history.Id;
-                _context.TaskHistory.Add(taskHistory);
-            }
+            taskHistories = await _taskHistoryService.SaveTasksHistory(history, taskHistories);
 
-            foreach (var answerHistory in answerHistories)
-            {
-                answerHistory.TaskHistoryId = taskHistories.First(t => t.TaskId == answerHistory.TaskId).Id;
-                _context.AnswerHistory.Add(answerHistory);
-            }
-
-            await _context.SaveChangesAsync();
+            await _answerHistoryService.SaveAnswersHistory(taskHistories, answerHistories);
         }
          
         public async Task<Test> CreateNewTest(string testName, int courseId, IQueryable<CourseItem> sameCourseItems)
         {
             CourseItem newCourseItem = new CourseItem()
             {
-                TypeId = GetItemTypeByName("Test").Id,
+                TypeId = _courseItemService.GetItemTypeByName("Test").Id,
                 CourseId = courseId,
                 DateCreation = DateTime.Now,
                 OrderNumber = sameCourseItems.Count() > 0 ? sameCourseItems.Last().OrderNumber + 1 : 1

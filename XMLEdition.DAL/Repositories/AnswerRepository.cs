@@ -49,5 +49,11 @@ namespace XMLEdition.DAL.Repositories
         {
             return _context.TaskAnswers.Count(ta => ta.TaskId == taskId && ta.IsCorrect);
         }
+
+        public TaskAnswer GetAnswerByIdAndTask(int id, int taskId) {
+            return _context.TaskAnswers
+                    .Where(ta => ta.TaskId == taskId && ta.Id == id)
+                    .First();
+        }
     }
 }

@@ -10,13 +10,11 @@ namespace XMLEdition.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private ProjectContext _context = new ProjectContext();
         private LessonRepository _lessonRepository;
         private CourseRepository _courseRepository;
 
         public HomeController(ProjectContext context)
         {
-            _context = context;
             _lessonRepository = new LessonRepository(context);
             _courseRepository = new CourseRepository(context);
         }

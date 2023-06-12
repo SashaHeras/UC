@@ -14,12 +14,28 @@ builder.Services.AddDbContext<ProjectContext>(options => options.UseSqlServer(
 
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddScoped<AnswerHistoryRepository>();
+builder.Services.AddScoped<AnswerRepository>();
 builder.Services.AddScoped<CourseItemRepository>();
 builder.Services.AddScoped<CourseRepository>();
 builder.Services.AddScoped<CourseTypeRepository>();
 builder.Services.AddScoped<LessonRepository>();
+builder.Services.AddScoped<TaskHistoryRepository>();
 builder.Services.AddScoped<TaskRepository>();
+builder.Services.AddScoped<TestHistoryRepository>();
+builder.Services.AddScoped<TestRepository>();
+
+builder.Services.AddScoped<AnswerHistoryService>();
+builder.Services.AddScoped<AnswerService>();
+builder.Services.AddScoped<AzureService>();
+builder.Services.AddScoped<CourseItemService>();
 builder.Services.AddScoped<CourseService>();
+builder.Services.AddScoped<LessonService>();
+builder.Services.AddScoped<MediaService>();
+builder.Services.AddScoped<TaskHistoryService>();
+builder.Services.AddScoped<TaskService>();
+builder.Services.AddScoped<TestHistoryService>();
+builder.Services.AddScoped<TestService>();
 
 var app = builder.Build();
 
