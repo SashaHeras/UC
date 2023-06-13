@@ -1,22 +1,19 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.WindowsAzure.Storage;
 using XMLEdition.Models;
 using XMLEdition.Core.Services;
-using XMLEdition.DAL.Repositories;
 using XMLEdition.DAL.EF;
 using XMLEdition.DAL.Entities;
-using System.Xml.Linq;
 
 namespace XMLEdition.Controllers
 {
     public class CourseController : Controller
     {
-        private ProjectContext _context = new ProjectContext();
+        private readonly ProjectContext _context;
 
-        private CourseService _courseService;
-        private LessonService _lessonService;
-        private MediaService _mediaService;
-        private CourseItemService _courseItemService;
+        private readonly CourseService _courseService;
+        private readonly LessonService _lessonService;
+        private readonly MediaService _mediaService;
+        private readonly CourseItemService _courseItemService;
 
         public CourseController(ProjectContext projectContext, CourseService service, LessonService lessonService,
             MediaService mediaService, CourseItemService courseItemService)

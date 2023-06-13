@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
-using System.IO;
-using XMLEdition.DAL.EF;
 using XMLEdition.DAL.Repositories;
 using XMLEdition.Models;
 
@@ -9,14 +7,13 @@ namespace XMLEdition.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
         private LessonRepository _lessonRepository;
         private CourseRepository _courseRepository;
 
-        public HomeController(ProjectContext context)
+        public HomeController(LessonRepository lessonRepository, CourseRepository courseRepository)
         {
-            _lessonRepository = new LessonRepository(context);
-            _courseRepository = new CourseRepository(context);
+            _lessonRepository = lessonRepository;
+            _courseRepository = courseRepository;
         }
 
         public IActionResult Index()

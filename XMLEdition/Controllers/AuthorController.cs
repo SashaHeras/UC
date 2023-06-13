@@ -1,13 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using XMLEdition.Core.Services;
-using XMLEdition.DAL.EF;
-using XMLEdition.DAL.Repositories;
 
 namespace XMLEdition.Controllers
 {
     public class AuthorController : Controller
     {
-        private CourseService _courseService;
+        private readonly CourseService _courseService;
 
         public AuthorController(CourseService courseService)
         {

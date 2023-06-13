@@ -1,15 +1,7 @@
-﻿using Azure.Storage.Blobs;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Razor.Compilation;
-using Microsoft.DotNet.Scaffolding.Shared.ProjectModel;
-using Microsoft.WindowsAzure.Storage;
+﻿using Microsoft.AspNetCore.Mvc;
 using XMLEdition.Core.Services;
-using XMLEdition.DAL.EF;
 using XMLEdition.DAL.Entities;
-using XMLEdition.DAL.Repositories;
 using XMLEdition.DAL.ViewModels;
-using XMLEdition.Migrations;
-using XMLEdition.Models;
 
 namespace XMLEdition.Controllers
 {
@@ -21,8 +13,7 @@ namespace XMLEdition.Controllers
         private CourseItemService _courseItemService;
         private CourseService _courseService;
 
-        public LessonController(
-            LessonService lessonService, AzureService azureService, MediaService mediaService, 
+        public LessonController(LessonService lessonService, AzureService azureService, MediaService mediaService, 
             CourseItemService courseItemService, CourseService courseService)
         {
             _lessonService = lessonService;

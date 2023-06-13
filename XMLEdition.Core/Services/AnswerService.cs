@@ -1,11 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using XMLEdition.DAL.Entities;
-using XMLEdition.DAL.Intefaces;
+﻿using XMLEdition.DAL.Entities;
 using XMLEdition.DAL.Repositories;
 using XMLEdition.DAL.ViewModels;
 

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using XMLEdition.DAL.EF;
+﻿using XMLEdition.DAL.EF;
 using XMLEdition.DAL.Entities;
 using XMLEdition.DAL.Intefaces;
 

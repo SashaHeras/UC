@@ -1,8 +1,4 @@
-﻿using Azure.Core;
-using Microsoft.AspNetCore.Http;
-using Microsoft.WindowsAzure.Storage;
-using System.Text.Json;
-using XMLEdition.DAL.EF;
+﻿using System.Text.Json;
 using XMLEdition.DAL.Entities;
 using XMLEdition.DAL.Repositories;
 

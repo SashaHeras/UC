@@ -1,15 +1,8 @@
-﻿using Antlr.Runtime.Tree;
-using Framework.Helper.Extension;
+﻿using Framework.Helper.Extension;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.JSInterop.Implementation;
-using Microsoft.SqlServer.Server;
-using System.Text.RegularExpressions;
 using XMLEdition.Core.Services;
-using XMLEdition.DAL.EF;
 using XMLEdition.DAL.Entities;
-using XMLEdition.DAL.Repositories;
 using XMLEdition.DAL.ViewModels;
-using XMLEdition.Migrations;
 
 namespace XMLEdition.Controllers
 {

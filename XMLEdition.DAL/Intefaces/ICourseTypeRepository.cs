@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using XMLEdition.DAL.Entities;
+﻿using XMLEdition.DAL.Entities;
 using XMLEdition.DAL.Infrastructure;
 
 namespace XMLEdition.DAL.Interfaces
